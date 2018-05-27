@@ -1,0 +1,461 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1. Introduction &#8212; cismdoc  documentation</title>
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Quick-start guide" href="quick-start.html" />
+    <link rel="prev" title="CISM User’s Guide" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="quick-start.html" title="2. Quick-start guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="CISM User’s Guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cismdoc  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CISM User’s Guide</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Introduction</a><ul>
+<li><a class="reference internal" href="#scientific-background">1.1. Scientific background</a></li>
+<li><a class="reference internal" href="#ice-sheets-in-cesm">1.2. Ice sheets in CESM</a></li>
+<li><a class="reference internal" href="#limitations">1.3. Limitations</a><ul>
+<li><a class="reference internal" href="#limitations-of-the-ice-sheet-model">1.3.1. Limitations of the ice sheet model</a></li>
+<li><a class="reference internal" href="#limitations-of-other-components-of-the-cesm-modeling-system">1.3.2. Limitations of other components of the CESM modeling system</a></li>
+<li><a class="reference internal" href="#whats-new-in-cesm1-2-with-respect-to-ice-sheet-modeling">1.3.3. What’s new in CESM1.2 with respect to ice sheet modeling?</a></li>
+<li><a class="reference internal" href="#what-s-new-in-cesm1-1-with-respect-to-ice-sheet-modeling">1.3.4. What’s new in CESM1.1 with respect to ice sheet modeling?</a></li>
+<li><a class="reference internal" href="#known-problems-in-cesm1-2">1.3.5. Known problems in CESM1.2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">CISM User’s Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="quick-start.html"
+                        title="next chapter">2. Quick-start guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/users_guide/introduction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<span id="id1"></span><h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This document accompanies the Community Earth System Model (CESM) User’s
+Guide and is intended for users who would like to run CESM with dynamic
+ice sheets and/or an improved surface mass balance scheme for glaciated
+regions. For more information, please see the CESM User’s Guide:
+<a class="reference external" href="http://www.cesm.ucar.edu/models/cesm1.2/">http://www.cesm.ucar.edu/models/cesm1.2/</a>.</p>
+<p>The introduction provides some scientific background, along with a brief
+history of land-ice model development within CESM. Section 2 is a
+quick-start guide for new users. Section 3 describes how to run the
+standalone ice sheet model within CESM, forced by output from a
+previous, coupled run. Section 4 describes Glimmer, the Community Ice
+Sheet Model (Glimmer-CISM), the dynamic ice sheet model in CESM. Section
+5 gives a detailed description of the surface-mass-balance scheme for
+ice sheets in the Community Land Model (CLM). Section 6 answers some
+common questions about model usage.</p>
+<p>It should be emphasized that this is an early implementation with a
+number of scientific limitations that are detailed below. Model
+developers are keenly aware of these limitations and are actively
+addressing them. Several major improvements are planned for the next one
+to two years and will be released as they become available.</p>
+<p>This documentation is itself in progress. If you find errors, or if you
+would like to have some additional information included, please contact
+the authors at <a class="reference external" href="mailto:lipscomb&#37;&#52;&#48;lanl&#46;gov">lipscomb<span>&#64;</span>lanl<span>&#46;</span>gov</a> or <a class="reference external" href="mailto:sacks&#37;&#52;&#48;ucar&#46;edu">sacks<span>&#64;</span>ucar<span>&#46;</span>edu</a>.</p>
+<div class="section" id="scientific-background">
+<h2>1.1. Scientific background<a class="headerlink" href="#scientific-background" title="Permalink to this headline">¶</a></h2>
+<p>Historically, ice sheet models were not included in global climate
+models (GCMs), because they were thought to be too sluggish to respond
+to climate change on decade-to-century time scales. In the Community
+Climate System Model (CCSM), as in many other global climate models, the
+extent and elevation of the Greenland and Antarctic ice sheets were
+assumed to be fixed in time. Interactions between ice sheets and other
+parts of the climate system were largely ignored.</p>
+<p>Recent observations, however, have established that the Greenland and
+Antarctic ice sheets can respond to atmospheric and ocean warming on
+time scales of a decade or less. Satellite gravity measurements have
+shown that both ice sheets are losing mass at a rate of ~200 Gt/yr
+(Velicogna 2009). (A mass loss of 360 Gt corresponds to global sea-level
+rise of 1 mm.) Greenland mass loss is caused by increased surface
+melting and the acceleration of large outlet glaciers (van den Broeke et
+al. 2009). In Antarctica, mass is being lost primarily because of the
+acceleration of outlet glaciers, especially in the Amundsen Sea
+Embayment of West Antarctica (Rignot et al. 2008).</p>
+<p>Small glaciers and ice caps (GIC) also have retreated in recent years.
+Although the total volume of GIC (~0.6 m sea-level equivalent; Radić and
+Hock 2010) is much less than that of the Greenland ice sheet (~7 m) and
+the Antarctic ice sheet (~60 m), glaciers and ice caps can respond
+quickly to climate change. Mass loss from GIC has grown in recent years
+and has been estimated at ~400 Gt/yr (Meier et al. 2007). GCMs generally
+assume that the mass of glaciers and ice caps, like that of ice sheets,
+is fixed.</p>
+<p>Global sea level is rising at a rate of about 30 cm/century, with
+primary contributions from land ice retreat and ocean thermal expansion
+(Cazenave et al. 2008). Estimates of 21<sup>st</sup> century ice-sheet
+mass loss and sea-level rise are highly uncertain. The IPCC Fourth
+Assessment Report (Meehl et al. 2007) projected 18 to 59 cm of sea-level
+rise by 2100 but specifically excluded ice-sheet dynamical feedbacks, in
+part because existing ice sheet models were deemed inadequate. A widely
+cited semi-empirical study (Rahmstorf 2007) estimated 40 to 150 cm of
+21<sup>st</sup> century sea-level rise, based on the assumption that the
+rate of rise is linearly proportional to the increase in global mean
+temperatures from preindustrial values. The assumptions of
+semi-empirical models, however, may not be valid as additional land-ice
+processes come into play.</p>
+<p>Modeling of land ice has therefore taken on increased urgency. Several
+workshops (e.g., Little et al. 2007; Lipscomb et al. 2009) have called
+for developing improved ice sheet models. There is general agreement on
+the need for (1) “higher-order” flow models with a unified treatment of
+vertical shear stresses and horizontal-plane stresses, (2) finer grid
+resolution (~5 km or less) for ice streams, outlet glaciers, and other
+regions where the flow varies rapidly on small scales, and (3) improved
+treatments of key physical processes such as basal sliding, subglacial
+water transport, iceberg calving, and grounding-line migration. These
+improvements are beginning to be incorporated in numerical ice sheet
+models. One such model is the Glimmer Community Ice Sheet Model
+(Glimmer-CISM), which has been coupled to CESM and is described below.</p>
+<p>Although much can be learned from ice sheet models in standalone mode,
+coupled models are required to capture important feedbacks. For example,
+surface ablation may be underestimated if an ice sheet model is forced
+by an atmospheric model that does not respond to changes in surface
+albedo and elevation (Pritchard et al. 2008). At ice sheet margins,
+floating ice shelves are closely coupled to the ocean in ways that are
+just beginning to be understood and modeled (Holland et al. 2008a,
+2008b). Also, changes in ice sheet elevation and surface runoff could
+have significant effects on the regional and global circulation of the
+atmosphere and ocean. The inclusion of dynamic ice sheets in CESM and
+other GCMs will likely lead to scientific insights that cannot be
+obtained from standalone ice sheet models.</p>
+</div>
+<div class="section" id="ice-sheets-in-cesm">
+<h2>1.2. Ice sheets in CESM<a class="headerlink" href="#ice-sheets-in-cesm" title="Permalink to this headline">¶</a></h2>
+<p>Since 2006, researchers in the Climate, Ocean and Sea Ice Modeling
+(COSIM) group at Los Alamos National Laboratory (LANL) have worked with
+scientists at the National Center for Atmospheric Research (NCAR) to
+incorporate an ice sheet model in the CCSM/CESM framework. This work has
+been funded primarily by the Department of Energy (DOE) Scientific
+Discovery through Advanced Computing (SciDAC) program, with additional
+support from the National Science Foundation (NSF). The Glimmer ice
+sheet model (Rutt et al. 2009), developed by Tony Payne and colleagues
+at the University of Bristol, was chosen for coupling. Although
+Glimmer’s dynamical core was relatively basic, a higher-order dynamics
+scheme was under development. In addition, the model was well structured
+and well documented, with an interface (GLINT) to enable coupling to
+GCMs.</p>
+<p>Glimmer was initially coupled to CCSM version 3.5. The surface mass
+balance (SMB; the difference between annual accumulation and ablation)
+was computed using Glimmer’s positive-degree-scheme, which uses
+empirical formulas to relate surface temperatures to summer melting. It
+was decided that the PDD scheme was not appropriate for climate change
+modeling, because empirical relationships that are valid for present-day
+climate may not hold in the future. Instead, a surface-mass-balance
+scheme for ice sheets was developed for the Community Land Model (CLM).
+This scheme computes the SMB in each of ~10 elevation classes per grid
+cell in glaciated regions. The SMB is passed via the coupler to the ice
+sheet component, where it is averaged, downscaled, and used to force the
+dynamic ice sheet model at the upper surface. (See Section 4 for
+details.) When the CCSM4 coupling framework became available, the
+coupling was redone for the new framework.</p>
+<p>In 2009, the U.K. researchers who designed Glimmer joined efforts with
+U.S. scientists who were developing a Community Ice Sheet Model (CISM),
+and the model was renamed Glimmer-CISM. Model development was overseen
+by a six-member steering committee including Magnus Hagdorn (U.
+Edinburgh), Jesse Johnson (U. Montana), William Lipscomb (LANL), Tony
+Payne (U. Bristol), Stephen Price (LANL), and Ian Rutt (U. Swansea). The
+model resides on the BerliOS repository
+(<a class="reference external" href="http://glimmer-cism.berlios.de/">http://glimmer-cism.berlios.de/</a>). It is an open-source code governed by
+the GNU General Public License and is freely available to all. The
+version included in the initial CESM release is a close approximation of
+Glimmer-CISM version 1.6.</p>
+<p>Subsequent ice-sheet model development targeted for CESM has taken place
+in a Subversion repository at the National Center for Atmospheric
+Research (<a class="reference external" href="https://svn-cism-model.cgd.ucar.edu/">https://svn-cism-model.cgd.ucar.edu/</a>). CESM1.2 includes a new
+version of Glimmer-CISM (version 1.9). This version includes extensive
+modifications that have been made in preparation for the upcoming
+release of Glimmer-CISM version 2.0, which will include 3d,
+1st-order-accurate ice dynamics, support for MPI-based distributed
+parallelism, and support for linking to Trilinos solver libraries. When
+run with shallow-ice dynamics, Glimmer-CISM 1.9 gives answers that are
+approximately the same as version 1.6, which was the version included in
+CESM1.1.1 and earlier.</p>
+</div>
+<div class="section" id="limitations">
+<h2>1.3. Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of significant limitations of the ice sheet model
+within CESM. Most of these are under active development by members of
+the Land Ice Working Group.</p>
+<div class="section" id="limitations-of-the-ice-sheet-model">
+<h3>1.3.1. Limitations of the ice sheet model<a class="headerlink" href="#limitations-of-the-ice-sheet-model" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>The model is technically supported but is still undergoing scientific</dt>
+<dd>testing and validation. We cannot guarantee that the default
+values of model parameters will yield an optimal simulation.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The dynamical core is similar to that in the original Glimmer code</dt>
+<dd>and is based on the shallow-ice approximation (SIA). The SIA is
+valid in the interior of ice sheets, but not in fast-flowing
+regions such as ice shelves, ice streams, and outlet glaciers. A
+higher-order scheme that is valid in all parts of the ice sheet
+is being tested and will become part of CESM in 2014 with the
+release of Glimmer-CISM version 2.0.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The current Glimmer-CISM code is serial. This is not a limitation for</dt>
+<dd>the SIA model, which is computationally fast, but will be an
+issue for the higher-order model. A parallel version of the code
+is under development and is expected to be released by 2014.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Glimmer-CISM simulates only the large ice sheets (Greenland and</dt>
+<dd>Antarctica). There is currently no ability in CESM to simulate
+evolution of smaller glaciers. A separate model for simulating
+smaller glaciers is under development and is expected to be
+released in 2014.</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="limitations-of-other-components-of-the-cesm-modeling-system">
+<h3>1.3.2. Limitations of other components of the CESM modeling system<a class="headerlink" href="#limitations-of-other-components-of-the-cesm-modeling-system" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>There is no out-of-the-box capability for topography in the atmosphere model (CAM) to
+respond to changes in ice sheet geometry. (However, members of the Land Ice Working
+Group have developed an offline script that can be used for these purposes.)</li>
+<li><dl class="first docutils">
+<dt>The ice sheet model has not been fully coupled to the ocean model; that</dt>
+<dd>coupling is under development. For this reason the initial
+implementation is for the Greenland ice sheet only. Since
+ice-ocean coupling is critical for the dynamics of the Antarctic
+ice sheet, it was decided that Antarctic simulations without
+ocean coupling would be of limited scientific value.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The division of glaciers into elevation classes in CLM is fairly</dt>
+<dd>coarse and static in space. The current scheme is reasonable for
+Greenland, but not ideal for mountain glaciers.</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="whats-new-in-cesm1-2-with-respect-to-ice-sheet-modeling">
+<h3>1.3.3. What’s new in CESM1.2 with respect to ice sheet modeling?<a class="headerlink" href="#whats-new-in-cesm1-2-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h3>
+<p>Compared to the CESM1.1 series, there have been a number of improvements
+in CESM that are relevant for ice sheet modeling:</p>
+<ul class="simple">
+<li>CESM1.2 includes a new version of Glimmer-CISM (version 1.9). This
+version includes extensive modifications that have been made in
+preparation for the upcoming release of Glimmer-CISM version 2.0,
+which will include 3d, 1st-order-accurate ice dynamics and support
+for MPI-based distributed parallelism. When run with shallow-ice
+dynamics, Glimmer-CISM 1.9 gives answers that are approximately the
+same as version 1.6, which was the version included in CESM1.1.1 and
+earlier.</li>
+<li>Some changes to default parameter values: For a few configuration
+settings, the numeric value corresponding to each option has changed
+(see
+<a class="reference external" href="http://www.cesm.ucar.edu/models/cesm1.1/cesm/doc/modelnl/nl_cism.html">http://www.cesm.ucar.edu/models/cesm1.2/cesm/doc/modelnl/nl_cism.html</a>).
+In addition, there have been additional configuration options added
+(the first two below) and changes to some existing default option
+settings:<ul>
+<li><em>temp_init</em><ul>
+<li>Old: 1 (Initialize temperature to surface air temperature)</li>
+<li>New: 2 (Initialize temperature with a linear profile in each
+column)</li>
+</ul>
+</li>
+<li><em>basal_mass_balance</em><ul>
+<li>Old: 0 (basal mass balance not included in continuity equation)</li>
+<li>New: 1 (basal mass balance included in continuity equation)</li>
+</ul>
+</li>
+<li><em>sigma</em><ul>
+<li>Old: 2 (read sigma coordinates from config file)</li>
+<li>New: 0 (compute standard Glimmer sigma coordinates)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>New initial conditions have been provided for both CLM and CISM, when
+running the BG1850CN compset at f09 resolution (currently, this is
+the only compset involving CISM that is set up as a “hybrid”
+compset). Importantly, this is the first time we have provided
+spun-up ice sheet initial conditions, so that the ice sheet is in
+rough equilibrium with the CESM climate. However, because of how
+these initial conditions were generated, they will not be in full
+equilibrium with recent versions of CESM. In addition, the ice sheet
+spin-up was done with some altered configuration settings compared to
+the current out-of-the-box settings. For more details, see the README
+file in this subdirectory of CESM’s inputdata directory:
+&lt;ccsm4_init/bg40.1850.track1.1deg.006b/0863-01-01&gt;. Despite these
+caveats, the CISM initial condition file in this directory
+(bg40.1850.track1.1deg.006b.cism.r.0863-01-01-00000.nc) could be used
+to start the ice sheet in a roughly spun-up state even when running
+with a different compset and/or resolution than this BG1850CN f09
+hybrid compset for which it is used out-of-the-box.</li>
+<li>In CLM, fixed the <em>tsrf</em> field sent to CISM so that it is
+appropriately time-averaged</li>
+<li>Option to run with 36 elevation classes (200m each), rather than the
+default 10. (Note that no surface datasets exist for this option, but
+they can be created easily using CLM’s mksurfdata_map tool.)</li>
+<li>Option in CLM to write the CISM forcing fields (e.g., surface mass
+balance) to history files, for each elevation class. (Previously,
+only the grid cell average could be written to the CLM history file.)
+(This is documented more extensively in Section 6.4.)</li>
+<li>Added a <em>CISM_OBSERVED_IC</em> option to force use of observed initial
+conditions rather than a restart file when performing a hybrid run.
+(This is documented more extensively in Section 2.9.)</li>
+<li>CISM SourceMods have been split into two directories: any changes to
+source code in the <em>glimmer-cism</em> subdirectory need to go in
+<em>SourceMods/src.cism/glimmer-cism/</em></li>
+<li>CISM is now built using the same cmake build system as is used for
+building the standalone code</li>
+<li>In the CESM xml files, the old <em>GLC_GRID</em> variable has been renamed
+to <em>CISM_GRID</em>; <em>GLC_GRID</em> is now used for a different purpose and
+generally should not be changed once a case has been created</li>
+</ul>
+</div>
+<div class="section" id="what-s-new-in-cesm1-1-with-respect-to-ice-sheet-modeling">
+<h3>1.3.4. What’s new in CESM1.1 with respect to ice sheet modeling?<a class="headerlink" href="#what-s-new-in-cesm1-1-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h3>
+<p>Compared to the CESM1.0 series, there have been a number of improvements
+in CESM that are relevant for ice sheet modeling:</p>
+<ul class="simple">
+<li>A new compset type, <em>TG</em>, has been added. This allows running the
+standalone ice sheet model forced by output from a previous, coupled
+CESM simulation. We provide a variety of out-of-the-box forcing data,
+or you can generate your own forcing data. See Section 3 for more
+details.</li>
+<li>Support for longer coupling intervals in CISM and in CESM scripts –
+e.g., a 1-year coupling interval, useful for TG runs of centuries to
+many millennia.</li>
+<li>Changed the default Greenland ice sheet grid to 5 km (previously was
+20 km)</li>
+<li>Changed a number of other default CISM configuration settings to
+produce more robust ice sheet evolution, especially at 5 km
+resolution</li>
+<li>Ensemble capability for all CESM components, including CISM (see
+Section 6.1 for details)</li>
+<li>More robust namelist generation facility, standardized across CESM
+components (see Section 2.7 for details)</li>
+<li>Enabled ESMF interface for CISM</li>
+<li>Fixed memory leak in CISM</li>
+<li>Bug fix for glacier virtual columns in CLM</li>
+<li>New high-resolution <em>pct_glacier</em> input file for CLM, based on the
+Randolph Glacier Inventory, and new CLM surface datasets based on
+this file (see Section 5.4 for details)</li>
+<li>New diagnostic capabilities in CLM, including the ability to output
+fields averaged only over the glacier portion of each grid cell (see
+Section 6.5 for details)</li>
+<li>New IG4804 compset</li>
+<li>Improved testing capability for TG compsets in the CESM test
+framework</li>
+</ul>
+</div>
+<div class="section" id="known-problems-in-cesm1-2">
+<h3>1.3.5. Known problems in CESM1.2<a class="headerlink" href="#known-problems-in-cesm1-2" title="Permalink to this headline">¶</a></h3>
+<p>The following are known problems in CESM1.2 that are relevant for ice
+sheet modeling:</p>
+<ul class="simple">
+<li>CISM restarts can only occur on year boundaries.</li>
+<li>CLM’s interpinic tool does not work properly for input files with
+multiple glacier elevation classes.</li>
+<li>The current TG forcing data were generated with a bug in the <em>tsrf</em>
+field: each day, the value from a single timestep was sent from CLM
+to CISM, rather than this field being time-averaged.</li>
+<li>CLM’s code for multiple elevation classes (and thus coupling to CISM)
+does not work correctly for GLC_NEC=1 (i.e., a single elevation
+class, but using the glc_mec code)</li>
+<li>There are a number of bugs with the use of a calendar that includes
+leap years; for now we recommend only using a no-leap calendar.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="quick-start.html" title="2. Quick-start guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="CISM User’s Guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">cismdoc  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >CISM User’s Guide</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, William Lipsco.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>
