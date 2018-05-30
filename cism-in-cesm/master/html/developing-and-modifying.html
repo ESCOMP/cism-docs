@@ -1,0 +1,225 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3. Developing and modifying CISM &#8212; cismdoc  documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Running the standalone ice sheet model within CESM: TG compsets" href="tg-compsets.html" />
+    <link rel="prev" title="2. Quick-start guide" href="quick-start.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tg-compsets.html" title="4. Running the standalone ice sheet model within CESM: TG compsets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="quick-start.html" title="2. Quick-start guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Developing and modifying CISM</a><ul>
+<li><a class="reference internal" href="#source-code-directory-structure">3.1. Source code directory structure</a></li>
+<li><a class="reference internal" href="#simulating-the-greenland-ice-sheet">3.2. Simulating the Greenland Ice Sheet</a></li>
+<li><a class="reference internal" href="#ice-sheet-grids">3.3. Ice sheet grids</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quick-start.html"
+                        title="previous chapter">2. Quick-start guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tg-compsets.html"
+                        title="next chapter">4. Running the standalone ice sheet model within CESM: TG compsets</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developing-and-modifying.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developing-and-modifying-cism">
+<span id="developing-and-modifying"></span><h1>3. Developing and modifying CISM<a class="headerlink" href="#developing-and-modifying-cism" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="source-code-directory-structure">
+<h2>3.1. Source code directory structure<a class="headerlink" href="#source-code-directory-structure" title="Permalink to this headline">¶</a></h2>
+<p>FIXME: Bill S needs to rewrite this section</p>
+<p>In the CESM directory structure, each model component sits under a
+directory with a three-letter acronym: e.g., <em>atm</em> for the atmosphere
+model, <em>lnd</em> for the land surface, <em>ocn</em> for the ocean, and <em>ice</em> for
+sea ice. The ice sheet component resides in a directory called <em>glc</em>.
+Within the <em>glc</em> directory are three subdirectories: <em>sglc</em> (a stub
+model), <em>xglc</em> (a “dead” model), and <em>cism</em> (the physical model).</p>
+<p>Inside the <em>cism</em> subdirectory are several more subdirectories:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><em>glimmer-cism</em>, which contains source code from Glimmer-CISM. This is</dt>
+<dd>organized into various sub-directories, some of which are used in
+CESM (chiefly <em>libglide, libglimmer, libglimmer-solve,
+libglint</em>), and others which are only used when building
+Glimmer-CISM in standalone mode, outside the context of CESM
+(e.g., <em>example-drivers</em>)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>source_glc</em>, which contains wrapper modules that link Glimmer-CISM</dt>
+<dd>to the CESM coupler.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>drivers</em>, which contains two versions of the <em>glc</em> driver: one for</dt>
+<dd>use in the MCT coupling framework and the other for the ESMF
+framework.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>bld,</em> which contains files required to build the code and create</dt>
+<dd>namelist files. The sub-directory <em>namelist_files</em> contains xml
+files that describe all possible namelist / configuration
+settings, and their default values (see Section 2.7 for the
+preferred way to modify these settings).</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>tools</em>, which contains tools for generating land/ice-sheet grid</dt>
+<dd>overlap files.</dd>
+</dl>
+</li>
+<li><em>test</em>, which contains code to test parts of the source code.</li>
+<li><dl class="first docutils">
+<dt><em>mpi</em> and <em>serial</em>, which have appropriate versions of source code</dt>
+<dd>that can be used for parallel and serial runs, respectively. The
+<em>serial</em> directory is obsolete; now the <em>mpi</em> directory is used
+even when running on a single processor.</dd>
+</dl>
+</li>
+</ul>
+<p>The files of most interest to users are in the <em>glimmer-cism</em> and
+<em>source_glc</em> directories. The safest way to change source code in these
+directories is to copy the file to the
+<em>SourceMods/src.cism/glimmer-cism</em> or <em>SourceMods/src.cism/</em>
+subdirectories within the case directory and edit the file there. When
+the code is built, the contents of these directories will automatically
+overwrite any files of the same name in the model source code
+directories. See section 2.8 for details.</p>
+</div>
+<div class="section" id="simulating-the-greenland-ice-sheet">
+<h2>3.2. Simulating the Greenland Ice Sheet<a class="headerlink" href="#simulating-the-greenland-ice-sheet" title="Permalink to this headline">¶</a></h2>
+<p>FIXME: Gunter needs to rewrite this section</p>
+<p>A primary motivation for having
+a CESM ice sheet model is to do climate change experiments with a
+dynamic Greenland Ice Sheet (GrIS). The first step is to simulate a
+present-day (or preindustrial) ice sheet that is in steady-state with
+the CESM climate and is not too different in thickness, extent, and
+velocity from the real GrIS. If we cannot do this, then either we will
+start climate change simulations with an unrealistic GrIS, or we will
+start with a realistic GrIS that is far from steady state, making it
+difficult to distinguish the climate-change signal from model
+transients.</p>
+<p>It can be challenging to generate a realistic ice sheet, for several
+reasons: (1) The surface mass balance computed in CESM could be
+inaccurate; (2) the present-day GrIS may not be in steady-state with
+the present-day (or preindustrial) climate. Our working hypotheses are
+that (1) If the SMB is reasonably accurate, we can obtain a reasonable
+large-scale thickness and extent for the GIS; (2) With a higher-order
+dynamics scheme and some judicious tuning, we can generate ice streams
+and outlet glaciers in the right locations with realistic velocities;
+and (3) The present-day GrIS is not far from steady-state with the
+preindustrial climate. These hypotheses are now being tested. Early
+results are reported in a series of papers (Lipscomb et al. 2012;
+Vizcaíno et al. 2012a and 2012b) submitted to the CESM special issue
+of the <em>Journal of Climate</em>.</p>
+<p>Obtaining an accurate surface mass balance may require some tuning in
+CTSM; see Section 5 for details. The current default settings
+may not be optimal. The config files will be updated when we have more
+experience in running the model.</p>
+</div>
+<div class="section" id="ice-sheet-grids">
+<h2>3.3. Ice sheet grids<a class="headerlink" href="#ice-sheet-grids" title="Permalink to this headline">¶</a></h2>
+<p>FIXME: Bill S needs to rewrite this section</p>
+<p>Local ice sheet grids must be rectangular; typically they are polar
+stereographic projections. For Greenland, three grids are currently
+supported, with resolutions of 20 km and 4 km, respectively.
+Each local grid is compatible with any of the three supported global
+resolutions. The current default is the <em>gland4</em> 4 km grid. This can
+be changed by modifying CISM_GRID to the desired value (gland4 or
+gland20) in env_run.xml. A number of configuration defaults depend
+on the grid. You can see the effect of changing <em>CISM_GRID</em> by running
+<em>preview_namelists</em> before and after making this change. The rules that
+determine default values are given in
+<em>models/glc/cism/bld/namelist_files/namelist_defaults_cism.xml</em>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tg-compsets.html" title="4. Running the standalone ice sheet model within CESM: TG compsets"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="quick-start.html" title="2. Quick-start guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, William Lipsco.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

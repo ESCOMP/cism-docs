@@ -1,0 +1,741 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. Quick-start guide &#8212; cismdoc  documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Developing and modifying CISM" href="developing-and-modifying.html" />
+    <link rel="prev" title="1. Introduction" href="introduction.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="developing-and-modifying.html" title="3. Developing and modifying CISM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Quick-start guide</a><ul>
+<li><a class="reference internal" href="#overview">2.1. Overview</a></li>
+<li><a class="reference internal" href="#downloading-the-code">2.2. Downloading the code</a></li>
+<li><a class="reference internal" href="#creating-a-case">2.3. Creating a case</a></li>
+<li><a class="reference internal" href="#setting-up-a-case">2.4. Setting up a case</a></li>
+<li><a class="reference internal" href="#building-a-case">2.5. Building a case</a></li>
+<li><a class="reference internal" href="#running-a-case">2.6. Running a case</a></li>
+<li><a class="reference internal" href="#modifying-namelist-settings">2.7. Modifying namelist settings</a><ul>
+<li><a class="reference internal" href="#modifying-source-code">2.7.1. Modifying source code</a></li>
+<li><a class="reference internal" href="#branch-and-hybrid-runs">2.7.2. Branch and hybrid runs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#interpinic">2.8. Interpinic</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="developing-and-modifying.html"
+                        title="next chapter">3. Developing and modifying CISM</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quick-start.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-start-guide">
+<span id="quickstart"></span><h1>2. Quick-start guide<a class="headerlink" href="#quick-start-guide" title="Permalink to this headline">¶</a></h1>
+<p>This section provides a recipe for checking out code from the CESM
+repository, building and running a case, and modifying parameters
+related to land ice. It is assumed that the reader is already somewhat
+familiar with CESM and is working on a machine that supports CESM out of
+the box. For more details on building and running CESM, please see the
+CESM User’s Guide, from which this section has been adapted. See also
+the CESM website, <em>http://www.cesm.ucar.edu/models/cesm1.2/.</em></p>
+<div class="section" id="overview">
+<h2>2.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>CESM consists of six physical models: atmosphere (atm), ocean (ocn),
+land (lnd), sea ice (ice), land ice (glc), and river runoff (rof). A
+central coupler coordinates the models and passes information between
+them. Each model can have active, data, dead, and stub components. An
+active component is a prognostic physical model. Data components provide
+scientifically valid input data for cases where an active model is not
+needed, whereas dead components generate invalid data that is used only
+for system testing. Stub components are present only to meet interface
+requirements when a component is not needed.</p>
+<p>The active components of CESM are CAM (the Community Atmosphere Model),
+POP (the Parallel Ocean Program), CLM (the Community Land Model), CICE
+(the Community Ice CodE), CISM (the Community Ice Sheet Model), and RTM
+(the River Transport Model). Currently, CISM is synonymous with
+Glimmer-CISM, the dynamic ice sheet model described in Section 4. The
+ice-sheet surface mass balance is computed in CLM and passed to CISM via
+the coupler.</p>
+<p>These components can be run in many different configurations. A
+particular mix of components, along with component-specific
+configuration and namelist settings, is called a component set, or
+“compset”. Among the common compsets are B (fully coupled, with all
+active components), F (active CAM, CLM, and CICE, with a data ocean),
+and I (active CLM with data atmosphere and stub ice and ocean). These
+configurations all use a stub land-ice component. The corresponding
+configurations with an active land-ice component are denoted BG, FG, and
+IG. In addition, starting with CESM1.1, a TG compset allows running the
+ice sheet model in standalone mode, forced by output from a previous BG,
+FG or IG run. TG compsets are described in detail in Section 3.</p>
+<p>The CESM components can be run on a variety of grids. The atmosphere and
+land are often run on the same grid, but CESM supports running them on
+different grids. The ocean and sea ice components must always run on the
+same grid. The ice-sheet component has a grid for each active ice sheet.
+Unlike the other component grids, which are global, the ice-sheet grids
+have limited domains. The current grids are polar stereographic
+projections with rectangular grid cells.</p>
+<p>Three Greenland grids are supported, with resolutions of 20 km, 10 km,
+and 5 km, respectively. Antarctic grids at comparable resolutions will
+be supported in a future release. Each Greenland grid can be run with
+one of three land/atmosphere grids: T31 (a coarse-resolution spectral
+grid with dimensions 48 x 96), FV2 (a 1.9<sup>o</sup>x2.5<sup>o</sup>
+finite volume grid), and FV1 (a 0.9<sup>o</sup>x1.25<sup>o</sup>
+finite-volume grid). The land resolution is important for ice sheets
+because a higher-resolution land grid can be expected to provide a more
+realistic surface mass balance.</p>
+<p>These definitions will be used in the rest of the section:</p>
+<ul class="simple">
+<li>$COMPSET is the component set.</li>
+<li>$RES is the grid resolution.</li>
+<li>$MACH is the machine name.</li>
+<li>$CCSMROOT is the CESM root directory.</li>
+<li>$CASE is the case name.</li>
+<li>$CASEROOT is the pathname of the directory where the case is created.</li>
+<li>$EXEROOT is the pathname of the executable directory, which is
+usually different from $CASEROOT.</li>
+<li>$RUNDIR is the directory where CESM is run</li>
+<li>$DOUT_S_ROOT is the root directory for local short-term archiving.</li>
+</ul>
+</div>
+<div class="section" id="downloading-the-code">
+<h2>2.2. Downloading the code<a class="headerlink" href="#downloading-the-code" title="Permalink to this headline">¶</a></h2>
+<p>CESM code is publicly available through a Subversion repository. You
+will need Subversion client software, version 1.4.2 or later. For more
+information on Subversion, see <a class="reference external" href="http://subversion.tigris.org">http://subversion.tigris.org</a>.</p>
+<p>To check out a release version of the code, you should register as a
+CESM user here:</p>
+<p><a class="reference external" href="http://www.cesm.ucar.edu/models/cesm1.0/register/register_cesm1.0.cgi">http://www.cesm.ucar.edu/models/cesm1.0/register/register_cesm1.0.cgi</a></p>
+<p>You will be sent a username and password you can use to access the
+repository.</p>
+<p>Now log onto the machine where you plan to build and run CESM. For a
+list of available releases, type this command:</p>
+<ul class="simple">
+<li>svn list <a class="reference external" href="https://svn-ccsm-release.cgd.ucar.edu/model_versions">https://svn-ccsm-release.cgd.ucar.edu/model_versions</a></li>
+</ul>
+<p>The first time you access the repository from a given machine, you will
+need to enter your username and password. This information should be
+cached automatically so that you do not need to enter it repeatedly.</p>
+<p>To check out a particular release (say, model version cesm1.2.0), type
+this:</p>
+<ul class="simple">
+<li>svn co
+<a class="reference external" href="https://svn-ccsm-release.cgd.ucar.edu/model_versions/cesm1_2_0">https://svn-ccsm-release.cgd.ucar.edu/model_versions/cesm1_2_0</a></li>
+</ul>
+<p>This command puts a copy of CESM in a directory called cesm1_2_0. This
+is the $CCSMROOT directory. If successful, you will see a message of the
+form “Checked out revision xx.”</p>
+<p>Other useful Subversion commands include <em>svn info</em> (for various
+information about the release version), <em>svn status</em> (for a list of
+files that have changed since checkout), and <em>svn diff</em> (to see
+differences between the release version and your working copy).</p>
+<p>You may want to take a quick tour of the model. Type this:</p>
+<ul class="simple">
+<li>cd cesm1_2_0</li>
+<li>ls</li>
+</ul>
+<p>You will see directories called <em>models</em>, <em>scripts</em> and <em>tools</em>. The
+<em>scripts</em> directory contains useful scripts for creating new cases and
+tests. The <em>models</em> directory contains subdirectories called <em>atm, ocn,
+lnd, ice</em>, <em>glc</em>, and <em>rof,</em> corresponding to the physical models of
+CESM. There are also directories called <em>drv</em> (the driver), <em>utils</em>
+(various utilities), <em>csm_share</em> (code shared among different models),
+and <em>dead_share</em> (code shared among the dead models). The <em>tools</em>
+directory contains utilities for creating the mapping files that are
+needed by the CESM coupler when you define a new model grid, as well as
+a <em>cprnc</em> tool that is useful for determining the differences between
+two model runs.</p>
+</div>
+<div class="section" id="creating-a-case">
+<h2>2.3. Creating a case<a class="headerlink" href="#creating-a-case" title="Permalink to this headline">¶</a></h2>
+<p>The next step is to create a case. From $CCSMROOT, go to the scripts
+directory:</p>
+<ul class="simple">
+<li>cd scripts</li>
+</ul>
+<p>Here there is a script called <em>create_newcase</em>. The basic form of the
+<em>create_newcase</em> command is</p>
+<ul>
+<li><p class="first">create_newcase -case $CASEROOT \</p>
+<blockquote>
+<div><p>-mach $MACH \</p>
+<p>-compset $COMPSET \</p>
+<p>-res $RES</p>
+</div></blockquote>
+</li>
+</ul>
+<p>For more information about this command, type</p>
+<ul class="simple">
+<li>create_newcase -h</li>
+</ul>
+<p>For a list of supported machines, compsets, and resolutions, type</p>
+<ul class="simple">
+<li>create_newcase -list machines</li>
+<li>create_newcase -list compsets</li>
+<li>create_newcase -list grids</li>
+</ul>
+<p>Suppose you are running on the yellowstone machine, and you want to
+create an IG case (active land and land-ice components, data atmosphere,
+stub ocean and sea ice) using the 1.9<sup>o</sup>x2.5<sup>o</sup>
+finite-volume grid for the land and atmosphere and a 1<sup>o</sup> grid
+for the ocean. You want to call this case “testIGfv2<em>”</em>. You would
+type</p>
+<ul class="simple">
+<li>create_newcase -case testIGfv2 -mach yellowstone -compset IG -res
+f19_g16</li>
+</ul>
+<p>If successful, you will see a message like this:</p>
+<p>Successfully created the case for yellowstone</p>
+<p>It is possible to configure cases with many different combinations of
+compsets and grids, but not all these cases have been validated
+scientifically.</p>
+<p>In $CCSMROOT/scripts there is now a subdirectory called <em>testIGfv2</em>.
+This is the $CASEROOT directory. Go to $CASEROOT:</p>
+<ul class="simple">
+<li>cd testIGfv2</li>
+</ul>
+<p>This directory contains a number of scripts and xml files. Take a look
+at the file <em>env_case.xml</em>. This file specifies $CASE, $CASEROOT,
+$CCSMROOT, and other settings that cannot be changed once the case is
+created. For an explanation of these and other settings in the various
+xml files, see the online documentation for CESM
+(<a class="reference external" href="http://www.cesm.ucar.edu/models/cesm1.2/cesm/doc/modelnl/modelnl.html">http://www.cesm.ucar.edu/models/cesm1.2/cesm/doc/modelnl/modelnl.html</a>).</p>
+</div>
+<div class="section" id="setting-up-a-case">
+<h2>2.4. Setting up a case<a class="headerlink" href="#setting-up-a-case" title="Permalink to this headline">¶</a></h2>
+<p>To configure the case, go to $CASEROOT and type</p>
+<ul class="simple">
+<li>cesm_setup</li>
+</ul>
+<p>This command creates a machine-specific Macros file and run script in
+$CASEROOT. It also creates the files <em>user_nl_</em>xxx (where <em>xxx</em>
+denotes the set of components targeted for this case); <em>these files are
+where all user component namelist modifications are now made.</em></p>
+<p>Once you set up the case, the file <em>env_mach_pes.xml</em> (which
+determines the processor layout) is locked. It cannot be changed unless
+you undo and redo the setup, as follows:</p>
+<ul class="simple">
+<li>cesm_setup -clean</li>
+<li># Make changes to env_mach_pes.xml</li>
+<li>cesm_setup</li>
+</ul>
+<p>Although xml files can be edited manually, it is safer to use the
+<em>xmlchange</em> command. For example, to change $NTASKS_ATM before setting
+up a case, you would type</p>
+<ul class="simple">
+<li>xmlchange -file env_mach_pes.xml -id NTASKS_ATM -val 128</li>
+</ul>
+<p>Or simply:</p>
+<ul class="simple">
+<li>xmlchange NTASKS_ATM=128</li>
+</ul>
+<p>Another setting relevant to runs with active land ice is
+$CLM_FORCE_COLDSTART. Currently, this is automatically set to “on” for
+compsets with an active land-ice component (e.g., IG, FG, and BG). This
+means that CLM will be initialized with arbitrary initial conditions
+rather than a restart file. If this option is set to “off”, the model
+will fail at initialization because the current CLM restart files are
+not compatible with active land ice.</p>
+</div>
+<div class="section" id="building-a-case">
+<h2>2.5. Building a case<a class="headerlink" href="#building-a-case" title="Permalink to this headline">¶</a></h2>
+<p>The $CASEROOT directory should now contain a script called $CASE.build
+(<em>testIGfv2.build</em> in our case)<em>.</em> To build the model, run this
+script:</p>
+<ul class="simple">
+<li>testIGfv2.build</li>
+</ul>
+<p><strong>Note that the CISM build requires CMake version 2.8.6 or newer.</strong>
+CMake is present on all supported machines, but if you are building on
+your own machine, you will need to ensure that CMake is installed and in
+your path.</p>
+<p>The build script does the following:</p>
+<ul class="simple">
+<li>creates component namelists in $RUNDIR.</li>
+<li>checks for required data sets and (hopefully) downloads missing data
+automatically.</li>
+<li>creates the required utility and component libraries.</li>
+<li>creates the model executable in $EXEROOT.</li>
+</ul>
+<p>If the build is successful, you will see this:</p>
+<p>CCSM BUILDEXE SCRIPT HAS FINISHED SUCCESSFULLY</p>
+<p>Otherwise, you will get a message that the build failed, referring you
+to a file in $RUNDIR for information about why it failed. Each component
+has its own build-log file; for land ice the filename is of the form
+<em>glc.bldlog.yymmdd-hhmmss.</em></p>
+<p>Look at the file <em>env_build.xml</em>, which contains settings such as
+$DEBUG and $EXEROOT. The $DEBUG option is false by default; set it to
+true to turn on compile-time and run-time debugging. When running on
+yellowstone, $EXEROOT is /glade/scratch/$CCSMUSER/$CASE/bld by default.
+A related setting, $RUNDIR, specifies the location of the directory in
+which the model is run. $RUNDIR is set in <em>env_run.xml</em>, and on
+yellowstone is /glade/scratch/$CCSMUSER/$CASE/run by default.</p>
+<p>The <em>env_build.nml</em> file is locked after the code is built. To change
+settings after building, you must clean and redo the build:</p>
+<ul class="simple">
+<li>testIGfv2.clean_build</li>
+<li># Make changes to env_build.xml</li>
+<li>testIGfv2.build</li>
+</ul>
+</div>
+<div class="section" id="running-a-case">
+<h2>2.6. Running a case<a class="headerlink" href="#running-a-case" title="Permalink to this headline">¶</a></h2>
+<p>Once the code has built successfully, it can be run by submitting the
+run script, $CASE.run. On yellowstone, which manages jobs using LSF, the
+first few lines of the run script look like this:</p>
+<p>#BSUB -n 64</p>
+<p>#BSUB -R “span[ptile=64]”</p>
+<p>#BSUB -q regular</p>
+<p>#BSUB -N</p>
+<p>#BSUB -x</p>
+<p>#BSUB -a poe</p>
+<p>#BSUB -o poe.stdout.%J</p>
+<p>#BSUB -e poe.stderr.%J</p>
+<p>#BSUB -J testIGfv2</p>
+<p>#BSUB -W 0:50</p>
+<p>#BSUB -P 12345678</p>
+<p>Here, -n specifies the number of processors that will be requested; -q
+is the queue; -o and -e give the names of standard output and error
+files that will be written to $CASEROOT; -W is the wall-clock time
+requested (50 minutes in the above example); and -P is the project code.
+The queue can be changed to raise or lower the run priority. The
+wall-clock time should be set to a value sufficient to complete the run
+(or at least to write restart files) without exceeding the machine
+limit. If a machine is busy, then reducing the time requested will
+usually allow the run to start earlier.</p>
+<p>Next, look at <em>env_run.xml</em>. Unlike the other xml files, this file can
+be modified at any point during a sequence of runs. (As mentioned above,
+it is safest to use the <em>xmlchange</em> command to edit xml files.) Among
+the key settings are $RUN_TYPE, $RUN_STARTDATE, and (for cases with an
+active land-ice component) $CISM_GRID. The $RUN_TYPE is <em>startup</em> by
+default. Other options are <em>hybrid</em> and <em>branch</em>; these are explained in
+Section 2.9. The default start date is compset-dependent, but is often
+simply 0001-01-01, which denotes January 1 of year 1. The default value
+of $CISM_GRID is <em>gland5UM</em>, which refers to the 5-km Greenland grid,
+using an updated dataset from the University of Montana. To run with a
+coarser grid, change this to <em>gland10</em> or <em>gland20 (or gland5 to use an
+alternative 5-km dataset)</em>.</p>
+<p>Another important setting is $CONTINUE_RUN, which is false by default.
+This means that the run will start from the beginning (usually from the
+date 0001-01-01). If $CONTINUE_RUN is true, then the run will start
+from a restart file generated by a previous run. Restart files reside in
+$RUNDIR. $RUNDIR also contains several one-line pointer files (e.g,
+<em>rpointer.glc</em> for land ice) that specify the name of the current
+restart file for each component.</p>
+<p>The next setting is $RESUBMIT, an integer (set to 0 by default) that
+specifies the number of times the run script will be resubmitted
+automatically after a run completes. This option is useful for longer
+production runs when you are sure the code is working. If $CONTINUE_RUN
+is initially false and $RESUBMIT &gt; 0, then $CONTINUE_RUN is
+automatically set to true when the run script is resubmitted. If you do
+not use the $RESUBMIT option, $CONTINUE_RUN will remain false unless
+you change it manually.</p>
+<p>To determine the length of the run, you set $STOP_OPTION and $STOP_N.
+By default, $STOP_OPTION is <em>ndays</em>, and $STOP_N = 5, which means the
+run will complete after 5 model days. Just after building a case, it is
+a good idea to do a 5-day trial run before trying a longer run. The
+allowed units of $STOP_OPTION are seconds, minutes, hours, days,
+months, and years. The value of $STOP_N can be any integer.</p>
+<p>The settings $RESTART_OPTION and $RESTART_N determine how often
+restart files are written. By default, these are set to $STOP_OPTION
+and $STOP_N, respectively, but they can be modified to write restart
+files more often.</p>
+<p>For runs with an active land-ice component, $HIST_OPTION and $HIST_N
+are also important. These generally specify the output frequency for
+coupler history files, but CISM’s history frequency is currently
+hard-wired to be the same as the coupler history frequency. For compsets
+with an active land-ice component, these are set to give annual output
+by default.</p>
+<p>The <em>env_run.xml</em> file also contains settings for archiving. If
+$DOUT_S is TRUE (the default), the model output will be written to
+$DOUT_S_ROOT for short-term archiving. On yellowstone, $DOUT_S_ROOT
+is set to /glade/scratch/$CCSMUSER/archive/$CASE by default.</p>
+<p>Once you have modified the run script and <em>env_run.xml</em> as needed, you
+are ready to submit the run script. The following commands are for a
+machine that manages batch jobs using LSF (e.g., yellowstone). The
+commands will be different for other load-sharing systems, such as PBS.
+To submit the run, type</p>
+<ul class="simple">
+<li>bsub &lt; testIGfv2.run</li>
+</ul>
+<p>If successful, you will get a message that the job is submitted. To
+check the job status, type</p>
+<ul class="simple">
+<li>bjobs</li>
+</ul>
+<p>You will see something like this:</p>
+<p>JOBID USER STAT QUEUE FROM_HOST EXEC_HOST JOB_NAME SUBMIT_TIME</p>
+<p>123456 myname PEND regular yslogin1-ib testIGfv2 Dec 31 23:59</p>
+<p>If the status is PEND, your job is waiting in the queue; if the status
+is RUN, then the job is running. If you type <em>bjobs</em> after the job has
+finished, you will see something like “No unfinished job found”. In your
+$CASEROOT directory there will be two files with names of the form
+<em>cesm.stderr.123456</em> and <em>cesm.stdout.123456</em>. Look at the latter file.
+If all has gone well, you will see lines like this near the end of the
+file:</p>
+<p>Sat Jan 01 01:23:45 MDT 2011 – CSM EXECUTION HAS FINISHED</p>
+<p>(seq_mct_drv): ============ SUCCESSFUL TERMINATION OF CPL7-CCSM</p>
+<p>If the job starts but fails to complete, the last line may look like
+this:</p>
+<p>Sat Jan 01 00:12:34 MDT 2011 – CSM EXECUTION BEGINS HERE</p>
+<p>In this case you will have to figure out why the job failed before
+completion. A common cause of failure is not allowing enough time to
+finish the run. Otherwise, one of the components probably has failed
+during execution. You can investigate by looking at the various
+component log files in $RUNDIR. Log files are moved from $RUNDIR to the
+local archive only if the run completes successfully.</p>
+<p>If you are running on a machine that uses PBS instead of LSF (e.g.,
+titan, a Cray XT6 machine at Oak Ridge), then to submit the run script
+you would type</p>
+<ul class="simple">
+<li>qsub testIGfv2.run</li>
+</ul>
+<p>To check the job status, type</p>
+<ul class="simple">
+<li>qstat</li>
+</ul>
+<p>When a run finishes successfully, you will find various log files (e.g.,
+<em>glc.log.yymmdd-hhmmss</em> for the land-ice model) in $CASEROOT/logs. These
+log files are also written to the local archive, $DOUT_S_ROOT. The
+land-ice log files are in $DOUT_S_ROOT/glc, and similarly for the
+other models.</p>
+<p>History files are also written to the archive, usually in netCDF format.
+The history files for land ice are in $DOUT_S_ROOT/glc/hist, and those
+for the land model are in $DOUT_S_ROOT/lnd/hist. These files contain
+gridded output written at regular intervals, usually once per model year
+for land ice and monthly for other active components. These files can be
+viewed and post-processed using a netCDF viewer such as ncview (for a
+quick look), Ferret, MATLAB, or IDL.</p>
+</div>
+<div class="section" id="modifying-namelist-settings">
+<h2>2.7. Modifying namelist settings<a class="headerlink" href="#modifying-namelist-settings" title="Permalink to this headline">¶</a></h2>
+<p>Once the code is running, you may want to change namelist or
+configuration variables. Variables related to land ice are set in the
+files <em>cism_in</em>, <em>cism.config</em> and <em>lnd_in.</em> These files appear in
+$RUNDIR, and also in $CASEROOT/CaseDocs. User modifications can be made
+to these files by adding lines to <em>user_nl_cism</em> (for variables in
+<em>cism_in</em> or <em>cism.config</em>) or <em>user_nl_clm</em> (for variables in
+<em>lnd_in</em>); this is described in more detail below. The various
+<em>user_nl_xxx</em> files are created when you first run <em>cesm_setup</em> for
+your case. They can be modified any time between running <em>cesm_setup</em>
+and the start of the run: the model does NOT need to be rebuilt after
+making namelist changes in these files.</p>
+<p>Most parameters directly relevant to ice sheet modeling are set in
+<em>cism.config.</em> This config file contains settings used by
+Glimmer-CISM—for example, grid information (which is set automatically
+based on the value of CISM_GRID in <em>env_run.xml</em>), physics parameter
+settings, and the names and frequency of input and output files. See
+Section 4 and the Glimmer-CISM documentation for more information about
+these settings. The <em>cism_in</em> file contains some additional parameters
+controlling the CISM run.</p>
+<p>The file <em>lnd_in</em> provides settings for CLM. An important variable
+related to land ice is <em>create_glacier_mec_landunit</em>, which is true
+by default for any case with active land ice. When this setting is true,
+CLM creates special glacier landunits with multiple elevation classes as
+described in Section 5. Another relevant setting is <em>glc_smb</em>, which
+also is true by default. If <em>glc_smb</em> is true, then CLM sends the
+surface mass balance to CISM via the coupler. If <em>glc_smb</em> is false,
+CLM instead sends input for Glimmer-CISM’s positive-degree-day scheme.
+(The PDD option is not currently enabled in Glimmer-CISM, but will be
+supported in a future release.) Finally, <em>albice</em> sets the albedo of
+bare glacier ice in the visible and near IR bands of the spectrum.</p>
+<p>Changes to both <em>cism.config</em> and <em>cism_in</em> can be made by adding lines
+with the following format to the <em>user_nl_cism</em> file in your case
+directory:</p>
+<blockquote>
+<div>namelist_variable = value</div></blockquote>
+<p>Note that there is no distinction in <em>user_nl_cism</em> between variables
+that will appear in <em>cism_in</em> vs. those that will appear in
+<em>cism.config</em>: CISM’s build-namelist utility knows where each variable
+belongs. For example, to set the value of <em>cism_debug</em> to .true. and
+<em>basal_tract_const</em> to 1.e-3, include the following in
+<em>user_nl_cism</em>:</p>
+<p>cism_debug = .true.</p>
+<p>basal_tract_const = 1.e-3</p>
+<p>After running <em>preview_namelists</em>, the following will appear in
+<em>cism_in</em>:</p>
+<p>&amp;cism_params</p>
+<p>…</p>
+<p>cism_debug = .true.</p>
+<p>…</p>
+<p>/</p>
+<p>and the following will appear in <em>cism.config</em>:</p>
+<p>[parameters]</p>
+<p>basal_tract_const = 1.e-3</p>
+<p>…</p>
+<p>Changes to lnd_in can be made by adding similar lines to user_nl_clm.
+For example, to change the ice albedo (values give albedo in the visible
+and near-infrared), add the following line to <em>user_nl_clm</em>:</p>
+<blockquote>
+<div>albice = 0.55,0.45</div></blockquote>
+<p>After changing any of the <em>user_nl_xxx</em> files, you can preview the
+generated namelists by running the <em>preview_namelists</em> utility in the
+case directory. Generated namelists will then appear in the
+$CASEROOT/CaseDocs, as well as in $RUNDIR.</p>
+<p>All of these namelist parameters are documented online, on CESM’s
+namelist documentation page.</p>
+<p>Note: There appears to be a bug in the parsing of strings in
+<em>user_nl_cism</em> that are bound for <em>cism.config</em>: These appear to be
+handled correctly if they are single-quoted, but double-quoted strings
+lead to buggy behavior.</p>
+<div class="section" id="modifying-source-code">
+<h3>2.7.1. Modifying source code<a class="headerlink" href="#modifying-source-code" title="Permalink to this headline">¶</a></h3>
+<p>Advanced users may want to modify source code in the model directories.
+CISM source code is located in $CCSMROOT/models/glc/cism, and CLM source
+code is in $CCSMROOT/models/lnd/clm/src. Although it is possible to
+change the files in these directories, it is safer to copy files to the
+appropriate SourceMods directories and edit them there. For example,
+modified CLM files are placed in $CASEROOT/SourceMods/src.clm.</p>
+<p>The location for modified CISM files depends on whether it is part of
+the Glimmer-CISM code, or part of the CESM-specific code. For any source
+code that appears in the <em>glimmer-cism</em> subdirectory of
+<em>models/glc/cism</em>, the modified file should go in
+$CASEROOT/SourceMods/src.cism/glimmer-cism. For any other source code
+(e.g., modifications to code from <em>source_glc</em>), the modified file
+should go directly in $CASEROOT/SourceMods/src.cism. <strong>Putting modified
+source files in the wrong SourceMods directory can lead to build
+errors.</strong></p>
+<p><strong>Please note that C++ code in the *glimmer-cism* directory can NOT be
+modified via SourceMods</strong>; this C++ code must be modified in-place in
+the main source code directory.</p>
+<p>Once the modified files are in place, the code can be rebuilt. The files
+in the SourceMods directories automatically replace the files of the
+same name in the model directories.</p>
+</div>
+<div class="section" id="branch-and-hybrid-runs">
+<h3>2.7.2. Branch and hybrid runs<a class="headerlink" href="#branch-and-hybrid-runs" title="Permalink to this headline">¶</a></h3>
+<p>As mentioned above, there are three kinds of runs: startup, branch, and
+hybrid. In a startup run (the default), all components are initialized
+using baseline states that are determined independently by each
+component. The start date is determined by the setting $RUN_STARTDATE
+and is sent from the coupler to the components at initialization.</p>
+<p>In a branch run, the components are initialized using a consistent set
+of restart files from an earlier run. Usually the case name of the
+branch ran is different from that of the previous run. Branch runs are
+often used for sensitivity studies. For example, suppose you want to
+study the effect of changes in the ice albedo. You could spin up the
+model for 100 years, then launch a series of branch runs, each starting
+from the same point but proceeding with a different albedo value. A
+branch run is bit-for-bit identical to a continuation of the original
+run provided that no source code or namelist values are changed. The
+start date for the branch run is determined by the restart files from
+the original run.</p>
+<p>Suppose you want to set up a branch run on yellowstone, starting from
+the beginning of year 2 of reference case <em>testIGfv2</em>. First go to
+$CCSMROOT/scripts and create a new case:</p>
+<ul class="simple">
+<li>create_newcase -case testIGfv2_br2 -mach yellowstone -compset IG
+-res f19_g16</li>
+<li>cd testIGfv2_br2</li>
+</ul>
+<p>Then set up and build:</p>
+<ul class="simple">
+<li>cesm_setup</li>
+<li>testIFfv2_br2.build</li>
+</ul>
+<p>Then modify these settings, which appear in <em>env_run.xml:</em></p>
+<ul class="simple">
+<li>xmlchange RUN_TYPE=branch</li>
+<li>xmlchange RUN_REFCASE=testIGfv2</li>
+<li>xmlchange RUN_REFDATE=0002-01-01</li>
+</ul>
+<p>Next, copy the restart files from the reference case into $RUNDIR for
+the branch case. If the reference restart files are in
+/glade/scratch/$USER/archive/testIGfv2/rest, you would go to the new
+$RUNDIR and type</p>
+<ul class="simple">
+<li>cp /glade/scratch/$USER/archive/testIGfv2/rest/0002-01-01-00000/* .</li>
+</ul>
+<p>This command will copy the required restart and pointer files to
+$RUNDIR. You can then return to the branch $CASEROOT, edit
+<em>env_run.xml</em> as needed, and submit the run script.</p>
+<p>A hybrid run is similar, except that the starting date (specified by
+$RUN_STARTDATE) can be changed relative to the reference case.
+Bit-for-bit reproducibility is generally not possible for hybrid runs,
+but the overall climate is continuous provided that no source code or
+namelist values are changed. For more details, see the CESM User’s
+Guide.</p>
+<p>In some situations, you may want to run a case that is a hybrid start
+for most components –&nbsp;so that they start from spun-up initial conditions
+–&nbsp;but for which CISM starts with observed initial conditions instead of
+a restart file. For example, you may not have a CISM restart file for
+this case, or the scientific purpose of the run might warrant starting
+with observed initial conditions rather than an existing restart file.</p>
+<p>To do this, set the <em>CISM_OBSERVED_IC</em> variable in env_run.xml:</p>
+<ul class="simple">
+<li>xmlchange CISM_OBSERVED_IC=TRUE</li>
+</ul>
+<p>This will force CISM to start from the same observed initial conditions
+that are used for a startup run.</p>
+<p>Note that <em>CISM_OBSERVED_IC</em> is ignored for startup runs; for branch
+runs, it must be FALSE.</p>
+</div>
+</div>
+<div class="section" id="interpinic">
+<h2>2.8. Interpinic<a class="headerlink" href="#interpinic" title="Permalink to this headline">¶</a></h2>
+<p><strong>CAUTION: The interpinic tool currently does not work correctly if the
+input file (the file you are interpolating from) has glacier_mec
+landunits. However, it should work correctly for the first case
+described below.</strong></p>
+<p>When CESM is run in a G configuration (i.e., IG, FG, or BG), the land
+model is initialized with a surface data set different from the standard
+CLM surface data sets. Glacier landunits (with one column each) are
+replaced by glacier_mec landunits (with ~10 columns each). This means
+that a G simulation cannot be initialized directly with the output from
+a non-G run. Output from the non-G run must first be interpolated into
+the CLM data structure appropriate for a G run. This can be done using
+the CLM <em>interpinic</em> tool.</p>
+<p>For example, suppose we have a CLM restart file called
+“<em>bcase.1deg.clm2.r.1000-01-01-00000.nc</em>”. This file contains CLM
+output from year 1000 of a fully coupled (B) case. We want to use this
+output to initialize CLM when running a BG case (to save the expense of
+spinning up the BG case for ~1000 years from a cold start). We will use
+the B file to initialize all landunits other than glacier_mec. For
+glacier_mec landunits, we will use the output from an IG case, e.g.,
+“<em>igcase.1deg.clm2.r.0100-01-01-00000.nc</em>”. The B file will be the
+input file, and the IG file will be the output template file (since it
+has the required data structures, including glacier_mec landunits and
+columns, for initializing a BG run).</p>
+<p>The interpinic tool is located here:
+$<em>CCSMROOT/models/lnd/clm/tools/clmXXX/interpinic</em>, where XXX is
+either 4_0 or 4_5, depending on whether you are creating initial
+conditions for CLM4.0 or CLM4.5. The first step is to build the
+interpinic executable. Go to the <em>src</em> subdirectory and edit
+<em>interpinic.F90</em> as follows: search for the variable
+“<em>override_missing</em>” and change its value from “true” to “false”.
+(By setting this variable to false, we stipulate that glacier_mec
+values, which are missing in the input B file, are <em>not</em> overwritten in
+the output template IG file.) Save the modified version, and build the
+executable:</p>
+<ul class="simple">
+<li>gmake interpinic</li>
+</ul>
+<p>Copy the executable to the directory containing the input B file and the
+output template IG file. Save a copy of the output template file under a
+different name, because this file will be rewritten during the
+interpinic. Type the following:</p>
+<ul class="simple">
+<li>./interpinic -i <em>input_filename</em> -o <em>output_filename</em></li>
+</ul>
+<p>Screen output will let you know how the interpinic process is going. If
+the process completes successfully, the template version of
+<em>output_filename</em> will be converted to a new file of the same name,
+containing a mixture of B data (for landunits other than glacier_mec)
+and IG data (for glacier_mec), and it will be in the correct format for
+initializing a BG run.</p>
+<p>Note that the input file and output file do not have to reside on the
+same grid. If the grids are different, the input file values will be
+written to the nearest neighbor point containing an equivalent landunit
+in the output file.</p>
+<p>Another use of interpinic: <strong>CAUTION: The interpinic tool currently does
+not work correctly for this case:</strong> Suppose that the CLM surface data
+set has changed, such that the number of glacier_mec landunits per
+gridcell is different. We want to use a restart file from a G run with
+the old data set to initialize a G run with the new data set. In this
+case the input file is the restart file from the old run, and the output
+template file is a restart file from a short (e.g., 5-day) new run. Go
+to the interpinic directory and make the executable as above, but do
+<em>not</em> change the value of <em>override_missing</em>. (In this case we are not
+trying to prevent any information in the output file from being
+overwritten.) Again, save a copy of the output file and type the
+following:</p>
+<ul class="simple">
+<li>./interpinic –i <em>input_filename</em> –o <em>output_filename</em></li>
+</ul>
+<p>The new version of <em>output_filename</em> will consist of output from the
+old run, converted to the data structure required for initializing the
+new run.</p>
+<p>For more information on interpinic, see the CLM User’s Guide.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="developing-and-modifying.html" title="3. Developing and modifying CISM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, William Lipsco.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>
