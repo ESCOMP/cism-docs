@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7. Controlling output from CLM and CISM &#8212; cismdoc  documentation</title>
+    <title>6. Controlling output from CLM and CISM &#8212; CESM Land Ice CESM2.0 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="8. Acknowledgments" href="acknowledgements.html" />
-    <link rel="prev" title="6. Ice sheets in the Community Land Model, and glacier-land coupling" href="ice-sheets-in-clm.html" />
+    <link rel="next" title="7. Acknowledgments" href="acknowledgements.html" />
+    <link rel="prev" title="5. Ice sheets in the Community Land Model, and glacier-land coupling" href="ice-sheets-in-clm.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -31,23 +31,23 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="acknowledgements.html" title="8. Acknowledgments"
+          <a href="acknowledgements.html" title="7. Acknowledgments"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ice-sheets-in-clm.html" title="6. Ice sheets in the Community Land Model, and glacier-land coupling"
+          <a href="ice-sheets-in-clm.html" title="5. Ice sheets in the Community Land Model, and glacier-land coupling"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">7. Controlling output from CLM and CISM</a><ul>
-<li><a class="reference internal" href="#controlling-cism-output">7.1. Controlling CISM output</a></li>
-<li><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">7.2. Producing land ice-specific output from CLM</a><ul>
-<li><a class="reference internal" href="#outputting-forcing-fields-sent-from-clm-to-cism">7.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
-<li><a class="reference internal" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice">7.2.2. Adding a CLM history field that provides averages only over ice</a></li>
+<li><a class="reference internal" href="#">6. Controlling output from CLM and CISM</a><ul>
+<li><a class="reference internal" href="#controlling-cism-output">6.1. Controlling CISM output</a></li>
+<li><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">6.2. Producing land ice-specific output from CLM</a><ul>
+<li><a class="reference internal" href="#outputting-forcing-fields-sent-from-clm-to-cism">6.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
+<li><a class="reference internal" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice">6.2.2. Adding a CLM history field that provides averages only over ice</a></li>
 </ul>
 </li>
 </ul>
@@ -56,10 +56,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="ice-sheets-in-clm.html"
-                        title="previous chapter">6. Ice sheets in the Community Land Model, and glacier-land coupling</a></p>
+                        title="previous chapter">5. Ice sheets in the Community Land Model, and glacier-land coupling</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="acknowledgements.html"
-                        title="next chapter">8. Acknowledgments</a></p>
+                        title="next chapter">7. Acknowledgments</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -88,10 +88,10 @@
           <div class="body" role="main">
             
   <div class="section" id="controlling-output-from-clm-and-cism">
-<span id="controlling-output"></span><h1>7. Controlling output from CLM and CISM<a class="headerlink" href="#controlling-output-from-clm-and-cism" title="Permalink to this headline">¶</a></h1>
+<span id="controlling-output"></span><h1>6. Controlling output from CLM and CISM<a class="headerlink" href="#controlling-output-from-clm-and-cism" title="Permalink to this headline">¶</a></h1>
 <p>FIXME: bring this section up to date.</p>
 <div class="section" id="controlling-cism-output">
-<h2>7.1. Controlling CISM output<a class="headerlink" href="#controlling-cism-output" title="Permalink to this headline">¶</a></h2>
+<h2>6.1. Controlling CISM output<a class="headerlink" href="#controlling-cism-output" title="Permalink to this headline">¶</a></h2>
 <p>Model history frequency is controlled by <em>HIST_OPTION</em> and <em>HIST_N</em> in
 <em>env_run.xml</em>. By default, history files are written once a year. Among
 the standard fields written to the history file are the ice thickness
@@ -113,9 +113,9 @@ necessary script can be found in $CASEROOT/Buildconf/cismIOconf. See the
 README.cismIO file in that directory for details.</p>
 </div>
 <div class="section" id="producing-land-ice-specific-output-from-clm">
-<h2>7.2. Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>
+<h2>6.2. Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="outputting-forcing-fields-sent-from-clm-to-cism">
-<h3>7.2.1. Outputting forcing fields sent from CLM to CISM<a class="headerlink" href="#outputting-forcing-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1. Outputting forcing fields sent from CLM to CISM<a class="headerlink" href="#outputting-forcing-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>CLM sends three sets of fields to CISM, for each elevation class: <em>qice,
 tsrf</em> and <em>topo</em> (see Section 5.2). It can often be useful to view the
 values of these forcing fields for each elevation class within each grid
@@ -131,7 +131,7 @@ created with different time frequencies. See the CLM User’s Guide for
 details on how to do this.</p>
 </div>
 <div class="section" id="adding-a-clm-history-field-that-provides-averages-only-over-ice">
-<h3>7.2.2. Adding a CLM history field that provides averages only over ice<a class="headerlink" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.2. Adding a CLM history field that provides averages only over ice<a class="headerlink" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice" title="Permalink to this headline">¶</a></h3>
 <p>In general, CLM history fields give weighted averages over the entire
 grid cell. If you are interested in diagnostics just over ice landunits
 for certain history fields, you can make a source code modification for
@@ -166,16 +166,16 @@ examine the difference between the fields <em>TSOI</em> and <em>TSOI_ICE</em>:</
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="acknowledgements.html" title="8. Acknowledgments"
+          <a href="acknowledgements.html" title="7. Acknowledgments"
              >next</a> |</li>
         <li class="right" >
-          <a href="ice-sheets-in-clm.html" title="6. Ice sheets in the Community Land Model, and glacier-land coupling"
+          <a href="ice-sheets-in-clm.html" title="5. Ice sheets in the Community Land Model, and glacier-land coupling"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, William Lipsco.
+        &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>

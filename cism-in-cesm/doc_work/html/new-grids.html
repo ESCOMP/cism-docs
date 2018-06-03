@@ -1,0 +1,669 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Appendix A: Introducing a new ice sheet grid &#8212; CESM Land Ice CESM2.0 documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="8. References" href="references.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="references.html" title="8. References"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Appendix A: Introducing a new ice sheet grid</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid">Generating lnd &lt;-&gt; glc mapping files for a new CISM grid</a></li>
+<li><a class="reference internal" href="#generating-glc-ocn-mapping-files">Generating glc -&gt; ocn mapping files</a></li>
+<li><a class="reference internal" href="#adding-new-grid-and-mapping-files-in-config-grids-xml">Adding new grid and mapping files in config_grids.xml</a></li>
+<li><a class="reference internal" href="#add-new-entries-in-cism-s-xml-file-s">Add new entries in CISM’s xml file(s)</a></li>
+<li><a class="reference internal" href="#for-greenland-grids-submerging-land-outside-of-greenland">For Greenland grids: Submerging land outside of Greenland</a><ul>
+<li><a class="reference internal" href="#new-method-using-the-mask-field">New method, using the ‘mask’ field</a></li>
+<li><a class="reference internal" href="#old-method-using-the-landcover-field">Old method, using the ‘landcover’ field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="previous chapter">8. References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/new-grids.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="appendix-a-introducing-a-new-ice-sheet-grid">
+<span id="new-grids"></span><h1>Appendix A: Introducing a new ice sheet grid<a class="headerlink" href="#appendix-a-introducing-a-new-ice-sheet-grid" title="Permalink to this headline">¶</a></h1>
+<p>This section describes what is needed when introducing a new ice sheet grid into the
+system. Much of the information here is also relevant when introducing a new land grid (in
+which case new lnd-glc mapping files are needed) or a new ocean grid (in which case new
+ocn-glc mapping files are needed).</p>
+<p>Note that local ice sheet grids must be rectangular; typically they are polar
+stereographic projections.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The following instructions assume:</p>
+<ol class="arabic simple">
+<li>You have a SCRIP grid file for your new grid</li>
+<li>You have the NetCDF operators (nco) in your path. On yellowstone, you can
+accomplish this with <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">nco</span></code></li>
+<li>You are using the bash shell (otherwise some instructions will need to be
+modified slightly)</li>
+<li>You are working on yellowstone</li>
+</ol>
+</div>
+<div class="section" id="generating-lnd-glc-mapping-files-for-a-new-cism-grid">
+<h2>Generating lnd &lt;-&gt; glc mapping files for a new CISM grid<a class="headerlink" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Build the check_maps tool</p>
+<p>This isn’t entirely necessary, but allows the maps you generate to be checked
+by this tool. To build this, follow the instructions in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code>.</p>
+</li>
+<li><p class="first">Modify the following script that will create the necessary mapping
+files. Make sure to fill in the correct values for -fglc and -nglc where it
+says ‘FIXME’:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#
+#
+# Batch script to submit to create suite of ESMF mapping files
+#
+# Set up for yellowstone
+#
+# yellowstone-specific batch commands:
+#BSUB -P P93300601        # project number
+#BSUB -n 8               # number of processors
+#BSUB -R &quot;span[ptile=16]&quot;
+#BSUB -W 24:00            # wall-clock limit
+#BSUB -q caldera          # queue
+#BSUB -o regrid.%J.out    # ouput filename
+#BSUB -e regrid.%J.err    # error filename
+#BSUB -J gen_cesm_maps    # job name
+#BSUB -N                  # send email upon job completion
+
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Set user-defined parameters here
+#----------------------------------------------------------------------
+
+# CISM grid
+# FIXME: Fill this in with the path to your SCRIP grid file and the name of your grid
+glc_grid=&quot; -fglc /PATH/TO/SCRIPgrid.nc -nglc gland4km &quot;
+
+# CLM grids
+clm_f09=&quot; -flnd $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/0.9x1.25_c110307.nc -nlnd fv0.9x1.25 &quot;
+clm_f19=&quot; -flnd $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/1.9x2.5_c110308.nc -nlnd fv1.9x2.5 &quot;
+clm_T31=&quot; -flnd $CESMDATAROOT/mapping/grids/T31_040122.nc -nlnd T31 &quot;
+clm_hcru=&quot; -flnd $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_360x720_nomask_c120830.nc -nlnd 360x720 &quot;
+clm_4x5=&quot; -flnd $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_4x5_nomask_c110308.nc -nlnd fv4x5 &quot;
+clm_10x15=&quot; -flnd $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_10x15_nomask_c110308.nc -nlnd fv10x15 &quot;
+
+# This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne120np4_nomask_c101123.nc
+clm_ne120=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne120np4_pentagons_100310.nc -nlnd ne120np4 &quot;
+
+# This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne30np4_nomask_c101123.nc
+clm_ne30=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne30np4_091226_pentagons.nc -nlnd ne30np4 &quot;
+
+# This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne16np4_nomask_c110512.nc
+clm_ne16=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne16np4_110512_pentagons.nc -nlnd ne16np4 &quot;
+
+### Not bothering with this one: seems to not be used any more
+### clm_f02=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/fv0.23x0.31_071004.nc -nlnd fv0.23x0.31 &quot;
+
+#----------------------------------------------------------------------
+# Done setting user-defined parameters
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Stuff done in a machine-specific way
+#----------------------------------------------------------------------
+
+# Determine number of processors we&#39;re running on
+host_array=($LSB_HOSTS)
+REGRID_PROC=${#host_array[@]}
+
+#----------------------------------------------------------------------
+# Begin general script
+#----------------------------------------------------------------------
+
+for lnd_grid in &quot;$clm_f09&quot; &quot;$clm_f19&quot; &quot;$clm_T31&quot; &quot;$clm_hcru&quot; &quot;$clm_4x5&quot; &quot;$clm_10x15&quot; &quot;$clm_ne120&quot; &quot;$clm_ne30&quot; &quot;$clm_ne16&quot;; do
+    cmdargs=&quot;$glc_grid $lnd_grid --batch&quot;
+    echo &quot;==============================================================================&quot;
+    echo &quot;About to execute gen_cesm_maps with: $cmdargs&quot;
+    env REGRID_PROC=$REGRID_PROC ./gen_cesm_maps.sh $cmdargs
+done
+</pre></div>
+</div>
+</li>
+<li><p class="first">Name the script cism.regridbatch.sh, and put it in
+cime/tools/mapping/gen_mapping_files</p>
+</li>
+<li><p class="first">Run:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bsub</span> <span class="o">&lt;</span> <span class="n">cism</span><span class="o">.</span><span class="n">regridbatch</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>You can ignore errors in the .err file that look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATTENTION</span><span class="p">:</span> <span class="mi">0031</span><span class="o">-</span><span class="mi">408</span>  <span class="mi">8</span> <span class="n">tasks</span> <span class="n">allocated</span> <span class="n">by</span> <span class="n">Resource</span> <span class="n">Manager</span><span class="p">,</span> <span class="n">continuing</span><span class="o">...</span>
+<span class="n">ATTENTION</span><span class="p">:</span> <span class="mi">0031</span><span class="o">-</span><span class="mi">408</span>  <span class="mi">8</span> <span class="n">tasks</span> <span class="n">allocated</span> <span class="n">by</span> <span class="n">Resource</span> <span class="n">Manager</span><span class="p">,</span> <span class="n">continuing</span><span class="o">...</span>
+<span class="n">Abort</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">on</span> <span class="n">node</span> <span class="mi">0</span> <span class="p">(</span><span class="n">rank</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">comm</span> <span class="o">-</span><span class="mi">2080374782</span><span class="p">):</span> <span class="n">application</span> <span class="n">called</span> <span class="n">MPI_Abort</span><span class="p">(</span><span class="n">comm</span><span class="o">=</span><span class="mh">0x84000002</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">process</span> <span class="mi">0</span>
+<span class="n">ERROR</span><span class="p">:</span> <span class="mi">0031</span><span class="o">-</span><span class="mi">300</span>  <span class="n">Forcing</span> <span class="nb">all</span> <span class="n">remote</span> <span class="n">tasks</span> <span class="n">to</span> <span class="n">exit</span> <span class="n">due</span> <span class="n">to</span> <span class="n">exit</span> <span class="n">code</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">task</span> <span class="mi">0</span>
+<span class="n">forrtl</span><span class="p">:</span> <span class="n">error</span> <span class="p">(</span><span class="mi">78</span><span class="p">):</span> <span class="n">process</span> <span class="n">killed</span> <span class="p">(</span><span class="n">SIGTERM</span><span class="p">)</span>
+<span class="n">Image</span>              <span class="n">PC</span>                <span class="n">Routine</span>            <span class="n">Line</span>        <span class="n">Source</span>
+<span class="n">libpthread</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">0</span>    <span class="mi">0000003</span><span class="n">F7240F4B5</span>  <span class="n">Unknown</span>               <span class="n">Unknown</span>  <span class="n">Unknown</span>
+<span class="n">libpoe</span><span class="o">.</span><span class="n">so</span>          <span class="mi">00002</span><span class="n">B1CF8267AE2</span>  <span class="n">Unknown</span>               <span class="n">Unknown</span>  <span class="n">Unknown</span>
+<span class="n">libpthread</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">0</span>    <span class="mi">0000003</span><span class="n">F724079D1</span>  <span class="n">Unknown</span>               <span class="n">Unknown</span>  <span class="n">Unknown</span>
+<span class="n">libc</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">6</span>          <span class="mi">0000003</span><span class="n">F718E88FD</span>  <span class="n">Unknown</span>               <span class="n">Unknown</span>  <span class="n">Unknown</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Look through output in the .out file telling you about the results of running
+check_maps on all of your new mapping files.</p>
+<p>Ideally, you’ll see a lot of output that looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1: map_gland4km_TO_fv0.9x1.25_aave.161222.nc
+ All           21  tests passed!
+-----
+2: map_fv0.9x1.25_TO_gland4km_aave.161222.nc
+ All           21  tests passed!
+-----
+3: map_fv0.9x1.25_TO_gland4km_blin.161222.nc
+ All           14  tests passed!
+-----
+</pre></div>
+</div>
+<p>However, you should expect to see errors when checking the very
+coarse-resolution fv10x15 grid, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="n">map_gland4km_TO_fv10x15_aave</span><span class="o">.</span><span class="mf">161222.</span><span class="n">nc</span>
+ <span class="n">ERROR</span><span class="p">:</span> <span class="n">the</span> <span class="n">test</span> <span class="n">did</span> <span class="ow">not</span> <span class="n">successfully</span> <span class="nb">map</span> <span class="nb">any</span> <span class="n">values</span>
+ <span class="kn">from</span> <span class="nn">the</span> <span class="n">source</span> <span class="n">grid</span> <span class="n">to</span> <span class="n">the</span> <span class="n">destination</span> <span class="n">grid</span>
+           <span class="mi">0</span>  <span class="n">of</span>            <span class="mi">0</span>  <span class="n">tests</span> <span class="n">failed</span><span class="o">.</span> <span class="n">See</span> <span class="n">above</span> <span class="k">for</span> <span class="n">details</span><span class="o">.</span>
+<span class="o">-----</span>
+<span class="mi">2</span><span class="p">:</span> <span class="n">map_fv10x15_TO_gland4km_aave</span><span class="o">.</span><span class="mf">161222.</span><span class="n">nc</span>
+ <span class="n">FAILED</span><span class="p">:</span> <span class="n">L1</span> <span class="n">error</span> <span class="o">=</span>   <span class="mf">9.028874246726999E-003</span>  <span class="ow">in</span> <span class="n">test</span>            <span class="mi">1</span>
+ <span class="n">FAILED</span><span class="p">:</span> <span class="n">L1</span> <span class="n">error</span> <span class="o">=</span>   <span class="mf">2.228991274441720E-002</span>  <span class="ow">in</span> <span class="n">test</span>            <span class="mi">3</span>
+           <span class="mi">2</span>  <span class="n">of</span>           <span class="mi">21</span>  <span class="n">tests</span> <span class="n">failed</span><span class="o">.</span> <span class="n">See</span> <span class="n">above</span> <span class="k">for</span> <span class="n">details</span><span class="o">.</span>
+<span class="o">-----</span>
+</pre></div>
+</div>
+<p>In addition, you <em>may</em> see additional errors like that for other CLM grids,
+particularly if you have a higher-resolution CISM grid: The tolerances in
+check_maps are set such that errors can be expected when checking mappings
+between regional grids and relatively coarse-resolution global grids.</p>
+</li>
+<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
+<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
+where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is the <em>from</em> resolution. e.g.,
+<code class="docutils literal notranslate"><span class="pre">map_fv0.9x1.25_TO_gland4km_aave.161223.nc</span></code> goes in
+<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/fv0.9x1.25</span></code>, whereas
+<code class="docutils literal notranslate"><span class="pre">map_gland4km_TO_fv0.9x1.25_aave.161223.nc</span></code> goes in
+<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/gland4km</span></code>. You can accomplish this
+with the following code in bash:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>for fl in map_*.nc; do
+    IFS=&#39;_&#39; read -ra fname_split &lt;&lt;&lt; &quot;$fl&quot;
+    from_res=${fname_split[1]}
+    mv -v $fl $CESMDATAROOT/inputdata/cpl/gridmaps/${from_res}/
+done
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="generating-glc-ocn-mapping-files">
+<h2>Generating glc -&gt; ocn mapping files<a class="headerlink" href="#generating-glc-ocn-mapping-files" title="Permalink to this headline">¶</a></h2>
+<p>See also <a class="reference external" href="https://github.com/NCAR/cism_misc-runoff_mapping_inputs">https://github.com/NCAR/cism_misc-runoff_mapping_inputs</a></p>
+<ol class="arabic">
+<li><p class="first">Build the runoff_map tool in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/gen_mapping_files/runoff_to_ocn</span></code> by following the
+directions there</p>
+</li>
+<li><p class="first">Create a namelist file like the following, but changing the details to match
+your new grid:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">input_nml</span>
+   <span class="n">gridtype</span>     <span class="o">=</span> <span class="s1">&#39;scrip&#39;</span>
+   <span class="n">file_roff</span>    <span class="o">=</span> <span class="s1">&#39;/glade/p/cesmdata/cseg/inputdata/glc/cism/griddata/SCRIPgrid_greenland_4km_epsg3413_c161223.nc&#39;</span>
+   <span class="n">file_ocn</span>     <span class="o">=</span> <span class="s1">&#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_120309.nc&#39;</span>
+   <span class="n">file_ocn_coastal_mask</span> <span class="o">=</span> <span class="s1">&#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_coast_180430.nc&#39;</span>
+   <span class="n">file_nn</span>      <span class="o">=</span> <span class="s1">&#39;map_gland4km_epsg3413_to_gx3v7_nn.nc &#39;</span>
+   <span class="n">file_smooth</span>  <span class="o">=</span> <span class="s1">&#39;map_gx3v7_coast_to_gx3v7_sm.nc &#39;</span>
+   <span class="n">file_new</span>     <span class="o">=</span> <span class="s1">&#39;map_gland4km_to_gx3v7_nnsm_e1000r500_171024.nc&#39;</span>
+   <span class="n">title</span>        <span class="o">=</span> <span class="s1">&#39;runoff map: gland4km -&gt; gx3v7, nearest neighbor and smoothed &#39;</span>
+   <span class="n">eFold</span>        <span class="o">=</span> <span class="mf">1000000.0</span>
+   <span class="n">rMax</span>         <span class="o">=</span>  <span class="mf">500000.0</span>
+   <span class="n">restrict_smooth_src_to_nn_dest</span> <span class="o">=</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span>
+   <span class="n">step1</span> <span class="o">=</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span>
+   <span class="n">step2</span> <span class="o">=</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span>
+   <span class="n">step3</span> <span class="o">=</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span>
+  <span class="o">/</span>
+</pre></div>
+</div>
+<p>Name this file <code class="docutils literal notranslate"><span class="pre">runoff_map.nml</span></code></p>
+</li>
+<li><p class="first">Run</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">runoff_map</span> <span class="o">&lt;</span> <span class="n">runoff_map</span><span class="o">.</span><span class="n">nml</span>
+</pre></div>
+</div>
+<p>Note that it may be necessary to have the same environment that you used for
+building (e.g., via sourcing src/.env_mach_specific.sh before running this
+executable).</p>
+</li>
+<li><p class="first">Run</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_merge_mapping_files</span><span class="o">.</span><span class="n">sh</span> \
+<span class="o">--</span><span class="n">map_in_oo</span> <span class="n">map_gland4km_epsg3413_to_gx3v7_nn</span><span class="o">.</span><span class="n">nc</span> \
+<span class="o">--</span><span class="n">map_in_ms</span> <span class="n">map_gland4km_to_gx3v7_nnsm_e1000r500_171024</span><span class="o">.</span><span class="n">nc</span> \
+<span class="o">--</span><span class="n">region_mask</span> <span class="o">/</span><span class="n">glade</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="n">cesmdata</span><span class="o">/</span><span class="n">cseg</span><span class="o">/</span><span class="n">inputdata</span><span class="o">/</span><span class="n">ocn</span><span class="o">/</span><span class="n">pop</span><span class="o">/</span><span class="n">gx3v7</span><span class="o">/</span><span class="n">grid</span><span class="o">/</span><span class="n">region_mask_20090831</span><span class="o">.</span><span class="n">ieeei4</span> \
+<span class="o">--</span><span class="n">map_out</span> <span class="n">map_gland4km_to_gx3v7_nn_open_ocean_nnsm_e1000r500_marginal_sea_171024</span><span class="o">.</span><span class="n">nc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Repeat the above process with the gx1v6 grid, changing the input
+namelist appropriately.</p>
+<ul class="simple">
+<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v6_coast_170503.nc</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v6/grid/region_mask_20090205.ieeei4</span></code></li>
+</ul>
+</li>
+<li><p class="first">Repeat the above process with the gx1v7 grid, changing the input
+namelist appropriately.</p>
+<ul class="simple">
+<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v7_coast_170322.nc</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v7/grid/region_mask_20151008.ieeei4</span></code></li>
+</ul>
+</li>
+<li><p class="first">Run the check_maps tool on each of the resulting final mapping files
+(the files with the date stamp at the end)</p>
+<ul class="simple">
+<li>To build and run this, follow the instructions in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code></li>
+<li>Examine the output from this tool to make sure there are no major
+mapping errors<ul>
+<li>For these runoff mapping files, messages about “L1 error” and “L2
+error” can be ignored.</li>
+<li>Until <a class="reference external" href="https://github.com/ESMCI/cime/issues/2014">https://github.com/ESMCI/cime/issues/2014</a> is resolved, you
+need to add dimensions to the merged files with something like
+<code class="docutils literal notranslate"><span class="pre">ncap2</span> <span class="pre">-s</span>
+<span class="pre">'defdim(&quot;ni_a&quot;,416);defdim(&quot;nj_a&quot;,704);defdim(&quot;ni_b&quot;,320);defdim(&quot;nj_b&quot;,384)'</span>
+<span class="pre">YOUR_MAP_NAME.nc</span></code> (where you can find the correct dimensions on
+the non-merged (i.e., nnsm) mapping files).</li>
+</ul>
+</li>
+<li>If you’d like, you can also visually examine the mapped
+fields. Open the file named <code class="docutils literal notranslate"><span class="pre">test_YOUR_MAP_NAME.nc</span></code>; a useful
+field to view is <code class="docutils literal notranslate"><span class="pre">dst02</span></code>, which is the result of mapping a
+uniform field (with value 2) from the glc grid to the ocn grid.</li>
+</ul>
+</li>
+<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
+<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
+where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is your new CISM resolution.</p>
+<p>There are two final mapping files that need to be kept for each
+glc-ocn grid combination: The two files with the date stamp at the
+end.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-new-grid-and-mapping-files-in-config-grids-xml">
+<h2>Adding new grid and mapping files in config_grids.xml<a class="headerlink" href="#adding-new-grid-and-mapping-files-in-config-grids-xml" title="Permalink to this headline">¶</a></h2>
+<p>In order for your new grid and mapping files to be recognized by the CESM
+scripts, you need to add entries in config_grids.xml
+(<code class="docutils literal notranslate"><span class="pre">cime/cime_config/cesm/config_grids.xml</span></code>).</p>
+<ol class="arabic">
+<li><p class="first">Add new grid definition</p>
+<p>You’ll need to add a section like this:</p>
+<div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">domain</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;gland4&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">nx</span><span class="o">&gt;</span><span class="mi">376</span><span class="o">&lt;/</span><span class="n">nx</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">ny</span><span class="o">&gt;</span><span class="mi">701</span><span class="o">&lt;/</span><span class="n">ny</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">desc</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">-</span><span class="n">km</span> <span class="n">Greenland</span> <span class="n">grid</span><span class="p">,</span> <span class="k">for</span> <span class="n">use</span> <span class="k">with</span> <span class="n">the</span> <span class="n">glissade</span> <span class="n">dycore</span><span class="o">&lt;/</span><span class="n">desc</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">domain</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to new mapping files: lnd &lt;-&gt; glc</p>
+<p>You’ll need to add a section like this for each land grid, in the section
+“lnd to glc and glc to lnd mapping”:</p>
+<div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">gridmap</span> <span class="n">lnd_grid</span><span class="o">=</span><span class="s2">&quot;0.9x1.25&quot;</span> <span class="n">glc_grid</span><span class="o">=</span><span class="s2">&quot;gland4&quot;</span> <span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">map</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LND2GLC_FMAPNAME&quot;</span><span class="o">&gt;</span><span class="n">cpl</span><span class="o">/</span><span class="n">gridmaps</span><span class="o">/</span><span class="n">fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="o">/</span><span class="n">map_fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="n">_TO_gland4km_aave</span><span class="o">.</span><span class="mf">161223.</span><span class="n">nc</span><span class="o">&lt;/</span><span class="nb">map</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">map</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LND2GLC_SMAPNAME&quot;</span><span class="o">&gt;</span><span class="n">cpl</span><span class="o">/</span><span class="n">gridmaps</span><span class="o">/</span><span class="n">fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="o">/</span><span class="n">map_fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="n">_TO_gland4km_blin</span><span class="o">.</span><span class="mf">161223.</span><span class="n">nc</span><span class="o">&lt;/</span><span class="nb">map</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">map</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GLC2LND_FMAPNAME&quot;</span><span class="o">&gt;</span><span class="n">cpl</span><span class="o">/</span><span class="n">gridmaps</span><span class="o">/</span><span class="n">gland4km</span><span class="o">/</span><span class="n">map_gland4km_TO_fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="n">_aave</span><span class="o">.</span><span class="mf">161223.</span><span class="n">nc</span><span class="o">&lt;/</span><span class="nb">map</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">map</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GLC2LND_SMAPNAME&quot;</span><span class="o">&gt;</span><span class="n">cpl</span><span class="o">/</span><span class="n">gridmaps</span><span class="o">/</span><span class="n">gland4km</span><span class="o">/</span><span class="n">map_gland4km_TO_fv0</span><span class="o">.</span><span class="mi">9</span><span class="n">x1</span><span class="o">.</span><span class="mi">25</span><span class="n">_aave</span><span class="o">.</span><span class="mf">161223.</span><span class="n">nc</span><span class="o">&lt;/</span><span class="nb">map</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">gridmap</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to new mapping files: glc -&gt; ocn</p>
+<p>In the section “GRIDS: glc to ocn mapping”, add a section like this:</p>
+<div class="code xml highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;gridmap ocn_grid=&quot;gx1v6&quot; glc_grid=&quot;gland4&quot; &gt;
+  &lt;map name=&quot;GLC2OCN_LIQ_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc&lt;/map&gt;
+  &lt;map name=&quot;GLC2OCN_ICE_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nnsm_e1000r300_171105.nc&lt;/map&gt;
+&lt;/gridmap&gt;
+&lt;gridmap ocn_grid=&quot;gx1v7&quot; glc_grid=&quot;gland4&quot; &gt;
+  &lt;map name=&quot;GLC2OCN_LIQ_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc&lt;/map&gt;
+  &lt;map name=&quot;GLC2OCN_ICE_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nnsm_e1000r300_171105.nc&lt;/map&gt;
+&lt;/gridmap&gt;
+&lt;!-- POP&#39;s estuary box model is currently not active for gx3v7, so
+     we need nnsm maps for liquid as well as ice. --&gt;
+&lt;gridmap ocn_grid=&quot;gx3v7&quot; glc_grid=&quot;gland4&quot; &gt;
+  &lt;map name=&quot;GLC2OCN_LIQ_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc&lt;/map&gt;
+  &lt;map name=&quot;GLC2OCN_ICE_RMAPNAME&quot;&gt;cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc&lt;/map&gt;
+&lt;/gridmap&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>Important note for gx3v7 grid:</strong> The estuary box model is not
+active for the gx3v7 grid for now, so point to the nnsm file for
+both ice and liquid runoff. (However, to follow what’s done for the
+rof2ocn mapping files, you can still put the merged maps in the
+inputdata repository, so that they can be used if the estuary box
+model is ever activated for gx3v7.)</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="add-new-entries-in-cism-s-xml-file-s">
+<h2>Add new entries in CISM’s xml file(s)<a class="headerlink" href="#add-new-entries-in-cism-s-xml-file-s" title="Permalink to this headline">¶</a></h2>
+<p>NEED TO FILL THIS IN WITH INSTRUCTIONS</p>
+</div>
+<div class="section" id="for-greenland-grids-submerging-land-outside-of-greenland">
+<h2>For Greenland grids: Submerging land outside of Greenland<a class="headerlink" href="#for-greenland-grids-submerging-land-outside-of-greenland" title="Permalink to this headline">¶</a></h2>
+<p>For Greenland grids, we typically need to submerge land outside of the island of
+Greenland. If we don’t do this (allowing for Ellesmere Island, Iceland, etc. to
+appear as land), we’ll run into at least two problems:</p>
+<ol class="upperalpha simple">
+<li>CISM will try to dictate the land cover in those regions. Even if CLM’s
+surface dataset says there is glacier there, they will be overwritten with
+bare land if CISM doesn’t have any ice there.</li>
+<li>We can potentially get an ice sheet growing there if CLM dictates glacial
+inception.</li>
+</ol>
+<div class="section" id="new-method-using-the-mask-field">
+<h3>New method, using the ‘mask’ field<a class="headerlink" href="#new-method-using-the-mask-field" title="Permalink to this headline">¶</a></h3>
+<p>Joe’s new files have a ‘mask’ field on them that can be used for this
+purpose. Joe’s documentation of this field is:</p>
+<blockquote>
+<div><ul class="simple">
+<li>4 – floating ice</li>
+<li>3 – grounded ice</li>
+<li>2 – bare land</li>
+<li>1 – ocean</li>
+<li>0 – missing topg data</li>
+<li>-1 – shallow paleo ocean</li>
+<li>-2 – bare paleo land</li>
+<li>-3 – shallow ocean or land outside the paleo domain</li>
+</ul>
+<p>So, for the standard CISM input dataset, every point where mask &lt; 0 should be
+sunk to -200 m a.s.l. For the paleo grid however, mask &lt; -2 should be sunk and
+mask == -2 would become bare land (2) and mask == -1 would become ocean.</p>
+</div></blockquote>
+<p>However, I also want to submerge the points with mask == 0, because I don’t
+trust the handling of missing values.</p>
+<p>I used the following procedure:</p>
+<ol class="arabic">
+<li><p class="first">Submerge points with something like this (note: it’s important to have ‘mask’
+in quotes; otherwise ncap2 thinks mask has a special meaning):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ncap2</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;where((&#39;mask&#39; == 0) || (&#39;mask&#39; &lt; 0 &amp;&amp; topg &gt; -200)) topg = -200.;&quot;</span> <span class="n">greenland_4km_2017_02_23</span><span class="o">.</span><span class="n">epsg3413</span><span class="o">.</span><span class="n">nc</span> <span class="n">greenland_4km_epsg3413_c170429</span><span class="o">.</span><span class="n">nc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Confirm that there are now no missing values for topg, e.g., by loading it
+into python</p>
+</li>
+<li><p class="first">Remove the missing_value attribute from topg and add some metadata with
+something like this:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ncatted</span> <span class="o">-</span><span class="n">a</span> <span class="n">missing_value</span><span class="p">,</span><span class="n">topg</span><span class="p">,</span><span class="n">d</span><span class="p">,,</span> <span class="n">greenland_4km_epsg3413_c170429</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncatted</span> <span class="o">-</span><span class="n">h</span> <span class="o">-</span><span class="n">a</span> <span class="n">Note_170429</span><span class="p">,</span><span class="n">topg</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="s2">&quot;submerged all non-Greenland land to -200m with: ncap2 -s </span><span class="se">\&quot;</span><span class="s2">where((&#39;mask&#39; == 0) || (&#39;mask&#39; &lt; 0 &amp;&amp; topg &gt; -200)) topg = -200.;</span><span class="se">\&quot;</span><span class="s2">; then removed now-unnecessary missing_value attribute&quot;</span> <span class="n">greenland_4km_epsg3413_c170429</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncatted</span> <span class="o">-</span><span class="n">h</span> <span class="o">-</span><span class="n">a</span> <span class="n">Note_170429</span><span class="p">,</span><span class="k">global</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="s2">&quot;Same as greenland_4km_2017_02_23.epsg3413.nc (provided by Joe Kennedy), except submerged all non-Greenland land to -200m with: ncap2 -s </span><span class="se">\&quot;</span><span class="s2">where((&#39;mask&#39; == 0) || (&#39;mask&#39; &lt; 0 &amp;&amp; topg &gt; -200)) topg = -200.;</span><span class="se">\&quot;</span><span class="s2">; then removed now-unnecessary missing_value attribute of topg&quot;</span> <span class="n">greenland_4km_epsg3413_c170429</span><span class="o">.</span><span class="n">nc</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="old-method-using-the-landcover-field">
+<h3>Old method, using the ‘landcover’ field<a class="headerlink" href="#old-method-using-the-landcover-field" title="Permalink to this headline">¶</a></h3>
+<p><strong>Note: The method documented below is what I used before we had a ‘mask’ field
+on the input files.</strong></p>
+<p>Determining which grid cells are part of Greenland and which are outside
+Greenland is tricky. The easiest thing to do is to take an existing mask, which
+we have generated for some other grid, and regrid that to your new
+grid. Ideally, the existing mask will be at a resolution as close as possible to
+that of your new grid.</p>
+<p>In order to regrid this mask from one CISM grid to another, follow this
+process. This assumes that you have some “old” CISM input file with the
+“landcover” field on it, and that you have a SCRIP grid file corresponding to
+that old input file as well as for your new CISM grid.</p>
+<ol class="arabic">
+<li><p class="first">Make a mapping file from the old grid to the new one: Modify the following
+script (see the FIXME note for what to change):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#
+#
+# Batch script to submit to create ESMF mapping file
+#
+# Set up for yellowstone
+#
+# yellowstone-specific batch commands:
+#BSUB -P P93300601        # project number
+#BSUB -n 8                # number of processors
+#BSUB -R &quot;span[ptile=16]&quot;
+#BSUB -W 1:00             # wall-clock limit
+#BSUB -q caldera          # queue
+#BSUB -o regrid.%J.out    # ouput filename
+#BSUB -e regrid.%J.err    # error filename
+#BSUB -J create_ESMF_map  # job name
+#BSUB -N                  # send email upon job completion
+
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Set user-defined parameters here
+#----------------------------------------------------------------------
+
+# FIXME: Replace the following lines with paths to SCRIP grid files and names of your grids
+filesrc=&quot;/glade/p/cesmdata/cseg/inputdata/glc/cism/griddata/SCRIPgrid_gland_4km_c161223.nc&quot;
+filedst=&quot;/glade/p/cesmdata/cseg/inputdata/glc/cism/griddata/SCRIPgrid_greenland_4km_epsg3413_c161223.nc&quot;
+namesrc=&#39;gland4kmOld&#39;
+namedst=&#39;gland4kmNew&#39;
+
+typesrc=&#39;regional&#39;
+typedst=&#39;regional&#39;
+maptype=&#39;aave&#39;
+
+#----------------------------------------------------------------------
+# Done setting user-defined parameters
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Stuff done in a machine-specific way
+#----------------------------------------------------------------------
+
+# Determine number of processors we&#39;re running on
+host_array=($LSB_HOSTS)
+REGRID_PROC=${#host_array[@]}
+
+#----------------------------------------------------------------------
+# Begin general script
+#----------------------------------------------------------------------
+
+cmdargs=&quot;--filesrc $filesrc --filedst $filedst --namesrc $namesrc --namedst $namedst --typesrc $typesrc --typedst $typedst --maptype $maptype --batch&quot;
+env REGRID_PROC=$REGRID_PROC ./create_ESMF_map.sh $cmdargs
+</pre></div>
+</div>
+<p>Put this script in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/gen_mapping_files/gen_ESMF_mapping_file/</span></code>, named
+<code class="docutils literal notranslate"><span class="pre">regrid_cism_old_to_new.sh</span></code>, then submit it with:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bsub</span> <span class="o">&lt;</span> <span class="n">regrid_cism_old_to_new</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Extract the landcover field from your old CISM input file</p>
+<p>The landcover field is stored with a degenerate time dimension, but we need
+to remove that degenerate dimension. Run something like this, replacing the
+file path with the actual path to the CISM input file you’ll be using</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">cime</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">mapping</span><span class="o">/</span><span class="n">map_field</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">nco</span>
+<span class="n">ncks</span> <span class="o">-</span><span class="n">v</span> <span class="n">landcover</span> <span class="o">/</span><span class="n">glade</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="n">cesmdata</span><span class="o">/</span><span class="n">cseg</span><span class="o">/</span><span class="n">inputdata</span><span class="o">/</span><span class="n">glc</span><span class="o">/</span><span class="n">cism</span><span class="o">/</span><span class="n">Greenland</span><span class="o">/</span><span class="n">glissade</span><span class="o">/</span><span class="n">init</span><span class="o">/</span><span class="n">greenland_4km_2015_06_03</span><span class="o">.</span><span class="n">mcb_trunk_c161025</span><span class="o">.</span><span class="n">nc</span> <span class="n">landcover_old_with_time</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncwa</span> <span class="o">-</span><span class="n">a</span> <span class="n">time</span> <span class="n">landcover_old_with_time</span><span class="o">.</span><span class="n">nc</span> <span class="n">landcover_old</span><span class="o">.</span><span class="n">nc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Regrid the landcover field from your old CISM input file</p>
+<p>First, build the map_field tool (in <code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/map_field</span></code>), by
+following the directions there.</p>
+<p>Then, from <code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/map_field</span></code>, run something like the
+following, though replacing paths with the correct paths to your files. Note
+that, for this to work, you may need to source the env_mach_specific file
+that you sourced when building the map_field tool.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">map_field</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;/glade/p/work/sacks/cime/tools/mapping/gen_mapping_files/gen_ESMF_mapping_file/map_gland4kmOld_TO_gland4kmNew_aave.161223.nc&quot;</span> <span class="o">-</span><span class="k">if</span> <span class="n">landcover_old</span><span class="o">.</span><span class="n">nc</span> <span class="o">-</span><span class="n">iv</span> <span class="n">landcover</span> <span class="o">-</span><span class="n">of</span> <span class="n">landcover_new</span><span class="o">.</span><span class="n">nc</span> <span class="o">-</span><span class="n">ov</span> <span class="n">landcover</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Round landcover to 0 or 1, and fix dimension names</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ncap2</span> <span class="o">-</span><span class="n">s</span> <span class="s1">&#39;landcover_int = int(round(landcover))&#39;</span> <span class="n">landcover_new</span><span class="o">.</span><span class="n">nc</span> <span class="n">landcover_new2</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncrename</span> <span class="o">-</span><span class="n">d</span> <span class="n">ni</span><span class="p">,</span><span class="n">x1</span> <span class="o">-</span><span class="n">d</span> <span class="n">nj</span><span class="p">,</span><span class="n">y1</span> <span class="n">landcover_new2</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncks</span> <span class="o">-</span><span class="n">x</span> <span class="o">-</span><span class="n">v</span> <span class="n">landcover</span> <span class="n">landcover_new2</span><span class="o">.</span><span class="n">nc</span> <span class="n">landcover_new3</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">ncrename</span> <span class="o">-</span><span class="n">v</span> <span class="n">landcover_int</span><span class="p">,</span><span class="n">landcover</span> <span class="n">landcover_new3</span><span class="o">.</span><span class="n">nc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Append landcover field onto input file</p>
+<p>Change the ‘today’ variable and file names to point to your actual file in
+the following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export today=161223
+export path_to_input_file=/glade/p/cesmdata/cseg/inputdata/glc/cism/Greenland/glissade/init
+export landcover_origfile=greenland_4km_2015_06_03.mcb_trunk_c161025.nc
+export origfile=greenland_4km_2016_12_19.epsg3413.nc
+export newfile=greenland_4km_epsg3413_c${today}.nc
+cp $path_to_input_file/$origfile $path_to_input_file/$newfile
+ncks -A -v landcover landcover_new3.nc $path_to_input_file/$newfile
+ncatted -h -a no_data,landcover,c,i,0 -a has_data,landcover,c,i,1 -a Note_${today},landcover,c,c,&quot;Regridded landcover from $landcover_origfile using area-conservative remapping then rounding to 0/1&quot; $path_to_input_file/$newfile
+</pre></div>
+</div>
+</li>
+<li><p class="first">Submerge non-Greenland land with:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export extra_info_on_origfile=&quot; (provided by Joe Kennedy)&quot;
+ncap2 -s &#39;where(landcover == 0 &amp;&amp; topg &gt; -200) topg = -200.;&#39; $path_to_input_file/$newfile tempfile.nc
+mv tempfile.nc $path_to_input_file/$newfile
+ncatted -h -a Note_${today},topg,c,c,&quot;submerged all non-Greenland land to -200m with: ncap2 -s &#39;where(landcover == 0 &amp;&amp; topg &gt; -200) topg = -200.;&#39;&quot; $path_to_input_file/$newfile
+ncatted -h -a Note_${today},global,c,c,&quot;Same as ${origfile}${extra_info_on_origfile}, except (1) Includes landcover field, regridded from $landcover_origfile using area-conservative remapping then rounding to 0/1; (2) Submerged all non-Greenland land to -200m with: ncap2 -s &#39;where(landcover == 0 &amp;&amp; topg &gt; -200) topg = -200.;&#39;&quot; $path_to_input_file/$newfile
+</pre></div>
+</div>
+</li>
+<li><p class="first">Optional: Confirm the regridding of landcover.</p>
+<p>This step may not need to be done, but if you want to make sure landcover got
+regridded to the new grid properly, you can do it as follows. This uses
+python, with the NetCDF4 library. Note that dat_old points to the version of
+the dataset prior to modifying topg.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat_old</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;greenland_4km_2016_12_19.epsg3413.nc&#39;</span><span class="p">)</span>
+<span class="n">dat_new</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;greenland_4km_epsg3413_c161223.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">landcover</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dat_new</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;landcover&#39;</span><span class="p">][:])</span>
+<span class="n">topg_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dat_old</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;topg&#39;</span><span class="p">][:])</span>
+<span class="n">category</span> <span class="o">=</span> <span class="n">dat_new</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span><span class="s1">&#39;x1&#39;</span><span class="p">))</span>
+<span class="n">category_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">landcover</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">land</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">landcover</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">topg_orig</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ocean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">landcover</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">topg_orig</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">category_vals</span><span class="p">[</span><span class="n">ocean</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">category_vals</span><span class="p">[</span><span class="n">land</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">category</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">category_vals</span>
+<span class="n">category</span><span class="o">.</span><span class="n">landcover_is_0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">category</span><span class="o">.</span><span class="n">landcover_is_1_topg_lt_0</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">category</span><span class="o">.</span><span class="n">landcover_is_1_topg_ge_0</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">dat_new</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, make sure:</p>
+<ol class="lowerroman">
+<li><p class="first">landcover = 0 points only occur off the coast of Greenland - not within or
+near Greenland</p>
+<p>First viewed this with a color scale that spanned 0 - 2 (so different
+colors for 0, 1 and 2), and viewing where the 0s are relative to the 1s
+and 2s. Ideally, there should be some 1 (ocean) between the 2 (land) and 0
+(landcover = 0).</p>
+<p>Also viewed this by setting 0 to blue, 1-2 to white – making sure blue is
+only on periphery</p>
+</li>
+<li><p class="first">no topg &gt; 0, landcover = 1 points outside of Greenland</p>
+<p>Viewed this by setting 2 to blue, 0-1 to white – making sure there is no
+blue on the periphery</p>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="references.html" title="8. References"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

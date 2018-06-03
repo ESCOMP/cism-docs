@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>4. Running the standalone ice sheet model within CESM: TG compsets &#8212; CESM Land Ice CESM2.0 documentation</title>
+    <title>3. Running the standalone ice sheet model within CESM: TG compsets &#8212; CESM Land Ice CESM2.0 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html" />
-    <link rel="prev" title="3. Ice sheet grids" href="ice-sheet-grids.html" />
+    <link rel="next" title="4. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html" />
+    <link rel="prev" title="2. Running and modifying the CESM land ice component" href="running-and-modifying.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -31,10 +31,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="dynamic-ice-sheet-model.html" title="5. The dynamic ice sheet model"
+          <a href="dynamic-ice-sheet-model.html" title="4. The dynamic ice sheet model"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ice-sheet-grids.html" title="3. Ice sheet grids"
+          <a href="running-and-modifying.html" title="2. Running and modifying the CESM land ice component"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
@@ -43,23 +43,23 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">4. Running the standalone ice sheet model within CESM: TG compsets</a><ul>
-<li><a class="reference internal" href="#background">4.1. Background</a></li>
-<li><a class="reference internal" href="#running-with-existing-forcing-data">4.2. Running with existing forcing data</a></li>
-<li><a class="reference internal" href="#creating-and-running-with-your-own-forcing-data">4.3. Creating and running with your own forcing data</a></li>
-<li><a class="reference internal" href="#performing-a-run-to-create-forcing-data">4.4. Performing a run to create forcing data</a></li>
-<li><a class="reference internal" href="#performing-a-tg-run-using-your-own-forcing-data">4.5. Performing a TG run using your own forcing data</a></li>
-<li><a class="reference internal" href="#changes-to-some-cesm-defaults-for-tg-compsets">4.6. Changes to some CESM defaults for TG compsets</a></li>
+<li><a class="reference internal" href="#">3. Running the standalone ice sheet model within CESM: TG compsets</a><ul>
+<li><a class="reference internal" href="#background">3.1. Background</a></li>
+<li><a class="reference internal" href="#running-with-existing-forcing-data">3.2. Running with existing forcing data</a></li>
+<li><a class="reference internal" href="#creating-and-running-with-your-own-forcing-data">3.3. Creating and running with your own forcing data</a></li>
+<li><a class="reference internal" href="#performing-a-run-to-create-forcing-data">3.4. Performing a run to create forcing data</a></li>
+<li><a class="reference internal" href="#performing-a-tg-run-using-your-own-forcing-data">3.5. Performing a TG run using your own forcing data</a></li>
+<li><a class="reference internal" href="#changes-to-some-cesm-defaults-for-tg-compsets">3.6. Changes to some CESM defaults for TG compsets</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="ice-sheet-grids.html"
-                        title="previous chapter">3. Ice sheet grids</a></p>
+  <p class="topless"><a href="running-and-modifying.html"
+                        title="previous chapter">2. Running and modifying the CESM land ice component</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="dynamic-ice-sheet-model.html"
-                        title="next chapter">5. The dynamic ice sheet model</a></p>
+                        title="next chapter">4. The dynamic ice sheet model</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -88,9 +88,9 @@
           <div class="body" role="main">
             
   <div class="section" id="running-the-standalone-ice-sheet-model-within-cesm-tg-compsets">
-<span id="tg-compsets"></span><h1>4. Running the standalone ice sheet model within CESM: TG compsets<a class="headerlink" href="#running-the-standalone-ice-sheet-model-within-cesm-tg-compsets" title="Permalink to this headline">¶</a></h1>
+<span id="tg-compsets"></span><h1>3. Running the standalone ice sheet model within CESM: TG compsets<a class="headerlink" href="#running-the-standalone-ice-sheet-model-within-cesm-tg-compsets" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="background">
-<h2>4.1. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>The ice sheet model requires much less computational time per simulated
 year than other CESM components, but often needs to be run for many more
 model years (e.g., tens of thousands of years rather than a century).
@@ -107,7 +107,7 @@ must have coupler history files from a previous run that included CLM
 (see Section 3.3).</p>
 </div>
 <div class="section" id="running-with-existing-forcing-data">
-<h2>4.2. Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
+<h2>3.2. Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>There are currently four out-of-the-box TG compsets, using different
 periods of forcing data, as shown in the following table:</p>
 <table border="1" class="docutils">
@@ -154,7 +154,7 @@ data.) You <em>can</em> run with a different CISM_GRID than the one used to
 create the forcing data (gland5UM).</p>
 </div>
 <div class="section" id="creating-and-running-with-your-own-forcing-data">
-<h2>4.3. Creating and running with your own forcing data<a class="headerlink" href="#creating-and-running-with-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. Creating and running with your own forcing data<a class="headerlink" href="#creating-and-running-with-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>Currently, TG compsets are only able to handle forcing data from a
 previous CESM run (although, in theory, it should be possible to “fake”
 CESM output by creating files with the same format as existing TG
@@ -164,7 +164,7 @@ model (CLM), saving the necessary forcing files, and (2) perform a TG
 run using these new forcing data.</p>
 </div>
 <div class="section" id="performing-a-run-to-create-forcing-data">
-<h2>4.4. Performing a run to create forcing data<a class="headerlink" href="#performing-a-run-to-create-forcing-data" title="Permalink to this headline">¶</a></h2>
+<h2>3.4. Performing a run to create forcing data<a class="headerlink" href="#performing-a-run-to-create-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>To create the necessary forcing data (surface mass balance and surface
 temperature in each glacier elevation class), you need to perform a CESM
 run using a compset that includes an active land model (CLM) and an
@@ -191,7 +191,7 @@ modification prior to performing this run: In the routine
 the four instances of use_float=.true. to use_float=.false.</p>
 </div>
 <div class="section" id="performing-a-tg-run-using-your-own-forcing-data">
-<h2>4.5. Performing a TG run using your own forcing data<a class="headerlink" href="#performing-a-tg-run-using-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
+<h2>3.5. Performing a TG run using your own forcing data<a class="headerlink" href="#performing-a-tg-run-using-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>To perform a standalone CISM run forced by your newly-created forcing
 data, first create a new case using one of the existing TG compsets (see
 above table). It can be easiest to use the compset whose forcing data
@@ -255,7 +255,7 @@ necessary modifications to these xml variables. Finally, repeat the
 above procedure for modifying the domain file.</p>
 </div>
 <div class="section" id="changes-to-some-cesm-defaults-for-tg-compsets">
-<h2>4.6. Changes to some CESM defaults for TG compsets<a class="headerlink" href="#changes-to-some-cesm-defaults-for-tg-compsets" title="Permalink to this headline">¶</a></h2>
+<h2>3.6. Changes to some CESM defaults for TG compsets<a class="headerlink" href="#changes-to-some-cesm-defaults-for-tg-compsets" title="Permalink to this headline">¶</a></h2>
 <p>TG compsets have much lower computational expense per simulation year
 and much greater typical run lengths compared to most CESM
 configurations. Thus, a number of settings are changed automatically
@@ -279,16 +279,16 @@ when running with a TG compset. These include:</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="dynamic-ice-sheet-model.html" title="5. The dynamic ice sheet model"
+          <a href="dynamic-ice-sheet-model.html" title="4. The dynamic ice sheet model"
              >next</a> |</li>
         <li class="right" >
-          <a href="ice-sheet-grids.html" title="3. Ice sheet grids"
+          <a href="running-and-modifying.html" title="2. Running and modifying the CESM land ice component"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Bill Sacks, Gunter Leguy, William Lipscomb.
+        &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
