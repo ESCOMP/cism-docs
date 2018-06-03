@@ -41,13 +41,20 @@
   <ul>
 <li><a class="reference internal" href="#">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a><ul>
 <li><a class="reference internal" href="#prerequisites">A.1.1&nbsp;&nbsp;&nbsp;Prerequisites</a></li>
-<li><a class="reference internal" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid">A.1.2&nbsp;&nbsp;&nbsp;Generating lnd &lt;-&gt; glc mapping files for a new CISM grid</a></li>
-<li><a class="reference internal" href="#generating-glc-ocn-mapping-files">A.1.3&nbsp;&nbsp;&nbsp;Generating glc -&gt; ocn mapping files</a></li>
-<li><a class="reference internal" href="#adding-new-grid-and-mapping-files-in-config-grids-xml">A.1.4&nbsp;&nbsp;&nbsp;Adding new grid and mapping files in config_grids.xml</a></li>
-<li><a class="reference internal" href="#add-new-entries-in-cism-s-xml-file-s">A.1.5&nbsp;&nbsp;&nbsp;Add new entries in CISM’s xml file(s)</a></li>
-<li><a class="reference internal" href="#for-greenland-grids-submerging-land-outside-of-greenland">A.1.6&nbsp;&nbsp;&nbsp;For Greenland grids: Submerging land outside of Greenland</a><ul>
-<li><a class="reference internal" href="#new-method-using-the-mask-field">A.1.6.1&nbsp;&nbsp;&nbsp;New method, using the ‘mask’ field</a></li>
-<li><a class="reference internal" href="#old-method-using-the-landcover-field">A.1.6.2&nbsp;&nbsp;&nbsp;Old method, using the ‘landcover’ field</a></li>
+<li><a class="reference internal" href="#modifications-needed-for-cism">A.1.2&nbsp;&nbsp;&nbsp;Modifications needed for CISM</a><ul>
+<li><a class="reference internal" href="#add-new-entries-in-cism-s-xml-file-s">A.1.2.1&nbsp;&nbsp;&nbsp;Add new entries in CISM’s xml file(s)</a></li>
+<li><a class="reference internal" href="#for-greenland-grids-submerging-land-outside-of-greenland">A.1.2.2&nbsp;&nbsp;&nbsp;For Greenland grids: Submerging land outside of Greenland</a><ul>
+<li><a class="reference internal" href="#new-method-using-the-mask-field">A.1.2.2.1&nbsp;&nbsp;&nbsp;New method, using the ‘mask’ field</a></li>
+<li><a class="reference internal" href="#old-method-using-the-landcover-field">A.1.2.2.2&nbsp;&nbsp;&nbsp;Old method, using the ‘landcover’ field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modifications-needed-for-clm">A.1.3&nbsp;&nbsp;&nbsp;Modifications needed for CLM</a></li>
+<li><a class="reference internal" href="#generating-the-necessary-inter-component-mapping-files">A.1.4&nbsp;&nbsp;&nbsp;Generating the necessary inter-component mapping files</a><ul>
+<li><a class="reference internal" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid">A.1.4.1&nbsp;&nbsp;&nbsp;Generating lnd &lt;-&gt; glc mapping files for a new CISM grid</a></li>
+<li><a class="reference internal" href="#generating-glc-ocn-mapping-files">A.1.4.2&nbsp;&nbsp;&nbsp;Generating glc -&gt; ocn mapping files</a></li>
+<li><a class="reference internal" href="#adding-new-grid-and-mapping-files-in-config-grids-xml">A.1.4.3&nbsp;&nbsp;&nbsp;Adding new grid and mapping files in config_grids.xml</a></li>
 </ul>
 </li>
 </ul>
@@ -109,319 +116,14 @@ modified slightly)</li>
 <li>You are working on yellowstone</li>
 </ol>
 </div>
-<div class="section" id="generating-lnd-glc-mapping-files-for-a-new-cism-grid">
-<h2>A.1.2&nbsp;&nbsp;&nbsp;Generating lnd &lt;-&gt; glc mapping files for a new CISM grid<a class="headerlink" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p class="first">Build the check_maps tool</p>
-<p>This isn’t entirely necessary, but allows the maps you generate to be checked
-by this tool. To build this, follow the instructions in
-<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code>.</p>
-</li>
-<li><p class="first">Modify the following script that will create the necessary mapping
-files. Make sure to fill in the correct values for -fglc and -nglc where it
-says ‘FIXME’:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># Batch script to submit to create suite of ESMF mapping files</span>
-<span class="c1">#</span>
-<span class="c1"># Set up for yellowstone</span>
-<span class="c1">#</span>
-<span class="c1"># yellowstone-specific batch commands:</span>
-<span class="c1">#BSUB -P P93300601        # project number</span>
-<span class="c1">#BSUB -n 8               # number of processors</span>
-<span class="c1">#BSUB -R &quot;span[ptile=16]&quot;</span>
-<span class="c1">#BSUB -W 24:00            # wall-clock limit</span>
-<span class="c1">#BSUB -q caldera          # queue</span>
-<span class="c1">#BSUB -o regrid.%J.out    # ouput filename</span>
-<span class="c1">#BSUB -e regrid.%J.err    # error filename</span>
-<span class="c1">#BSUB -J gen_cesm_maps    # job name</span>
-<span class="c1">#BSUB -N                  # send email upon job completion</span>
-
-<span class="c1">#----------------------------------------------------------------------</span>
-
-<span class="c1">#----------------------------------------------------------------------</span>
-<span class="c1"># Set user-defined parameters here</span>
-<span class="c1">#----------------------------------------------------------------------</span>
-
-<span class="c1"># CISM grid</span>
-<span class="c1"># FIXME: Fill this in with the path to your SCRIP grid file and the name of your grid</span>
-<span class="nv">glc_grid</span><span class="o">=</span><span class="s2">&quot; -fglc /PATH/TO/SCRIPgrid.nc -nglc gland4km &quot;</span>
-
-<span class="c1"># CLM grids</span>
-<span class="nv">clm_f09</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/0.9x1.25_c110307.nc -nlnd fv0.9x1.25 &quot;</span>
-<span class="nv">clm_f19</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/1.9x2.5_c110308.nc -nlnd fv1.9x2.5 &quot;</span>
-<span class="nv">clm_T31</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/mapping/grids/T31_040122.nc -nlnd T31 &quot;</span>
-<span class="nv">clm_hcru</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_360x720_nomask_c120830.nc -nlnd 360x720 &quot;</span>
-<span class="nv">clm_4x5</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_4x5_nomask_c110308.nc -nlnd fv4x5 &quot;</span>
-<span class="nv">clm_10x15</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_10x15_nomask_c110308.nc -nlnd fv10x15 &quot;</span>
-
-<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne120np4_nomask_c101123.nc</span>
-<span class="nv">clm_ne120</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne120np4_pentagons_100310.nc -nlnd ne120np4 &quot;</span>
-
-<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne30np4_nomask_c101123.nc</span>
-<span class="nv">clm_ne30</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne30np4_091226_pentagons.nc -nlnd ne30np4 &quot;</span>
-
-<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne16np4_nomask_c110512.nc</span>
-<span class="nv">clm_ne16</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne16np4_110512_pentagons.nc -nlnd ne16np4 &quot;</span>
-
-<span class="c1">### Not bothering with this one: seems to not be used any more</span>
-<span class="c1">### clm_f02=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/fv0.23x0.31_071004.nc -nlnd fv0.23x0.31 &quot;</span>
-
-<span class="c1">#----------------------------------------------------------------------</span>
-<span class="c1"># Done setting user-defined parameters</span>
-<span class="c1">#----------------------------------------------------------------------</span>
-
-<span class="c1">#----------------------------------------------------------------------</span>
-<span class="c1"># Stuff done in a machine-specific way</span>
-<span class="c1">#----------------------------------------------------------------------</span>
-
-<span class="c1"># Determine number of processors we&#39;re running on</span>
-<span class="nv">host_array</span><span class="o">=(</span><span class="nv">$LSB_HOSTS</span><span class="o">)</span>
-<span class="nv">REGRID_PROC</span><span class="o">=</span><span class="si">${#</span><span class="nv">host_array</span><span class="p">[@]</span><span class="si">}</span>
-
-<span class="c1">#----------------------------------------------------------------------</span>
-<span class="c1"># Begin general script</span>
-<span class="c1">#----------------------------------------------------------------------</span>
-
-<span class="k">for</span> lnd_grid in <span class="s2">&quot;</span><span class="nv">$clm_f09</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_f19</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_T31</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_hcru</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_4x5</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_10x15</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne120</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne30</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne16</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nv">cmdargs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$glc_grid</span><span class="s2"> </span><span class="nv">$lnd_grid</span><span class="s2"> --batch&quot;</span>
-    <span class="nb">echo</span> <span class="s2">&quot;==============================================================================&quot;</span>
-    <span class="nb">echo</span> <span class="s2">&quot;About to execute gen_cesm_maps with: </span><span class="nv">$cmdargs</span><span class="s2">&quot;</span>
-    env <span class="nv">REGRID_PROC</span><span class="o">=</span><span class="nv">$REGRID_PROC</span> ./gen_cesm_maps.sh <span class="nv">$cmdargs</span>
-<span class="k">done</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Name the script cism.regridbatch.sh, and put it in
-cime/tools/mapping/gen_mapping_files</p>
-</li>
-<li><p class="first">Run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bsub &lt; cism.regridbatch.sh</span>
-</pre></div>
-</div>
-<p>You can ignore errors in the .err file that look like this:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ATTENTION: 0031-408  8 tasks allocated by Resource Manager, continuing...</span>
-<span class="go">ATTENTION: 0031-408  8 tasks allocated by Resource Manager, continuing...</span>
-<span class="go">Abort(0) on node 0 (rank 0 in comm -2080374782): application called MPI_Abort(comm=0x84000002, 0) - process 0</span>
-<span class="go">ERROR: 0031-300  Forcing all remote tasks to exit due to exit code 1 in task 0</span>
-<span class="go">forrtl: error (78): process killed (SIGTERM)</span>
-<span class="go">Image              PC                Routine            Line        Source</span>
-<span class="go">libpthread.so.0    0000003F7240F4B5  Unknown               Unknown  Unknown</span>
-<span class="go">libpoe.so          00002B1CF8267AE2  Unknown               Unknown  Unknown</span>
-<span class="go">libpthread.so.0    0000003F724079D1  Unknown               Unknown  Unknown</span>
-<span class="go">libc.so.6          0000003F718E88FD  Unknown               Unknown  Unknown</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Look through output in the .out file telling you about the results of running
-check_maps on all of your new mapping files.</p>
-<p>Ideally, you’ll see a lot of output that looks like this:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1: map_gland4km_TO_fv0.9x1.25_aave.161222.nc</span>
-<span class="go"> All           21  tests passed!</span>
-<span class="go">-----</span>
-<span class="go">2: map_fv0.9x1.25_TO_gland4km_aave.161222.nc</span>
-<span class="go"> All           21  tests passed!</span>
-<span class="go">-----</span>
-<span class="go">3: map_fv0.9x1.25_TO_gland4km_blin.161222.nc</span>
-<span class="go"> All           14  tests passed!</span>
-<span class="go">-----</span>
-</pre></div>
-</div>
-<p>However, you should expect to see errors when checking the very
-coarse-resolution fv10x15 grid, like this:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1: map_gland4km_TO_fv10x15_aave.161222.nc</span>
-<span class="go"> ERROR: the test did not successfully map any values</span>
-<span class="go"> from the source grid to the destination grid</span>
-<span class="go">           0  of            0  tests failed. See above for details.</span>
-<span class="go">-----</span>
-<span class="go">2: map_fv10x15_TO_gland4km_aave.161222.nc</span>
-<span class="go"> FAILED: L1 error =   9.028874246726999E-003  in test            1</span>
-<span class="go"> FAILED: L1 error =   2.228991274441720E-002  in test            3</span>
-<span class="go">           2  of           21  tests failed. See above for details.</span>
-<span class="go">-----</span>
-</pre></div>
-</div>
-<p>In addition, you <em>may</em> see additional errors like that for other CLM grids,
-particularly if you have a higher-resolution CISM grid: The tolerances in
-check_maps are set such that errors can be expected when checking mappings
-between regional grids and relatively coarse-resolution global grids.</p>
-</li>
-<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
-<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
-where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is the <em>from</em> resolution. e.g.,
-<code class="docutils literal notranslate"><span class="pre">map_fv0.9x1.25_TO_gland4km_aave.161223.nc</span></code> goes in
-<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/fv0.9x1.25</span></code>, whereas
-<code class="docutils literal notranslate"><span class="pre">map_gland4km_TO_fv0.9x1.25_aave.161223.nc</span></code> goes in
-<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/gland4km</span></code>. You can accomplish this
-with the following code in bash:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> fl in map_*.nc<span class="p">;</span> <span class="k">do</span>
-    <span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;_&#39;</span> <span class="nb">read</span> -ra fname_split <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;</span><span class="nv">$fl</span><span class="s2">&quot;</span>
-    <span class="nv">from_res</span><span class="o">=</span><span class="si">${</span><span class="nv">fname_split</span><span class="p">[1]</span><span class="si">}</span>
-    mv -v <span class="nv">$fl</span> <span class="nv">$CESMDATAROOT</span>/inputdata/cpl/gridmaps/<span class="si">${</span><span class="nv">from_res</span><span class="si">}</span>/
-<span class="k">done</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</div>
-<div class="section" id="generating-glc-ocn-mapping-files">
-<h2>A.1.3&nbsp;&nbsp;&nbsp;Generating glc -&gt; ocn mapping files<a class="headerlink" href="#generating-glc-ocn-mapping-files" title="Permalink to this headline">¶</a></h2>
-<p>See also <a class="reference external" href="https://github.com/NCAR/cism_misc-runoff_mapping_inputs">https://github.com/NCAR/cism_misc-runoff_mapping_inputs</a></p>
-<ol class="arabic">
-<li><p class="first">Build the runoff_map tool in
-<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/gen_mapping_files/runoff_to_ocn</span></code> by following the
-directions there</p>
-</li>
-<li><p class="first">Create a namelist file like the following, but changing the details to match
-your new grid:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&amp;input_nml</span>
-<span class="go">   gridtype     = &#39;scrip&#39;</span>
-<span class="go">   file_roff    = &#39;/glade/p/cesmdata/cseg/inputdata/glc/cism/griddata/SCRIPgrid_greenland_4km_epsg3413_c161223.nc&#39;</span>
-<span class="go">   file_ocn     = &#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_120309.nc&#39;</span>
-<span class="go">   file_ocn_coastal_mask = &#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_coast_180430.nc&#39;</span>
-<span class="go">   file_nn      = &#39;map_gland4km_epsg3413_to_gx3v7_nn.nc &#39;</span>
-<span class="go">   file_smooth  = &#39;map_gx3v7_coast_to_gx3v7_sm.nc &#39;</span>
-<span class="go">   file_new     = &#39;map_gland4km_to_gx3v7_nnsm_e1000r500_171024.nc&#39;</span>
-<span class="go">   title        = &#39;runoff map: gland4km -&gt; gx3v7, nearest neighbor and smoothed &#39;</span>
-<span class="go">   eFold        = 1000000.0</span>
-<span class="go">   rMax         =  500000.0</span>
-<span class="go">   restrict_smooth_src_to_nn_dest = .true.</span>
-<span class="go">   step1 = .true.</span>
-<span class="go">   step2 = .true.</span>
-<span class="go">   step3 = .true.</span>
-<span class="go">  /</span>
-</pre></div>
-</div>
-<p>Name this file <code class="docutils literal notranslate"><span class="pre">runoff_map.nml</span></code></p>
-</li>
-<li><p class="first">Run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./runoff_map &lt; runoff_map.nml</span>
-</pre></div>
-</div>
-<p>Note that it may be necessary to have the same environment that you used for
-building (e.g., via sourcing src/.env_mach_specific.sh before running this
-executable).</p>
-</li>
-<li><p class="first">Run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./run_merge_mapping_files.sh \</span>
-<span class="go">--map_in_oo map_gland4km_epsg3413_to_gx3v7_nn.nc \</span>
-<span class="go">--map_in_ms map_gland4km_to_gx3v7_nnsm_e1000r500_171024.nc \</span>
-<span class="go">--region_mask /glade/p/cesmdata/cseg/inputdata/ocn/pop/gx3v7/grid/region_mask_20090831.ieeei4 \</span>
-<span class="go">--map_out map_gland4km_to_gx3v7_nn_open_ocean_nnsm_e1000r500_marginal_sea_171024.nc</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Repeat the above process with the gx1v6 grid, changing the input
-namelist appropriately.</p>
-<ul class="simple">
-<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
-<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v6_coast_170503.nc</span></code></li>
-<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v6/grid/region_mask_20090205.ieeei4</span></code></li>
-</ul>
-</li>
-<li><p class="first">Repeat the above process with the gx1v7 grid, changing the input
-namelist appropriately.</p>
-<ul class="simple">
-<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
-<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v7_coast_170322.nc</span></code></li>
-<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v7/grid/region_mask_20151008.ieeei4</span></code></li>
-</ul>
-</li>
-<li><p class="first">Run the check_maps tool on each of the resulting final mapping files
-(the files with the date stamp at the end)</p>
-<ul class="simple">
-<li>To build and run this, follow the instructions in
-<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code></li>
-<li>Examine the output from this tool to make sure there are no major
-mapping errors<ul>
-<li>For these runoff mapping files, messages about “L1 error” and “L2
-error” can be ignored.</li>
-<li>Until <a class="reference external" href="https://github.com/ESMCI/cime/issues/2014">https://github.com/ESMCI/cime/issues/2014</a> is resolved, you
-need to add dimensions to the merged files with something like
-<code class="docutils literal notranslate"><span class="pre">ncap2</span> <span class="pre">-s</span>
-<span class="pre">'defdim(&quot;ni_a&quot;,416);defdim(&quot;nj_a&quot;,704);defdim(&quot;ni_b&quot;,320);defdim(&quot;nj_b&quot;,384)'</span>
-<span class="pre">YOUR_MAP_NAME.nc</span></code> (where you can find the correct dimensions on
-the non-merged (i.e., nnsm) mapping files).</li>
-</ul>
-</li>
-<li>If you’d like, you can also visually examine the mapped
-fields. Open the file named <code class="docutils literal notranslate"><span class="pre">test_YOUR_MAP_NAME.nc</span></code>; a useful
-field to view is <code class="docutils literal notranslate"><span class="pre">dst02</span></code>, which is the result of mapping a
-uniform field (with value 2) from the glc grid to the ocn grid.</li>
-</ul>
-</li>
-<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
-<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
-where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is your new CISM resolution.</p>
-<p>There are two final mapping files that need to be kept for each
-glc-ocn grid combination: The two files with the date stamp at the
-end.</p>
-</li>
-</ol>
-</div>
-<div class="section" id="adding-new-grid-and-mapping-files-in-config-grids-xml">
-<h2>A.1.4&nbsp;&nbsp;&nbsp;Adding new grid and mapping files in config_grids.xml<a class="headerlink" href="#adding-new-grid-and-mapping-files-in-config-grids-xml" title="Permalink to this headline">¶</a></h2>
-<p>In order for your new grid and mapping files to be recognized by the CESM
-scripts, you need to add entries in config_grids.xml
-(<code class="docutils literal notranslate"><span class="pre">cime/cime_config/cesm/config_grids.xml</span></code>).</p>
-<ol class="arabic">
-<li><p class="first">Add new grid definition</p>
-<p>You’ll need to add a section like this:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;domain</span> <span class="na">name=</span><span class="s">&quot;gland4&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;nx&gt;</span>376<span class="nt">&lt;/nx&gt;</span> <span class="nt">&lt;ny&gt;</span>701<span class="nt">&lt;/ny&gt;</span>
-  <span class="nt">&lt;desc&gt;</span>4-km Greenland grid, for use with the glissade dycore<span class="nt">&lt;/desc&gt;</span>
-<span class="nt">&lt;/domain&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Point to new mapping files: lnd &lt;-&gt; glc</p>
-<p>You’ll need to add a section like this for each land grid, in the section
-“lnd to glc and glc to lnd mapping”:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gridmap</span> <span class="na">lnd_grid=</span><span class="s">&quot;0.9x1.25&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;LND2GLC_FMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/fv0.9x1.25/map_fv0.9x1.25_TO_gland4km_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;LND2GLC_SMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/fv0.9x1.25/map_fv0.9x1.25_TO_gland4km_blin.161223.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2LND_FMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_TO_fv0.9x1.25_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2LND_SMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_TO_fv0.9x1.25_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
-<span class="nt">&lt;/gridmap&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Point to new mapping files: glc -&gt; ocn</p>
-<p>In the section “GRIDS: glc to ocn mapping”, add a section like this:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx1v6&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nnsm_e1000r300_171105.nc<span class="nt">&lt;/map&gt;</span>
-<span class="nt">&lt;/gridmap&gt;</span>
-<span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx1v7&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nnsm_e1000r300_171105.nc<span class="nt">&lt;/map&gt;</span>
-<span class="nt">&lt;/gridmap&gt;</span>
-<span class="c">&lt;!-- POP&#39;s estuary box model is currently not active for gx3v7, so</span>
-<span class="c">     we need nnsm maps for liquid as well as ice. --&gt;</span>
-<span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx3v7&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc<span class="nt">&lt;/map&gt;</span>
-  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc<span class="nt">&lt;/map&gt;</span>
-<span class="nt">&lt;/gridmap&gt;</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><strong>Important note for gx3v7 grid:</strong> The estuary box model is not
-active for the gx3v7 grid for now, so point to the nnsm file for
-both ice and liquid runoff. (However, to follow what’s done for the
-rof2ocn mapping files, you can still put the merged maps in the
-inputdata repository, so that they can be used if the estuary box
-model is ever activated for gx3v7.)</li>
-</ul>
-</li>
-</ol>
-</div>
+<div class="section" id="modifications-needed-for-cism">
+<h2>A.1.2&nbsp;&nbsp;&nbsp;Modifications needed for CISM<a class="headerlink" href="#modifications-needed-for-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="add-new-entries-in-cism-s-xml-file-s">
-<h2>A.1.5&nbsp;&nbsp;&nbsp;Add new entries in CISM’s xml file(s)<a class="headerlink" href="#add-new-entries-in-cism-s-xml-file-s" title="Permalink to this headline">¶</a></h2>
+<h3>A.1.2.1&nbsp;&nbsp;&nbsp;Add new entries in CISM’s xml file(s)<a class="headerlink" href="#add-new-entries-in-cism-s-xml-file-s" title="Permalink to this headline">¶</a></h3>
 <p>NEED TO FILL THIS IN WITH INSTRUCTIONS</p>
 </div>
 <div class="section" id="for-greenland-grids-submerging-land-outside-of-greenland">
-<h2>A.1.6&nbsp;&nbsp;&nbsp;For Greenland grids: Submerging land outside of Greenland<a class="headerlink" href="#for-greenland-grids-submerging-land-outside-of-greenland" title="Permalink to this headline">¶</a></h2>
+<h3>A.1.2.2&nbsp;&nbsp;&nbsp;For Greenland grids: Submerging land outside of Greenland<a class="headerlink" href="#for-greenland-grids-submerging-land-outside-of-greenland" title="Permalink to this headline">¶</a></h3>
 <p>For Greenland grids, we typically need to submerge land outside of the island of
 Greenland. If we don’t do this (allowing for Ellesmere Island, Iceland, etc. to
 appear as land), we’ll run into at least two problems:</p>
@@ -433,7 +135,7 @@ bare land if CISM doesn’t have any ice there.</li>
 inception.</li>
 </ol>
 <div class="section" id="new-method-using-the-mask-field">
-<h3>A.1.6.1&nbsp;&nbsp;&nbsp;New method, using the ‘mask’ field<a class="headerlink" href="#new-method-using-the-mask-field" title="Permalink to this headline">¶</a></h3>
+<h4>A.1.2.2.1&nbsp;&nbsp;&nbsp;New method, using the ‘mask’ field<a class="headerlink" href="#new-method-using-the-mask-field" title="Permalink to this headline">¶</a></h4>
 <p>Joe Kennedy’s new files have a ‘mask’ field on them that can be used for this
 purpose. Joe’s documentation of this field is:</p>
 <blockquote>
@@ -475,7 +177,7 @@ something like this:</p>
 </ol>
 </div>
 <div class="section" id="old-method-using-the-landcover-field">
-<h3>A.1.6.2&nbsp;&nbsp;&nbsp;Old method, using the ‘landcover’ field<a class="headerlink" href="#old-method-using-the-landcover-field" title="Permalink to this headline">¶</a></h3>
+<h4>A.1.2.2.2&nbsp;&nbsp;&nbsp;Old method, using the ‘landcover’ field<a class="headerlink" href="#old-method-using-the-landcover-field" title="Permalink to this headline">¶</a></h4>
 <p><strong>Note: The method documented below is what I used before we had a ‘mask’ field
 on the input files.</strong></p>
 <p>Determining which grid cells are part of Greenland and which are outside
@@ -642,6 +344,331 @@ only on periphery</p>
 blue on the periphery</p>
 </li>
 </ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="modifications-needed-for-clm">
+<h2>A.1.3&nbsp;&nbsp;&nbsp;Modifications needed for CLM<a class="headerlink" href="#modifications-needed-for-clm" title="Permalink to this headline">¶</a></h2>
+<p>You need to ensure that the <code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field on CLM’s surface dataset is set up
+consistently with the new CISM grid. You should have a glacier region (or multiple glacier
+regions) encompassing the full CISM grid, whose glacier region behaviors are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">glacier_region_behavior</span> <span class="pre">=</span> <span class="pre">virtual</span></code>: This is needed in order to provide downscaled
+forcings for all CISM grid cells.</li>
+<li><code class="docutils literal notranslate"><span class="pre">glacier_region_melt_behavior</span> <span class="pre">=</span> <span class="pre">replaced_by_ice</span></code>: This is needed in order to compute
+SMB throughout the CISM domain.</li>
+</ul>
+<p>The value of <code class="docutils literal notranslate"><span class="pre">glacier_region_ice_runoff_behavior</span></code> can be whatever makes the most sense
+scientifically.</p>
+</div>
+<div class="section" id="generating-the-necessary-inter-component-mapping-files">
+<h2>A.1.4&nbsp;&nbsp;&nbsp;Generating the necessary inter-component mapping files<a class="headerlink" href="#generating-the-necessary-inter-component-mapping-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generating-lnd-glc-mapping-files-for-a-new-cism-grid">
+<h3>A.1.4.1&nbsp;&nbsp;&nbsp;Generating lnd &lt;-&gt; glc mapping files for a new CISM grid<a class="headerlink" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Build the check_maps tool</p>
+<p>This isn’t entirely necessary, but allows the maps you generate to be checked
+by this tool. To build this, follow the instructions in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code>.</p>
+</li>
+<li><p class="first">Modify the following script that will create the necessary mapping
+files. Make sure to fill in the correct values for -fglc and -nglc where it
+says ‘FIXME’:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># Batch script to submit to create suite of ESMF mapping files</span>
+<span class="c1">#</span>
+<span class="c1"># Set up for yellowstone</span>
+<span class="c1">#</span>
+<span class="c1"># yellowstone-specific batch commands:</span>
+<span class="c1">#BSUB -P P93300601        # project number</span>
+<span class="c1">#BSUB -n 8               # number of processors</span>
+<span class="c1">#BSUB -R &quot;span[ptile=16]&quot;</span>
+<span class="c1">#BSUB -W 24:00            # wall-clock limit</span>
+<span class="c1">#BSUB -q caldera          # queue</span>
+<span class="c1">#BSUB -o regrid.%J.out    # ouput filename</span>
+<span class="c1">#BSUB -e regrid.%J.err    # error filename</span>
+<span class="c1">#BSUB -J gen_cesm_maps    # job name</span>
+<span class="c1">#BSUB -N                  # send email upon job completion</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="c1"># Set user-defined parameters here</span>
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="c1"># CISM grid</span>
+<span class="c1"># FIXME: Fill this in with the path to your SCRIP grid file and the name of your grid</span>
+<span class="nv">glc_grid</span><span class="o">=</span><span class="s2">&quot; -fglc /PATH/TO/SCRIPgrid.nc -nglc gland4km &quot;</span>
+
+<span class="c1"># CLM grids</span>
+<span class="nv">clm_f09</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/0.9x1.25_c110307.nc -nlnd fv0.9x1.25 &quot;</span>
+<span class="nv">clm_f19</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/1.9x2.5_c110308.nc -nlnd fv1.9x2.5 &quot;</span>
+<span class="nv">clm_T31</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/mapping/grids/T31_040122.nc -nlnd T31 &quot;</span>
+<span class="nv">clm_hcru</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_360x720_nomask_c120830.nc -nlnd 360x720 &quot;</span>
+<span class="nv">clm_4x5</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_4x5_nomask_c110308.nc -nlnd fv4x5 &quot;</span>
+<span class="nv">clm_10x15</span><span class="o">=</span><span class="s2">&quot; -flnd </span><span class="nv">$CESMDATAROOT</span><span class="s2">/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_10x15_nomask_c110308.nc -nlnd fv10x15 &quot;</span>
+
+<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne120np4_nomask_c101123.nc</span>
+<span class="nv">clm_ne120</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne120np4_pentagons_100310.nc -nlnd ne120np4 &quot;</span>
+
+<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne30np4_nomask_c101123.nc</span>
+<span class="nv">clm_ne30</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne30np4_091226_pentagons.nc -nlnd ne30np4 &quot;</span>
+
+<span class="c1"># This grid is identical to $CESMDATAROOT/inputdata/lnd/clm2/mappingdata/grids/SCRIPgrid_ne16np4_nomask_c110512.nc</span>
+<span class="nv">clm_ne16</span><span class="o">=</span><span class="s2">&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/ne16np4_110512_pentagons.nc -nlnd ne16np4 &quot;</span>
+
+<span class="c1">### Not bothering with this one: seems to not be used any more</span>
+<span class="c1">### clm_f02=&quot; -flnd /glade/p/cesmdata/cseg/mapping/grids/fv0.23x0.31_071004.nc -nlnd fv0.23x0.31 &quot;</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="c1"># Done setting user-defined parameters</span>
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="c1"># Stuff done in a machine-specific way</span>
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="c1"># Determine number of processors we&#39;re running on</span>
+<span class="nv">host_array</span><span class="o">=(</span><span class="nv">$LSB_HOSTS</span><span class="o">)</span>
+<span class="nv">REGRID_PROC</span><span class="o">=</span><span class="si">${#</span><span class="nv">host_array</span><span class="p">[@]</span><span class="si">}</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="c1"># Begin general script</span>
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="k">for</span> lnd_grid in <span class="s2">&quot;</span><span class="nv">$clm_f09</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_f19</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_T31</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_hcru</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_4x5</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_10x15</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne120</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne30</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$clm_ne16</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nv">cmdargs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$glc_grid</span><span class="s2"> </span><span class="nv">$lnd_grid</span><span class="s2"> --batch&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;==============================================================================&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;About to execute gen_cesm_maps with: </span><span class="nv">$cmdargs</span><span class="s2">&quot;</span>
+    env <span class="nv">REGRID_PROC</span><span class="o">=</span><span class="nv">$REGRID_PROC</span> ./gen_cesm_maps.sh <span class="nv">$cmdargs</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Name the script cism.regridbatch.sh, and put it in
+cime/tools/mapping/gen_mapping_files</p>
+</li>
+<li><p class="first">Run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bsub &lt; cism.regridbatch.sh</span>
+</pre></div>
+</div>
+<p>You can ignore errors in the .err file that look like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ATTENTION: 0031-408  8 tasks allocated by Resource Manager, continuing...</span>
+<span class="go">ATTENTION: 0031-408  8 tasks allocated by Resource Manager, continuing...</span>
+<span class="go">Abort(0) on node 0 (rank 0 in comm -2080374782): application called MPI_Abort(comm=0x84000002, 0) - process 0</span>
+<span class="go">ERROR: 0031-300  Forcing all remote tasks to exit due to exit code 1 in task 0</span>
+<span class="go">forrtl: error (78): process killed (SIGTERM)</span>
+<span class="go">Image              PC                Routine            Line        Source</span>
+<span class="go">libpthread.so.0    0000003F7240F4B5  Unknown               Unknown  Unknown</span>
+<span class="go">libpoe.so          00002B1CF8267AE2  Unknown               Unknown  Unknown</span>
+<span class="go">libpthread.so.0    0000003F724079D1  Unknown               Unknown  Unknown</span>
+<span class="go">libc.so.6          0000003F718E88FD  Unknown               Unknown  Unknown</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Look through output in the .out file telling you about the results of running
+check_maps on all of your new mapping files.</p>
+<p>Ideally, you’ll see a lot of output that looks like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1: map_gland4km_TO_fv0.9x1.25_aave.161222.nc</span>
+<span class="go"> All           21  tests passed!</span>
+<span class="go">-----</span>
+<span class="go">2: map_fv0.9x1.25_TO_gland4km_aave.161222.nc</span>
+<span class="go"> All           21  tests passed!</span>
+<span class="go">-----</span>
+<span class="go">3: map_fv0.9x1.25_TO_gland4km_blin.161222.nc</span>
+<span class="go"> All           14  tests passed!</span>
+<span class="go">-----</span>
+</pre></div>
+</div>
+<p>However, you should expect to see errors when checking the very
+coarse-resolution fv10x15 grid, like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1: map_gland4km_TO_fv10x15_aave.161222.nc</span>
+<span class="go"> ERROR: the test did not successfully map any values</span>
+<span class="go"> from the source grid to the destination grid</span>
+<span class="go">           0  of            0  tests failed. See above for details.</span>
+<span class="go">-----</span>
+<span class="go">2: map_fv10x15_TO_gland4km_aave.161222.nc</span>
+<span class="go"> FAILED: L1 error =   9.028874246726999E-003  in test            1</span>
+<span class="go"> FAILED: L1 error =   2.228991274441720E-002  in test            3</span>
+<span class="go">           2  of           21  tests failed. See above for details.</span>
+<span class="go">-----</span>
+</pre></div>
+</div>
+<p>In addition, you <em>may</em> see additional errors like that for other CLM grids,
+particularly if you have a higher-resolution CISM grid: The tolerances in
+check_maps are set such that errors can be expected when checking mappings
+between regional grids and relatively coarse-resolution global grids.</p>
+</li>
+<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
+<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
+where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is the <em>from</em> resolution. e.g.,
+<code class="docutils literal notranslate"><span class="pre">map_fv0.9x1.25_TO_gland4km_aave.161223.nc</span></code> goes in
+<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/fv0.9x1.25</span></code>, whereas
+<code class="docutils literal notranslate"><span class="pre">map_gland4km_TO_fv0.9x1.25_aave.161223.nc</span></code> goes in
+<code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/gland4km</span></code>. You can accomplish this
+with the following code in bash:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> fl in map_*.nc<span class="p">;</span> <span class="k">do</span>
+    <span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;_&#39;</span> <span class="nb">read</span> -ra fname_split <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;</span><span class="nv">$fl</span><span class="s2">&quot;</span>
+    <span class="nv">from_res</span><span class="o">=</span><span class="si">${</span><span class="nv">fname_split</span><span class="p">[1]</span><span class="si">}</span>
+    mv -v <span class="nv">$fl</span> <span class="nv">$CESMDATAROOT</span>/inputdata/cpl/gridmaps/<span class="si">${</span><span class="nv">from_res</span><span class="si">}</span>/
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="generating-glc-ocn-mapping-files">
+<h3>A.1.4.2&nbsp;&nbsp;&nbsp;Generating glc -&gt; ocn mapping files<a class="headerlink" href="#generating-glc-ocn-mapping-files" title="Permalink to this headline">¶</a></h3>
+<p>See also <a class="reference external" href="https://github.com/NCAR/cism_misc-runoff_mapping_inputs">https://github.com/NCAR/cism_misc-runoff_mapping_inputs</a></p>
+<ol class="arabic">
+<li><p class="first">Build the runoff_map tool in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/gen_mapping_files/runoff_to_ocn</span></code> by following the
+directions there</p>
+</li>
+<li><p class="first">Create a namelist file like the following, but changing the details to match
+your new grid:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&amp;input_nml</span>
+<span class="go">   gridtype     = &#39;scrip&#39;</span>
+<span class="go">   file_roff    = &#39;/glade/p/cesmdata/cseg/inputdata/glc/cism/griddata/SCRIPgrid_greenland_4km_epsg3413_c161223.nc&#39;</span>
+<span class="go">   file_ocn     = &#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_120309.nc&#39;</span>
+<span class="go">   file_ocn_coastal_mask = &#39;/glade/p/cesm/cseg/mapping/grids/gx3v7_coast_180430.nc&#39;</span>
+<span class="go">   file_nn      = &#39;map_gland4km_epsg3413_to_gx3v7_nn.nc &#39;</span>
+<span class="go">   file_smooth  = &#39;map_gx3v7_coast_to_gx3v7_sm.nc &#39;</span>
+<span class="go">   file_new     = &#39;map_gland4km_to_gx3v7_nnsm_e1000r500_171024.nc&#39;</span>
+<span class="go">   title        = &#39;runoff map: gland4km -&gt; gx3v7, nearest neighbor and smoothed &#39;</span>
+<span class="go">   eFold        = 1000000.0</span>
+<span class="go">   rMax         =  500000.0</span>
+<span class="go">   restrict_smooth_src_to_nn_dest = .true.</span>
+<span class="go">   step1 = .true.</span>
+<span class="go">   step2 = .true.</span>
+<span class="go">   step3 = .true.</span>
+<span class="go">  /</span>
+</pre></div>
+</div>
+<p>Name this file <code class="docutils literal notranslate"><span class="pre">runoff_map.nml</span></code></p>
+</li>
+<li><p class="first">Run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./runoff_map &lt; runoff_map.nml</span>
+</pre></div>
+</div>
+<p>Note that it may be necessary to have the same environment that you used for
+building (e.g., via sourcing src/.env_mach_specific.sh before running this
+executable).</p>
+</li>
+<li><p class="first">Run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./run_merge_mapping_files.sh \</span>
+<span class="go">--map_in_oo map_gland4km_epsg3413_to_gx3v7_nn.nc \</span>
+<span class="go">--map_in_ms map_gland4km_to_gx3v7_nnsm_e1000r500_171024.nc \</span>
+<span class="go">--region_mask /glade/p/cesmdata/cseg/inputdata/ocn/pop/gx3v7/grid/region_mask_20090831.ieeei4 \</span>
+<span class="go">--map_out map_gland4km_to_gx3v7_nn_open_ocean_nnsm_e1000r500_marginal_sea_171024.nc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Repeat the above process with the gx1v6 grid, changing the input
+namelist appropriately.</p>
+<ul class="simple">
+<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v6_coast_170503.nc</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v6/grid/region_mask_20090205.ieeei4</span></code></li>
+</ul>
+</li>
+<li><p class="first">Repeat the above process with the gx1v7 grid, changing the input
+namelist appropriately.</p>
+<ul class="simple">
+<li>For <code class="docutils literal notranslate"><span class="pre">rMax</span></code>, use <code class="docutils literal notranslate"><span class="pre">300000.0</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">file_ocn_coastal_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">gx1v7_coast_170322.nc</span></code></li>
+<li>As of 2017-10-24, for <code class="docutils literal notranslate"><span class="pre">--region_mask</span></code>, use <code class="docutils literal notranslate"><span class="pre">/glade/p/cesmdata/cseg/inputdata/ocn/pop/gx1v7/grid/region_mask_20151008.ieeei4</span></code></li>
+</ul>
+</li>
+<li><p class="first">Run the check_maps tool on each of the resulting final mapping files
+(the files with the date stamp at the end)</p>
+<ul class="simple">
+<li>To build and run this, follow the instructions in
+<code class="docutils literal notranslate"><span class="pre">cime/tools/mapping/check_maps/README</span></code></li>
+<li>Examine the output from this tool to make sure there are no major
+mapping errors<ul>
+<li>For these runoff mapping files, messages about “L1 error” and “L2
+error” can be ignored.</li>
+<li>Until <a class="reference external" href="https://github.com/ESMCI/cime/issues/2014">https://github.com/ESMCI/cime/issues/2014</a> is resolved, you
+need to add dimensions to the merged files with something like
+<code class="docutils literal notranslate"><span class="pre">ncap2</span> <span class="pre">-s</span>
+<span class="pre">'defdim(&quot;ni_a&quot;,416);defdim(&quot;nj_a&quot;,704);defdim(&quot;ni_b&quot;,320);defdim(&quot;nj_b&quot;,384)'</span>
+<span class="pre">YOUR_MAP_NAME.nc</span></code> (where you can find the correct dimensions on
+the non-merged (i.e., nnsm) mapping files).</li>
+</ul>
+</li>
+<li>If you’d like, you can also visually examine the mapped
+fields. Open the file named <code class="docutils literal notranslate"><span class="pre">test_YOUR_MAP_NAME.nc</span></code>; a useful
+field to view is <code class="docutils literal notranslate"><span class="pre">dst02</span></code>, which is the result of mapping a
+uniform field (with value 2) from the glc grid to the ocn grid.</li>
+</ul>
+</li>
+<li><p class="first">Put mapping files in correct directories in the inputdata space</p>
+<p>The mapping files should go in <code class="docutils literal notranslate"><span class="pre">$CESMDATAROOT/inputdata/cpl/gridmaps/RES</span></code>
+where <code class="docutils literal notranslate"><span class="pre">RES</span></code> is your new CISM resolution.</p>
+<p>There are two final mapping files that need to be kept for each
+glc-ocn grid combination: The two files with the date stamp at the
+end.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-new-grid-and-mapping-files-in-config-grids-xml">
+<h3>A.1.4.3&nbsp;&nbsp;&nbsp;Adding new grid and mapping files in config_grids.xml<a class="headerlink" href="#adding-new-grid-and-mapping-files-in-config-grids-xml" title="Permalink to this headline">¶</a></h3>
+<p>In order for your new grid and mapping files to be recognized by the CESM
+scripts, you need to add entries in config_grids.xml
+(<code class="docutils literal notranslate"><span class="pre">cime/cime_config/cesm/config_grids.xml</span></code>).</p>
+<ol class="arabic">
+<li><p class="first">Add new grid definition</p>
+<p>You’ll need to add a section like this:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;domain</span> <span class="na">name=</span><span class="s">&quot;gland4&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;nx&gt;</span>376<span class="nt">&lt;/nx&gt;</span> <span class="nt">&lt;ny&gt;</span>701<span class="nt">&lt;/ny&gt;</span>
+  <span class="nt">&lt;desc&gt;</span>4-km Greenland grid, for use with the glissade dycore<span class="nt">&lt;/desc&gt;</span>
+<span class="nt">&lt;/domain&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to new mapping files: lnd &lt;-&gt; glc</p>
+<p>You’ll need to add a section like this for each land grid, in the section
+“lnd to glc and glc to lnd mapping”:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gridmap</span> <span class="na">lnd_grid=</span><span class="s">&quot;0.9x1.25&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;LND2GLC_FMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/fv0.9x1.25/map_fv0.9x1.25_TO_gland4km_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;LND2GLC_SMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/fv0.9x1.25/map_fv0.9x1.25_TO_gland4km_blin.161223.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2LND_FMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_TO_fv0.9x1.25_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2LND_SMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_TO_fv0.9x1.25_aave.161223.nc<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;/gridmap&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to new mapping files: glc -&gt; ocn</p>
+<p>In the section “GRIDS: glc to ocn mapping”, add a section like this:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx1v6&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v6_nnsm_e1000r300_171105.nc<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;/gridmap&gt;</span>
+<span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx1v7&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nn_open_ocean_nnsm_e1000r300_marginal_sea_171105.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx1v7_nnsm_e1000r300_171105.nc<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;/gridmap&gt;</span>
+<span class="c">&lt;!-- POP&#39;s estuary box model is currently not active for gx3v7, so</span>
+<span class="c">     we need nnsm maps for liquid as well as ice. --&gt;</span>
+<span class="nt">&lt;gridmap</span> <span class="na">ocn_grid=</span><span class="s">&quot;gx3v7&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_LIQ_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc<span class="nt">&lt;/map&gt;</span>
+  <span class="nt">&lt;map</span> <span class="na">name=</span><span class="s">&quot;GLC2OCN_ICE_RMAPNAME&quot;</span><span class="nt">&gt;</span>cpl/gridmaps/gland4km/map_gland4km_to_gx3v7_nnsm_e1000r500_171105.nc<span class="nt">&lt;/map&gt;</span>
+<span class="nt">&lt;/gridmap&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>Important note for gx3v7 grid:</strong> The estuary box model is not
+active for the gx3v7 grid for now, so point to the nnsm file for
+both ice and liquid runoff. (However, to follow what’s done for the
+rof2ocn mapping files, you can still put the merged maps in the
+inputdata repository, so that they can be used if the estuary box
+model is ever activated for gx3v7.)</li>
+</ul>
 </li>
 </ol>
 </div>
