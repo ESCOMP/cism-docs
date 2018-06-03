@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>5. The dynamic ice sheet model &#8212; cismdoc  documentation</title>
+    <title>4. The dynamic ice sheet model &#8212; CESM Land Ice CESM2.0 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Ice sheets in the Community Land Model, and glacier-land coupling" href="ice-sheets-in-clm.html" />
-    <link rel="prev" title="4. Running the standalone ice sheet model within CESM: TG compsets" href="tg-compsets.html" />
+    <link rel="next" title="5. Ice sheets in the Community Land Model, and glacier-land coupling" href="ice-sheets-in-clm.html" />
+    <link rel="prev" title="3. Running the standalone ice sheet model within CESM: TG compsets" href="tg-compsets.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -31,21 +31,21 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="ice-sheets-in-clm.html" title="6. Ice sheets in the Community Land Model, and glacier-land coupling"
+          <a href="ice-sheets-in-clm.html" title="5. Ice sheets in the Community Land Model, and glacier-land coupling"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tg-compsets.html" title="4. Running the standalone ice sheet model within CESM: TG compsets"
+          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: TG compsets"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">5. The dynamic ice sheet model</a><ul>
-<li><a class="reference internal" href="#the-community-ice-sheet-model">5.1. The Community Ice Sheet Model</a><ul>
-<li><a class="reference internal" href="#configuring-and-running-the-model">5.1.1. Configuring and running the model</a></li>
+<li><a class="reference internal" href="#">4. The dynamic ice sheet model</a><ul>
+<li><a class="reference internal" href="#the-community-ice-sheet-model">4.1. The Community Ice Sheet Model</a><ul>
+<li><a class="reference internal" href="#configuring-and-running-the-model">4.1.1. Configuring and running the model</a></li>
 </ul>
 </li>
 </ul>
@@ -54,10 +54,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="tg-compsets.html"
-                        title="previous chapter">4. Running the standalone ice sheet model within CESM: TG compsets</a></p>
+                        title="previous chapter">3. Running the standalone ice sheet model within CESM: TG compsets</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="ice-sheets-in-clm.html"
-                        title="next chapter">6. Ice sheets in the Community Land Model, and glacier-land coupling</a></p>
+                        title="next chapter">5. Ice sheets in the Community Land Model, and glacier-land coupling</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -86,7 +86,7 @@
           <div class="body" role="main">
             
   <div class="section" id="the-dynamic-ice-sheet-model">
-<span id="dynamic-ice-sheet-model"></span><h1>5. The dynamic ice sheet model<a class="headerlink" href="#the-dynamic-ice-sheet-model" title="Permalink to this headline">¶</a></h1>
+<span id="dynamic-ice-sheet-model"></span><h1>4. The dynamic ice sheet model<a class="headerlink" href="#the-dynamic-ice-sheet-model" title="Permalink to this headline">¶</a></h1>
 <p>This section gives a brief overview of ice flow modeling and of
 CISM, the dynamic ice sheet model in CESM. For more details,
 including a technical description of the model, please see Rutt et al.
@@ -94,7 +94,7 @@ including a technical description of the model, please see Rutt et al.
 out of date but still provides a useful description of Glimmer-CISM’s
 dynamical core (GLISSADE) and climate model interface (GLAD).</p>
 <div class="section" id="the-community-ice-sheet-model">
-<h2>5.1. The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
+<h2>4.1. The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
 <p>CISM is a thermomechanical ice sheet model that solves the
 equations of ice flow, given suitable approximations and boundary
 conditions. The source code is written primarily in Fortran 90 and 95.
@@ -127,7 +127,7 @@ pseudo-plastic for the sliding law and shelf-free for the calving law.</p>
 More complex schemes for subglacial water hydrology and
 evolution of basal till strength are being developed.</p>
 <div class="section" id="configuring-and-running-the-model">
-<h3>5.1.1. Configuring and running the model<a class="headerlink" href="#configuring-and-running-the-model" title="Permalink to this headline">¶</a></h3>
+<h3>4.1.1. Configuring and running the model<a class="headerlink" href="#configuring-and-running-the-model" title="Permalink to this headline">¶</a></h3>
 <p><strong>Timesteps:</strong> There are several kinds of timesteps in CISM.</p>
 <ol class="arabic simple">
 <li>The <em>forcing timestep</em> is the interval in hours between calls to
@@ -209,16 +209,16 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="ice-sheets-in-clm.html" title="6. Ice sheets in the Community Land Model, and glacier-land coupling"
+          <a href="ice-sheets-in-clm.html" title="5. Ice sheets in the Community Land Model, and glacier-land coupling"
              >next</a> |</li>
         <li class="right" >
-          <a href="tg-compsets.html" title="4. Running the standalone ice sheet model within CESM: TG compsets"
+          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: TG compsets"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cismdoc  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, William Lipsco.
+        &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
