@@ -1,0 +1,403 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. Running and modifying the CESM land ice component &#8212; CESM Land Ice CESM2.0 documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Ice sheet grids" href="ice-sheet-grids.html" />
+    <link rel="prev" title="1. Introduction" href="introduction.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ice-sheet-grids.html" title="3. Ice sheet grids"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Running and modifying the CESM land ice component</a><ul>
+<li><a class="reference internal" href="#choosing-a-cesm-configuration-for-land-ice-work">2.1. Choosing a CESM configuration for land ice work</a><ul>
+<li><a class="reference internal" href="#choosing-a-compset">2.1.1. Choosing a compset</a></li>
+<li><a class="reference internal" href="#choosing-a-cism-grid">2.1.2. Choosing a CISM grid</a></li>
+<li><a class="reference internal" href="#special-considerations-for-hybrid-cases">2.1.3. Special considerations for hybrid cases</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modifying-namelist-settings">2.2. Modifying namelist settings</a></li>
+<li><a class="reference internal" href="#modifying-source-code">2.3. Modifying source code</a><ul>
+<li><a class="reference internal" href="#source-code-directory-structure-and-repositories">2.3.1. Source code directory structure and repositories</a><ul>
+<li><a class="reference internal" href="#changing-code-in-place-in-the-source-tree">2.3.1.1. Changing code in-place in the source tree</a></li>
+<li><a class="reference internal" href="#using-sourcemods">2.3.1.2. Using SourceMods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ice-sheet-grids.html"
+                        title="next chapter">3. Ice sheet grids</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/running-and-modifying.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="running-and-modifying"></span><div class="section" id="running-and-modifying-the-cesm-land-ice-component">
+<h1>2. Running and modifying the CESM land ice component<a class="headerlink" href="#running-and-modifying-the-cesm-land-ice-component" title="Permalink to this headline">¶</a></h1>
+<p>This section provides an overview of some of the most important information needed when
+running a land ice-focused CESM case. This assumes you are familiar with the basic process
+of obtaining and running CESM, as described in the <a class="reference external" href="https://escomp.github.io/cesm">CESM Quickstart guide</a>.</p>
+<p>In CESM, land ice processes are simulated by two components: The land ice (glc) component
+and the land (lnd) component. The land ice component is CISM, the Community Ice Sheet
+Model; the land component is CLM, the Community Land Model (which is now part of CTSM, the
+Community Terrestrial Systems Model). CLM is responsible for computing the surface mass
+balance and surface temperature of ice sheets, along with snow pack evolution for all land
+cover types. CISM is responsible for ice sheet dynamics and other ice sheet internal
+processes.</p>
+<div class="section" id="choosing-a-cesm-configuration-for-land-ice-work">
+<h2>2.1. Choosing a CESM configuration for land ice work<a class="headerlink" href="#choosing-a-cesm-configuration-for-land-ice-work" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="choosing-a-compset">
+<h3>2.1.1. Choosing a compset<a class="headerlink" href="#choosing-a-compset" title="Permalink to this headline">¶</a></h3>
+<p>CESM high-level configurations are known as “compsets” (short for “component sets”,
+described in more detail in the <a class="reference external" href="http://esmci.github.io/cime/users_guide/compsets.html">CIME documentation</a>, the <a class="reference external" href="https://escomp.github.io/cesm/release-cesm2/cesm_configurations.html">CESM documentation</a>, and the <a class="reference external" href="http://www.cesm.ucar.edu/models/cesm2.0/cesm/compsets.html">table
+of available compsets</a>). At
+the compset level, there are three main modes for configuring CESM’s ice sheet component:</p>
+<ol class="arabic">
+<li><p class="first">Using CISM with ice evolution turned off.</p>
+<p>This is the standard configuration used by most CESM compsets. These compsets have
+<code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code> in their compset long name. CISM is built into the system and is
+called periodically by the CESM coupler, but it does very little. CISM serves two roles
+in the system in this configuration:</p>
+<ul class="simple">
+<li>Over the CISM domain (typically Greenland in CESM2), CISM dictates glacier areas and
+topographic elevations, overriding the values on CLM’s surface dataset. CISM also
+dictates the elevation of non-glacier land units in its domain, and only in this
+domain are atmospheric fields downscaled to non-glacier land units.</li>
+<li>CISM provides the grid onto which SMB is downscaled.</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><p class="first">Using CISM with ice evolution turned on.</p>
+<p>These compsets have <code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code> in their compset long name, and typically have the
+letter <code class="docutils literal notranslate"><span class="pre">G</span></code> somewhere near the end of their alias. CISM is fully active, receiving SMB
+from CLM and evolving dynamically. In addition, by default, CISM feeds information back
+to other climate system components — i.e., it is two-way coupled. Specifically, it
+sends:</p>
+<ul class="simple">
+<li>Glacier areas and elevations to CLM</li>
+<li>Ice and liquid runoff to the ocean</li>
+</ul>
+<p>Part or all of this two-way coupling can be turned off if desired.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><p class="first">Using a stub glacier component (SGLC), completely avoiding the use of CISM.</p>
+<p>This configuration has <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in the compset long name, and typically have <code class="docutils literal notranslate"><span class="pre">Gs</span></code>
+somewhere near the end of their alias. This is similar to (1), and CLM still computes
+ice sheet surface mass balance. However:</p>
+<ul class="simple">
+<li>Glacier areas and elevations are taken entirely from CLM’s surface dataset, and CLM
+does not perform any downscaling to non-glacier land units.</li>
+<li>Although SMB is still computed in CLM, it won’t be downscaled to a high-resolution
+ice sheet grid.</li>
+</ul>
+<p>There are a few possible reasons why you may want to run in this configuration:</p>
+<ul class="simple">
+<li>Single-point and regional runs over glacier regions, where it doesn’t make sense to
+run a dynamic ice sheet model.</li>
+<li>Runs with a Gregorian calendar (i.e., with leap years): CISM does not currently
+support a Gregorian calendar, so these runs need to use SGLC. This includes daa
+assimilation and CAM specified dynamics runs.</li>
+<li>Other cases where you don’t want to include CISM because of the extra complexity this
+involves, such as when setting up a new grid (which would require additional mapping
+files for CISM).</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+</ol>
+<p>After creating a case, you can switch between (1) and (2) by setting the xml variable,
+<code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code>.</p>
+<p>It is also possible to run with the older CISM1 physics, using the serial, shallow ice
+approximation glide dynamical core, rather than the parallel, higher-order glissade
+dynamical core. This can be selected at <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> time by changing CISM2 to CISM1
+in the compset long name (aliases using CISM1 have <code class="docutils literal notranslate"><span class="pre">G1</span></code> in place of <code class="docutils literal notranslate"><span class="pre">G</span></code>), or after
+case creation by setting the xml variable, <code class="docutils literal notranslate"><span class="pre">CISM_PHYS</span></code>.</p>
+</div>
+<div class="section" id="choosing-a-cism-grid">
+<h3>2.1.2. Choosing a CISM grid<a class="headerlink" href="#choosing-a-cism-grid" title="Permalink to this headline">¶</a></h3>
+<p>The CESM components can be run on a variety of grids, listed in <a class="reference external" href="http://www.cesm.ucar.edu/models/cesm2.0/cesm/grids.html">this table</a>. The atmosphere and land are
+often run on the same grid, but CESM supports running them on different grids. The ocean
+and sea ice components must always run on the same grid. The ice-sheet component has a
+grid for each active ice sheet.  Unlike the other component grids, which are global, the
+ice-sheet grids have limited domains. The current grids are polar stereographic
+projections with rectangular grid cells.</p>
+<p>Currently, CESM only supports running CISM over Greenland. When running with CISM2
+(glissade), the standard grid has a resolution of 4 km; when running with CISM1 (glide),
+the standard grid has a resolution of 5 km. Both CISM1 and CISM2 also support a 20 km grid
+for software testing purposes. There is out-of-the-box support for running either the 4 km
+(CISM2) or 5 km (CISM1) grids with most or all of the commonly-used atmosphere/land and
+ocean grids.</p>
+<p>The alias for a typical CESM grid lists the atmosphere/land grid followed by the ocean
+grid. For example, <code class="docutils literal notranslate"><span class="pre">f09_g17</span></code> runs the atmosphere and land on a 0.9°x1.25°
+finite-volume grid and the ocean and sea ice on a displaced Greenland pole 1°
+grid. If you don’t specify the CISM grid explicitly in the grid alias, it will use the
+default grid (4 km for a compset with CISM2, 5 km for a compset with CISM1). For some
+common grids, you can also specify the grid explicitly in the alias, using a <code class="docutils literal notranslate"><span class="pre">_gl</span></code>
+element following the ocean grid. For example, for a compset with CISM2, <code class="docutils literal notranslate"><span class="pre">f09_g17_gl4</span></code>
+is equivalent to <code class="docutils literal notranslate"><span class="pre">f09_g17</span></code>.</p>
+<p>For the T1850G compset (described in <a class="reference internal" href="tg-compsets.html#tg-compsets"><span class="std std-numref">Section 4</span></a>), you should use grid
+<code class="docutils literal notranslate"><span class="pre">f09_g17_gl4</span></code>. For more information on ice sheet grids, see <a class="reference internal" href="ice-sheet-grids.html#ice-sheet-grids"><span class="std std-numref">Section 3</span></a>.</p>
+</div>
+<div class="section" id="special-considerations-for-hybrid-cases">
+<h3>2.1.3. Special considerations for hybrid cases<a class="headerlink" href="#special-considerations-for-hybrid-cases" title="Permalink to this headline">¶</a></h3>
+<p>As described in the <a class="reference external" href="http://esmci.github.io/cime/users_guide/running-a-case.html#run-type-initialization">CIME documentation</a>,
+hybrid cases are commonly used to start a case from a pre-existing case. Generally, all
+components start up from the restart files in the reference case. However, in some
+situations, you may want to run a case that is a hybrid start for most components — so
+that they start from spun-up initial conditions — but for which CISM starts with
+observed initial conditions instead of a restart file. For example, you may not have a
+CISM restart file for this case, or the scientific purpose of the run might warrant
+starting with observed initial conditions rather than an existing restart file.</p>
+<p>To do this, set the <code class="docutils literal notranslate"><span class="pre">CISM_OBSERVED_IC</span></code> variable in <code class="docutils literal notranslate"><span class="pre">env_run.xml</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./xmlchange CISM_OBSERVED_IC=TRUE</span>
+</pre></div>
+</div>
+<p>This will force CISM to start from the same observed initial conditions that are used for
+a startup run.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">CISM_OBSERVED_IC</span></code> is ignored for startup runs; for branch runs, it must be
+FALSE.</p>
+</div>
+</div>
+<div class="section" id="modifying-namelist-settings">
+<h2>2.2. Modifying namelist settings<a class="headerlink" href="#modifying-namelist-settings" title="Permalink to this headline">¶</a></h2>
+<p>Once the code is running, you may want to change namelist or configuration
+variables. Variables related to land ice are set in the files <code class="docutils literal notranslate"><span class="pre">cism_in</span></code>, <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>
+and <code class="docutils literal notranslate"><span class="pre">lnd_in</span></code>. These files appear in the run directory, and also in the <code class="docutils literal notranslate"><span class="pre">CaseDocs</span></code>
+subdirectory of the case directory. User modifications can be made to these files by
+adding lines to <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> (for variables in <code class="docutils literal notranslate"><span class="pre">cism_in</span></code> or <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>) or
+<code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code> (for variables in <code class="docutils literal notranslate"><span class="pre">lnd_in</span></code>); this is described in more detail below. The
+various <code class="docutils literal notranslate"><span class="pre">user_nl_xxx</span></code> files are created when you first run <code class="docutils literal notranslate"><span class="pre">case.setup</span></code> for your
+case. They can be modified any time between running <code class="docutils literal notranslate"><span class="pre">case.setup</span></code> and the start of the
+run: the model does NOT need to be rebuilt after making namelist changes in these files.</p>
+<p>Most parameters directly relevant to ice sheet modeling are set in <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>. This
+config file contains settings used by CISM — for example, grid information (which is set
+automatically based on the resolution set at <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> time) and physics
+parameter settings. The <code class="docutils literal notranslate"><span class="pre">cism_in</span></code> file contains some additional parameters controlling
+the CISM run. All of the available settings are given in <a class="reference external" href="http://www.cesm.ucar.edu/models/cesm2.0/component_settings/cism_nml.html">this table</a> (variables in
+namelist groups with <code class="docutils literal notranslate"><span class="pre">config</span></code> in their name will go into the <code class="docutils literal notranslate"><span class="pre">cism.config</span></code> file;
+others will go into the <code class="docutils literal notranslate"><span class="pre">cism_in</span></code> file).</p>
+<p>The file <code class="docutils literal notranslate"><span class="pre">lnd_in</span></code> provides settings for CLM. CLM’s available settings are given in <a class="reference external" href="http://www.cesm.ucar.edu/models/cesm2.0/component_settings/clm4_5_nml.html">this
+table</a>.</p>
+<p>Changes to both <code class="docutils literal notranslate"><span class="pre">cism.config</span></code> and <code class="docutils literal notranslate"><span class="pre">cism_in</span></code> can be made by adding lines with the
+following format to the <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> file in your case directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">namelist_variable = value</span>
+</pre></div>
+</div>
+<p>Note that there is no distinction in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> between variables that will appear
+in <code class="docutils literal notranslate"><span class="pre">cism_in</span></code> vs. those that will appear in <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>: CISM’s build-namelist
+utility knows where each variable belongs. For example, to set the value of <code class="docutils literal notranslate"><span class="pre">cism_debug</span></code>
+to <code class="docutils literal notranslate"><span class="pre">.true.</span></code> and <code class="docutils literal notranslate"><span class="pre">dt</span></code> to <code class="docutils literal notranslate"><span class="pre">0.05</span></code>, include the following in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cism_debug = .true.</span>
+<span class="go">dt = 0.05</span>
+</pre></div>
+</div>
+<p>After running <code class="docutils literal notranslate"><span class="pre">preview_namelists</span></code>, the following will appear in <code class="docutils literal notranslate"><span class="pre">cism_in</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&amp;cism_params</span>
+<span class="go">...</span>
+<span class="go">cism_debug = .true.</span>
+<span class="go">...</span>
+<span class="go">/</span>
+</pre></div>
+</div>
+<p>and the following will appear in <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[time]</span>
+<span class="go">...</span>
+<span class="go">dt = 0.05</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Changes to <code class="docutils literal notranslate"><span class="pre">lnd_in</span></code> can be made by adding similar lines to <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>.  For
+example, to change the ice albedo (values give albedo in the visible and near-infrared),
+add the following line to <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">albice = 0.55,0.45</span>
+</pre></div>
+</div>
+<p>After changing any of the <code class="docutils literal notranslate"><span class="pre">user_nl_xxx</span></code> files, you can preview the generated namelists
+by running the <code class="docutils literal notranslate"><span class="pre">preview_namelists</span></code> utility in the case directory. Generated namelists
+will then appear in the CaseDocs subdirectory of your case as well as in the run
+directory.</p>
+<p>Note: There appears to be a bug in the parsing of strings in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> that are
+bound for <code class="docutils literal notranslate"><span class="pre">cism.config</span></code>: These appear to be handled correctly if they are single-quoted,
+but double-quoted strings lead to buggy behavior.</p>
+</div>
+<div class="section" id="modifying-source-code">
+<h2>2.3. Modifying source code<a class="headerlink" href="#modifying-source-code" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="source-code-directory-structure-and-repositories">
+<h3>2.3.1. Source code directory structure and repositories<a class="headerlink" href="#source-code-directory-structure-and-repositories" title="Permalink to this headline">¶</a></h3>
+<p>Within a CESM checkout, after all components are obtained with the <code class="docutils literal notranslate"><span class="pre">manage_externals</span></code>
+tool, CISM source code can be found in the directory <code class="docutils literal notranslate"><span class="pre">components/cism</span></code>. The source code
+for CISM within CESM is contained in two separate git repositories:</p>
+<ul class="simple">
+<li>The code for CISM itself is in the directory rooted at
+<code class="docutils literal notranslate"><span class="pre">components/cism/source_cism</span></code>. This is a git repository associated with the <a class="reference external" href="https://github.com/escomp/cism">CISM
+GitHub repository</a>.</li>
+<li>The wrapper code for connecting CISM with CESM is in the other subdirectories of
+<code class="docutils literal notranslate"><span class="pre">components/cism</span></code>. This top-level directory is a git repository associated with the
+<a class="reference external" href="https://github.com/escomp/cism-wrapper/">CISM-wrapper GitHub repository</a>.</li>
+</ul>
+<p>Other subdirectories of the top-level CISM-wrapper code are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">source_glc</span></code>, which contains much of the logic for driving CISM via CESM</li>
+<li><code class="docutils literal notranslate"><span class="pre">drivers</span></code>, which contains the code for coupling with CESM via the MCT coupling
+framework</li>
+<li><code class="docutils literal notranslate"><span class="pre">bld</span></code>, which mainly consists of code and xml files needed to create the namelist and
+configuration files. Note that the actual build of the model is handled by files in
+<code class="docutils literal notranslate"><span class="pre">cime_config</span></code>. The most important files in <code class="docutils literal notranslate"><span class="pre">bld</span></code> are <code class="docutils literal notranslate"><span class="pre">build-namelist</span></code> and the xml
+files in the <code class="docutils literal notranslate"><span class="pre">namelist_files</span></code> subdirectory, which describe all possible namelist /
+configuration settings and their default values.</li>
+<li><code class="docutils literal notranslate"><span class="pre">cime_config</span></code>, which contains build scripts and configuration files used by <a class="reference external" href="http://esmci.github.io/cime/">CIME</a> (the scripting and infrastructure of CESM).</li>
+<li><code class="docutils literal notranslate"><span class="pre">tools</span></code>, which contains tools (now somewhat obsolete) for generating land/ice-sheet
+grid overlap files</li>
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code>, which contains code (now somewhat obsolete) for testing some parts of the
+source code</li>
+<li><code class="docutils literal notranslate"><span class="pre">mpi</span></code> and <code class="docutils literal notranslate"><span class="pre">serial</span></code>, which have appropriate versions of source code that can be used
+for parallel and serial runs, respectively. The <code class="docutils literal notranslate"><span class="pre">serial</span></code> directory is obsolete; now
+the <code class="docutils literal notranslate"><span class="pre">mpi</span></code> directory is used even when running on a single processor.</li>
+<li><code class="docutils literal notranslate"><span class="pre">manage_externals</span></code>, which is the same tool that CESM uses to obtain its
+components. This instance of the tool can be used to obtain a working set of code when
+cloning directly from the <a class="reference external" href="https://github.com/escomp/cism-wrapper/">CISM-wrapper GitHub repository</a>.</li>
+</ul>
+<p>There are two ways to modify source code for a CESM case:</p>
+<ol class="arabic simple">
+<li>Changing code in-place in the source tree</li>
+<li>Using SourceMods</li>
+</ol>
+<p>These two methods are described in more detail below.</p>
+<div class="section" id="changing-code-in-place-in-the-source-tree">
+<h4>2.3.1.1. Changing code in-place in the source tree<a class="headerlink" href="#changing-code-in-place-in-the-source-tree" title="Permalink to this headline">¶</a></h4>
+<p>Changing code in-place allows you to make a git branch of the source code and do your work
+leveraging the power and convenience of git. As noted above, there are two separate git
+repositories making up CISM within CESM. If you need to modify code both in CISM itself
+and in the CISM-wrapper, you will need to create a separate git branch for each (as well
+as a separate GitHub fork of each repository if you want to push your work up to GitHub).</p>
+<p>This method is best for changes that have some of these characteristics:</p>
+<ul class="simple">
+<li>Long-term developments</li>
+<li>Incremental changes towards a final solution</li>
+<li>Changes that apply to many cases</li>
+<li>Changes that touch many files</li>
+<li>Any change intended to eventually come back to master</li>
+</ul>
+</div>
+<div class="section" id="using-sourcemods">
+<h4>2.3.1.2. Using SourceMods<a class="headerlink" href="#using-sourcemods" title="Permalink to this headline">¶</a></h4>
+<p>Within a case, there is a <code class="docutils literal notranslate"><span class="pre">SourceMods</span></code> directory that can contain modified source code
+that applies to that specific case. The location for modified CISM files depends on
+whether the files are part of the CISM code itself or part of the CISM-wrapper code. For
+any source code that appears in the <code class="docutils literal notranslate"><span class="pre">source_cism</span></code> subdirectory of <code class="docutils literal notranslate"><span class="pre">components/cism</span></code>,
+the modified file should go in <code class="docutils literal notranslate"><span class="pre">$CASEROOT/SourceMods/src.cism/source_cism</span></code>. For any
+other source code (e.g., modifications to code from <code class="docutils literal notranslate"><span class="pre">source_glc</span></code>), the modified file
+should go directly in <code class="docutils literal notranslate"><span class="pre">$CASEROOT/SourceMods/src.cism</span></code>. (C++ code in the <code class="docutils literal notranslate"><span class="pre">source_cism</span></code>
+directory can NOT be modified via SourceMods; this C++ code must be modified in-place in
+the main source code directory.) Once the modified files are in place, the code can be
+rebuilt. The files in the SourceMods directories automatically replace the files of the
+same name in the model directories.</p>
+<p>This method is suitable for changes that have these characteristics:</p>
+<ul class="simple">
+<li>Short-term developments (merging in new changes from master is a pain and very
+error-prone: you don’t have the version control system to help you keep track of your
+changes over time)</li>
+<li>Changes that apply to just one or two cases</li>
+<li>Changes that touch just a few files</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="ice-sheet-grids.html" title="3. Ice sheet grids"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Bill Sacks, Gunter Leguy, William Lipscomb.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>
