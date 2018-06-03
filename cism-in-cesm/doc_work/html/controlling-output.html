@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>6. Controlling output from CLM and CISM &#8212; CESM Land Ice CESM2.0 documentation</title>
+    <title>6. Controlling output from CISM and CLM &#8212; CESM Land Ice CESM2.0 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -43,7 +43,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">6. Controlling output from CLM and CISM</a><ul>
+<li><a class="reference internal" href="#">6. Controlling output from CISM and CLM</a><ul>
 <li><a class="reference internal" href="#controlling-cism-output">6.1. Controlling CISM output</a></li>
 <li><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">6.2. Producing land ice-specific output from CLM</a><ul>
 <li><a class="reference internal" href="#outputting-forcing-fields-sent-from-clm-to-cism">6.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
@@ -87,68 +87,95 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="controlling-output-from-clm-and-cism">
-<span id="controlling-output"></span><h1>6. Controlling output from CLM and CISM<a class="headerlink" href="#controlling-output-from-clm-and-cism" title="Permalink to this headline">¶</a></h1>
-<p>FIXME: bring this section up to date.</p>
+  <div class="section" id="controlling-output-from-cism-and-clm">
+<span id="controlling-output"></span><h1>6. Controlling output from CISM and CLM<a class="headerlink" href="#controlling-output-from-cism-and-clm" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="controlling-cism-output">
 <h2>6.1. Controlling CISM output<a class="headerlink" href="#controlling-cism-output" title="Permalink to this headline">¶</a></h2>
-<p>Model history frequency is controlled by <em>HIST_OPTION</em> and <em>HIST_N</em> in
-<em>env_run.xml</em>. By default, history files are written once a year. Among
-the standard fields written to the history file are the ice thickness
-(<em>thk</em>), upper surface elevation (<em>usurf</em>), bedrock elevation (<em>topg</em>)
-along with the surface mass balance (<em>acab</em>) and surface air temperature
-(<em>artm</em>) downscaled to the ice sheet grid; these fields are set by the
-variable <em>cesm_history_vars</em> in <em>cism_in</em>.</p>
-<p>Model restart frequency is coordinated by the CESM coupler. The restart
-or hotstart file contains all the fields required for exact restart.
-However, the restart will be exact only if the file is written
-immediately after an ice dynamics time step. This will normally be the
+<p>The default CISM output frequency is yearly. Most of the CISM output fields are
+instantaneous, so this default frequency means that you get a snapshot of the current
+state at the end of each year. You can change the output to be less frequent via the
+namelist variable <code class="docutils literal notranslate"><span class="pre">history_frequency</span></code>, which can be set in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. For
+example, to give output every 10 years, set:</p>
+<div class="highlight-Fortran notranslate"><div class="highlight"><pre><span></span><span class="n">history_frequency</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>The set of variables written to each history file is controlled by the namelist variable
+<code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code>. To see the variables output by default, examine
+<code class="docutils literal notranslate"><span class="pre">CaseDocs/cism_in</span></code> after running <code class="docutils literal notranslate"><span class="pre">preview_namelists</span></code> for your case. Among the standard
+fields written to the history file are the ice thickness (<code class="docutils literal notranslate"><span class="pre">thk</span></code>), upper surface
+elevation (<code class="docutils literal notranslate"><span class="pre">usurf</span></code>), bedrock elevation (<code class="docutils literal notranslate"><span class="pre">topg</span></code>), and the surface mass balance
+(<code class="docutils literal notranslate"><span class="pre">smb</span></code>) and surface temperature (<code class="docutils literal notranslate"><span class="pre">artm</span></code>) downscaled to the ice sheet grid.</p>
+<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. The
+source files with names <code class="docutils literal notranslate"><span class="pre">*_io.F90.default</span></code> specify the fields than can be written out:
+for CESM, these get copied to files with the same name but with the <code class="docutils literal notranslate"><span class="pre">.default</span></code> stripped
+off. The easiest way to write out new variables for your case is to add them to a file
+ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> and then rebuild the <code class="docutils literal notranslate"><span class="pre">*_io.F90</span></code> files using a python script. The
+necessary script can be found in <code class="docutils literal notranslate"><span class="pre">$CASEROOT/Buildconf/cismIOconf</span></code>. See the
+<code class="docutils literal notranslate"><span class="pre">README.cismIO</span></code> file in that directory for details.</p>
+<p>Model restart frequency is coordinated by the CESM coupler. The restart file contains all
+the fields required for exact restart.  However, the restart will be exact only if the
+file is written immediately after an ice dynamics time step. This will normally be the
 case for restart files written at the end of any model year.</p>
-<p>Many other fields can be written out if desired, simply by adding them
-to the variable list, <em>cesm_history_vars</em>. The source files with names
-“*_io.F90” specify the fields than can be written out. The easiest way
-to write out new variables is to add them to a file ending in “vars.def”
-and then rebuild the “*_io.F90” files using a python script. The
-necessary script can be found in $CASEROOT/Buildconf/cismIOconf. See the
-README.cismIO file in that directory for details.</p>
 </div>
 <div class="section" id="producing-land-ice-specific-output-from-clm">
 <h2>6.2. Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="outputting-forcing-fields-sent-from-clm-to-cism">
 <h3>6.2.1. Outputting forcing fields sent from CLM to CISM<a class="headerlink" href="#outputting-forcing-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
-<p>CLM sends three sets of fields to CISM, for each elevation class: <em>qice,
-tsrf</em> and <em>topo</em> (see Section 5.2). It can often be useful to view the
-values of these forcing fields for each elevation class within each grid
-cell. To do this, you can use the three CLM history variables,
-<em>QICE_FORC, TSRF_FORC</em> and <em>TOPO_FORC.</em> These history variables are
-inactive by default, but can be added to any of CLM’s history files
-using the <em>hist_fincl</em> CLM namelist variables. For example, to add
-<em>QICE_FORC</em> and <em>TSRF_FORC</em> to CLM’s default (monthly) history file,
-you would add the following in <em>user_nl_clm</em>:</p>
-<p>hist_fincl1 = ‘QICE_FORC’,’TSRF_FORC’</p>
-<p>As with other CLM history variables, additional history files can be
-created with different time frequencies. See the CLM User’s Guide for
-details on how to do this.</p>
+<p>CLM sends two sets of fields to CISM for each elevation class: <code class="docutils literal notranslate"><span class="pre">qice</span></code> and <code class="docutils literal notranslate"><span class="pre">tsrf</span></code>. In
+addition, it sends a third set of fields to the coupler for downscaling purposes:
+<code class="docutils literal notranslate"><span class="pre">topo</span></code>. It can often be useful to view the values of these forcing fields for each
+elevation class within each grid cell. To do this, you can use the three CLM history
+variables, <code class="docutils literal notranslate"><span class="pre">QICE_FORC</span></code>, <code class="docutils literal notranslate"><span class="pre">TSRF_FORC</span></code> and <code class="docutils literal notranslate"><span class="pre">TOPO_FORC</span></code>. These history variables are
+inactive by default, but can be added to any of CLM’s history files using the
+<code class="docutils literal notranslate"><span class="pre">hist_fincl</span></code> CLM namelist variables. For example, to add <code class="docutils literal notranslate"><span class="pre">QICE_FORC</span></code> and <code class="docutils literal notranslate"><span class="pre">TSRF_FORC</span></code>
+to CLM’s default (monthly) history file, you would add the following in <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>:</p>
+<div class="highlight-Fortran notranslate"><div class="highlight"><pre><span></span><span class="n">hist_fincl1</span> <span class="o">=</span> <span class="s1">&#39;QICE_FORC&#39;</span><span class="p">,</span><span class="s1">&#39;TSRF_FORC&#39;</span>
+</pre></div>
+</div>
+<p>As with other CLM history variables, additional history files can be created with
+different time frequencies. See the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM User’s Guide</a> for details on how to do this.</p>
 </div>
 <div class="section" id="adding-a-clm-history-field-that-provides-averages-only-over-ice">
 <h3>6.2.2. Adding a CLM history field that provides averages only over ice<a class="headerlink" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice" title="Permalink to this headline">¶</a></h3>
-<p>In general, CLM history fields give weighted averages over the entire
-grid cell. If you are interested in diagnostics just over ice landunits
-for certain history fields, you can make a source code modification for
-each field of interest. This is done in
-<em>models/lnd/clm/src/main/histFldsMod.F90</em>: Find the history field(s) of
-interest in this file, and add the following optional argument to the
-<em>hist_addfld1d</em> or <em>hist_addfld2d</em> call for that history field:
-<em>l2g_scale_type=’ice’</em>. You may want to copy and paste the call in
-order to maintain the original history field and add a new field that
-applies just over ice (being sure to change <em>fname</em>). For example,
-examine the difference between the fields <em>TSOI</em> and <em>TSOI_ICE</em>:</p>
-<p>call hist_addfld2d (fname=’TSOI’, units=’K’, type2d=’levgrnd’, &amp;</p>
-<p>avgflag=’A’, long_name=’soil temperature (vegetated landunits only)’, &amp;</p>
-<p>ptr_col=clm3%g%l%c%ces%t_soisno, l2g_scale_type=’veg’)</p>
-<p>call hist_addfld2d (fname=’TSOI_ICE’, units=’K’, type2d=’levgrnd’, &amp;</p>
-<p>avgflag=’A’, long_name=’soil temperature (ice landunits only)’, &amp;</p>
-<p>ptr_col=clm3%g%l%c%ces%t_soisno, l2g_scale_type=’ice’)</p>
+<p>In general, CLM history fields give weighted averages over the entire grid cell. If you
+are interested in diagnostics just over ice landunits for certain history fields, you can
+make a source code modification for each field of interest.</p>
+<p>CLM history field definitions are distributed throughout the CLM source code. The first
+step is to find the <code class="docutils literal notranslate"><span class="pre">hist_addfld1d</span></code> or <code class="docutils literal notranslate"><span class="pre">hist_addfld2d</span></code> subroutine call for the history
+field(s) of interest, by searching the code for the history field name. Then add a new
+<code class="docutils literal notranslate"><span class="pre">hist_addfld1d</span></code> or <code class="docutils literal notranslate"><span class="pre">hist_addfld2d</span></code> call that is mostly the same as the original, but:</p>
+<ol class="arabic simple">
+<li>Change the field name (<code class="docutils literal notranslate"><span class="pre">fname</span></code>), for example, changing <code class="docutils literal notranslate"><span class="pre">TSOI</span></code> to <code class="docutils literal notranslate"><span class="pre">TSOI_ICE</span></code></li>
+<li>Change <code class="docutils literal notranslate"><span class="pre">long_name</span></code> to call out that this field just applies over ice landunits</li>
+<li>Add a new argument to the call: <code class="docutils literal notranslate"><span class="pre">l2g_scale_type='ice'</span></code>.</li>
+<li>Possibly add <code class="docutils literal notranslate"><span class="pre">default='inactive'</span></code> so that this field only appears if explicitly
+requested in <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>.</li>
+</ol>
+<p>Here are some examples of currently-defined <code class="docutils literal notranslate"><span class="pre">_ICE</span></code> fields and their non-<code class="docutils literal notranslate"><span class="pre">_ICE</span></code>
+counterparts:</p>
+<div class="highlight-Fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">hist_addfld2d</span> <span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;TSOI&#39;</span><span class="p">,</span>  <span class="n">units</span><span class="o">=</span><span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="n">type2d</span><span class="o">=</span><span class="s1">&#39;levgrnd&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">avgflag</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;soil temperature (vegetated landunits only)&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">ptr_col</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">t_soisno_col</span><span class="p">,</span> <span class="n">l2g_scale_type</span><span class="o">=</span><span class="s1">&#39;veg&#39;</span><span class="p">)</span>
+
+<span class="k">call </span><span class="n">hist_addfld2d</span> <span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;TSOI_ICE&#39;</span><span class="p">,</span>  <span class="n">units</span><span class="o">=</span><span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="n">type2d</span><span class="o">=</span><span class="s1">&#39;levgrnd&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">avgflag</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;soil temperature (ice landunits only)&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">ptr_col</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">t_soisno_col</span><span class="p">,</span> <span class="n">l2g_scale_type</span><span class="o">=</span><span class="s1">&#39;ice&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">hist_addfld1d</span> <span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;FSH&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;W/m^2&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
+     <span class="n">avgflag</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;sensible heat not including correction for land use change and rain/snow conversion&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">ptr_patch</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">eflx_sh_tot_patch</span><span class="p">,</span> <span class="n">c2l_scale_type</span><span class="o">=</span><span class="s1">&#39;urbanf&#39;</span><span class="p">)</span>
+
+<span class="k">call </span><span class="n">hist_addfld1d</span> <span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;FSH_ICE&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;W/m^2&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
+     <span class="n">avgflag</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;sensible heat not including correction for land use change and rain/snow conversion (ice landunits only)&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">ptr_patch</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">eflx_sh_tot_patch</span><span class="p">,</span> <span class="n">c2l_scale_type</span><span class="o">=</span><span class="s1">&#39;urbanf&#39;</span><span class="p">,</span> <span class="n">l2g_scale_type</span><span class="o">=</span><span class="s1">&#39;ice&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+     <span class="n">default</span><span class="o">=</span><span class="s1">&#39;inactive&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that there are already many <code class="docutils literal notranslate"><span class="pre">_ICE</span></code> fields defined in the code, but many of these
+are inactive by default (meaning that they need to be explicitly added to history field
+lists via CLM’s <code class="docutils literal notranslate"><span class="pre">hist_fincl</span></code> mechanism).</p>
 </div>
 </div>
 </div>
