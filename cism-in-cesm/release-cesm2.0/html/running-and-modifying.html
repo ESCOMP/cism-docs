@@ -17,7 +17,7 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Running the standalone ice sheet model within CESM: TG compsets" href="tg-compsets.html" />
+    <link rel="next" title="3. Running the standalone ice sheet model within CESM: T compsets" href="tg-compsets.html" />
     <link rel="prev" title="1. Introduction" href="introduction.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: TG compsets"
+          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: T compsets"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="introduction.html" title="1. Introduction"
@@ -68,7 +68,7 @@
                         title="previous chapter">1. Introduction</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="tg-compsets.html"
-                        title="next chapter">3. Running the standalone ice sheet model within CESM: TG compsets</a></p>
+                        title="next chapter">3. Running the standalone ice sheet model within CESM: T compsets</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -126,7 +126,7 @@ in the system in this configuration:</p>
 <li>Over the CISM domain (typically Greenland in CESM2), CISM dictates glacier areas and
 topographic elevations, overriding the values on CLM’s surface dataset. CISM also
 dictates the elevation of non-glacier land units in its domain, and only in this
-domain are atmospheric fields downscaled to non-glacier land units.</li>
+domain does CLM downscale atmospheric fields to non-glacier land units.</li>
 <li>CISM provides the grid onto which SMB is downscaled.</li>
 </ul>
 <div class="line-block">
@@ -143,13 +143,15 @@ sends:</p>
 <li>Glacier areas and elevations to CLM</li>
 <li>Ice and liquid runoff to the ocean</li>
 </ul>
-<p>Part or all of this two-way coupling can be turned off if desired.</p>
+<p>Part or all of this two-way coupling can be turned off if desired.
+Note that the liquid runoff sent to the ocean consists of meltwater computed in the interior
+or at the base of the ice; surface liquid runoff is handled separately by CLM.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </li>
 <li><p class="first">Using a stub glacier component (SGLC), completely avoiding the use of CISM.</p>
-<p>This configuration has <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in the compset long name, and typically have <code class="docutils literal notranslate"><span class="pre">Gs</span></code>
+<p>These configurations have <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in the compset long name, and typically have <code class="docutils literal notranslate"><span class="pre">Gs</span></code>
 somewhere near the end of their alias. This is similar to (1), and CLM still computes
 ice sheet surface mass balance. However:</p>
 <ul class="simple">
@@ -163,7 +165,7 @@ ice sheet grid.</li>
 <li>Single-point and regional runs over glacier regions, where it doesn’t make sense to
 run a dynamic ice sheet model.</li>
 <li>Runs with a Gregorian calendar (i.e., with leap years): CISM does not currently
-support a Gregorian calendar, so these runs need to use SGLC. This includes daa
+support a Gregorian calendar, so these runs need to use SGLC. This includes data
 assimilation and CAM specified dynamics runs.</li>
 <li>Other cases where you don’t want to include CISM because of the extra complexity this
 involves, such as when setting up a new grid (which would require additional mapping
@@ -176,9 +178,9 @@ files for CISM).</li>
 </ol>
 <p>After creating a case, you can switch between (1) and (2) by setting the xml variable,
 <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code>.</p>
-<p>It is also possible to run with the older CISM1 physics, using the serial, shallow ice
-approximation glide dynamical core, rather than the parallel, higher-order glissade
-dynamical core. This can be selected at <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> time by changing CISM2 to CISM1
+<p>It is also possible to run with the older CISM1 physics, using the serial, shallow-ice-
+approximation dynamical core (Glide), rather than the parallel, higher-order
+dynamical core (Glissade). This can be selected at <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> time by changing CISM2 to CISM1
 in the compset long name (aliases using CISM1 have <code class="docutils literal notranslate"><span class="pre">G1</span></code> in place of <code class="docutils literal notranslate"><span class="pre">G</span></code>), or after
 case creation by setting the xml variable, <code class="docutils literal notranslate"><span class="pre">CISM_PHYS</span></code>.</p>
 </div>
@@ -191,7 +193,7 @@ grid for each active ice sheet.  Unlike the other component grids, which are glo
 ice-sheet grids have limited domains. The current grids are polar stereographic
 projections with rectangular grid cells.</p>
 <p>Currently, CESM only supports running CISM over Greenland. When running with CISM2
-(glissade), the standard grid has a resolution of 4 km; when running with CISM1 (glide),
+(Glissade), the standard grid has a resolution of 4 km; when running with CISM1 (Glide),
 the standard grid has a resolution of 5 km. Both CISM1 and CISM2 also support a 20 km grid
 for software testing purposes. There is out-of-the-box support for running either the 4 km
 (CISM2) or 5 km (CISM1) grids with most or all of the commonly-used atmosphere/land and
@@ -387,7 +389,7 @@ changes over time)</li>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: TG compsets"
+          <a href="tg-compsets.html" title="3. Running the standalone ice sheet model within CESM: T compsets"
              >next</a> |</li>
         <li class="right" >
           <a href="introduction.html" title="1. Introduction"
