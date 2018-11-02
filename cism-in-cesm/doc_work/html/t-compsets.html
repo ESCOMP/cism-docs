@@ -9,7 +9,7 @@
     <title>3. Running the standalone ice sheet model within CESM: T compsets &#8212; CESM Land Ice CESM2.0 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -209,8 +209,9 @@ you want to use a subset of the available years. However, the data land model ex
 to find domain information on the first year’s file; typically, this domain
 information (variable names beginning with <code class="docutils literal notranslate"><span class="pre">doml</span></code>) only appears on the first
 coupler history file. So, to start with something later than the first year, you will
-need to copy these <code class="docutils literal notranslate"><span class="pre">doml_xxx</span></code> fields from the first file onto the file
-corresponding to <code class="docutils literal notranslate"><span class="pre">DLND_CPLHIST_YR_START</span></code>.</p>
+need to copy all of these <code class="docutils literal notranslate"><span class="pre">doml_xxx</span></code> fields from the first file onto the file
+corresponding to <code class="docutils literal notranslate"><span class="pre">DLND_CPLHIST_YR_START</span></code>. <strong>Make sure you copy ALL of the</strong>
+<code class="docutils literal notranslate"><span class="pre">doml_xxx</span></code> <strong>fields (otherwise you may get garbage results).</strong></p>
 </div>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">DLND_CPLHIST_YR_END</span></code>: Last year of forcing data (can be set earlier
@@ -275,7 +276,7 @@ changed automatically when running with a T compset. These include:</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>
