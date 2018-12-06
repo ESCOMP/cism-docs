@@ -1,92 +1,179 @@
 
 
-<!doctype html>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Controlling output from CISM and CLM &mdash; CESM Land Ice CESM2.0 documentation</title>
+  
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>5. Controlling output from CISM and CLM &#8212; CESM Land Ice CESM2.0 documentation</title>
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/bizstyle.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Coupling CLM and CISM" href="clm-cism-coupling.html" />
-    <link rel="prev" title="4. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
-    <![endif]-->
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="clm-cism-coupling.html" title="6. Coupling CLM and CISM"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="dynamic-ice-sheet-model.html" title="4. The dynamic ice sheet model"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">5. Controlling output from CISM and CLM</a><ul>
-<li><a class="reference internal" href="#controlling-cism-output">5.1. Controlling CISM output</a></li>
-<li><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">5.2. Producing land ice-specific output from CLM</a><ul>
-<li><a class="reference internal" href="#outputting-forcing-fields-sent-from-clm-to-cism">5.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
-<li><a class="reference internal" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice">5.2.2. Adding a CLM history field that provides averages only over ice</a></li>
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CESM Land Ice CESM2.0 documentation" href="index.html"/>
+        <link rel="next" title="6. Coupling CLM and CISM" href="clm-cism-coupling.html"/>
+        <link rel="prev" title="4. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CESM Land Ice
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  CESM2.0
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Controlling output from CISM and CLM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-cism-output">5.1. Controlling CISM output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">5.2. Producing land ice-specific output from CLM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#outputting-forcing-fields-sent-from-clm-to-cism">5.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice">5.2.2. Adding a CLM history field that provides averages only over ice</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="dynamic-ice-sheet-model.html"
-                        title="previous chapter">4. The dynamic ice sheet model</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="clm-cism-coupling.html"
-                        title="next chapter">6. Coupling CLM and CISM</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/controlling-output.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+            
+          
         </div>
       </div>
+    </nav>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CESM Land Ice</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>5. Controlling output from CISM and CLM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/controlling-output.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="controlling-output-from-cism-and-clm">
 <span id="controlling-output"></span><h1>5. Controlling output from CISM and CLM<a class="headerlink" href="#controlling-output-from-cism-and-clm" title="Permalink to this headline">¶</a></h1>
@@ -106,13 +193,11 @@ example, to give output every 10 years, set:</p>
 fields written to the history file are the ice thickness (<code class="docutils literal notranslate"><span class="pre">thk</span></code>), upper surface
 elevation (<code class="docutils literal notranslate"><span class="pre">usurf</span></code>), bedrock elevation (<code class="docutils literal notranslate"><span class="pre">topg</span></code>), and the surface mass balance
 (<code class="docutils literal notranslate"><span class="pre">smb</span></code>) and surface temperature (<code class="docutils literal notranslate"><span class="pre">artm</span></code>) downscaled to the ice sheet grid.</p>
-<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. The
-source files with names <code class="docutils literal notranslate"><span class="pre">*_io.F90.default</span></code> specify the fields than can be written out:
-for CESM, these get copied to files with the same name but with the <code class="docutils literal notranslate"><span class="pre">.default</span></code> stripped
-off. The easiest way to write out new variables for your case is to add them to a file
-ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> and then rebuild the <code class="docutils literal notranslate"><span class="pre">*_io.F90</span></code> files using a python script. The
-necessary script can be found in <code class="docutils literal notranslate"><span class="pre">$CASEROOT/Buildconf/cismIOconf</span></code>. See the
-<code class="docutils literal notranslate"><span class="pre">README.cismIO</span></code> file in that directory for details.</p>
+<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. Files
+with names ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> in the source tree specify the fields that can be
+written out. You can add new variables to one of these <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files and rebuild the
+model in order to enable new output fields. (Note: These <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files can NOT be
+placed in SourceMods: they need to be changed in-place in the source tree.)</p>
 <p>Model restart frequency is coordinated by the CESM coupler. The restart file contains all
 the fields required for exact restart.  However, the restart will be exact only if the
 file is written immediately after an ice dynamics time step. This will normally be the
@@ -182,29 +267,81 @@ lists via CLM’s <code class="docutils literal notranslate"><span class="pre">h
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="clm-cism-coupling.html" class="btn btn-neutral float-right" title="6. Coupling CLM and CISM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dynamic-ice-sheet-model.html" class="btn btn-neutral" title="4. The dynamic ice sheet model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>var version_json_loc = "../versions.json";</script>
+
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="clm-cism-coupling.html" title="6. Coupling CLM and CISM"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="dynamic-ice-sheet-model.html" title="4. The dynamic ice sheet model"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">CESM Land Ice CESM2.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'CESM2.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>
