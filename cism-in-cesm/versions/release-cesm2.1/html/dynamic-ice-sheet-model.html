@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. The dynamic ice sheet model &mdash; CESM Land Ice CESM2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CESM Land Ice CESM2.1 documentation" href="index.html"/>
+        <link rel="next" title="5. Controlling output from CISM and CLM" href="controlling-output.html"/>
+        <link rel="prev" title="3. Running the standalone ice sheet model within CESM: T compsets" href="t-compsets.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CESM Land Ice
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>CESM2.1</option>
+                      
+                        
+                          <option value="../../master/html">master</option>
+                        
+                      
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. The dynamic ice sheet model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-community-ice-sheet-model">4.1. The Community Ice Sheet Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-and-running-the-model">4.1.1. Configuring and running the model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CESM Land Ice</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>4. The dynamic ice sheet model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dynamic-ice-sheet-model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-dynamic-ice-sheet-model">
+<span id="dynamic-ice-sheet-model"></span><h1>4. The dynamic ice sheet model<a class="headerlink" href="#the-dynamic-ice-sheet-model" title="Permalink to this headline">¶</a></h1>
+<p>This section gives a brief overview of ice flow modeling and of
+CISM, the dynamic ice sheet model in CESM. For more details,
+including a technical description of the model, please see Rutt et al. (2009)
+for the Glide shallow-ice dycore and Lipscomb et al. (2018) for the
+Glissade higher-order dycore.
+(The latter paper will be submitted to <em>Geoscientific Model Development</em>
+in June 2018, soon after the release of CESM2.0).
+See also the CISM documentation, which is slightly out of date but
+still provides a useful description of the Glissade dycore
+and the climate model interface (Glad).</p>
+<div class="section" id="the-community-ice-sheet-model">
+<h2>4.1. The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
+<p>CISM is a thermomechanical ice sheet model that solves the
+equations of ice flow, given suitable approximations and boundary
+conditions. The source code is written primarily in Fortran 90 and 95.
+The model resides on the github repository
+(<a class="reference external" href="https://github.com/ESCOMP/cism">https://github.com/ESCOMP/cism</a>), where it is under active development.
+CISM2.1 is currently the default ice sheet model in CESM2.0.</p>
+<p>CISM2.1 introduces a new dynamical core, Glissade, which runs in parallel
+and solves equations for the conservation of mass, momentum, and
+internal energy. Glissade supports several approximations of the
+Stokes equations for ice flow: the shallow-ice approximation
+(SIA), the shallow-shelf approximation (SSA), a depth-integrated viscosity
+approximation (DIVA), and the Blatter-Pattyn (BP) approximation.
+DIVA is the default solver for CISM in the CESM framework.</p>
+<p>In previous versions of CESM with CISM coupling capabilities, the
+dynamical core of the model was known as Glide and only solved the
+shallow-ice approximation in serial. While this option is still available,
+it is no longer supported.</p>
+<p>The surface boundary conditions (e.g., the surface temperature and
+surface mass balance) are supplied by a climate driver. When
+CISM is run in CESM, the climate driver is Glad, which receives
+the temperature and SMB from the coupler and passes them to the
+ice-sheet grid. The lower boundary conditions are given
+by a geothermal dataset, which supplies heat fluxes at the lower boundary,
+and by a basal topography dataset.
+Optionally, the basal topography can be modified at runtime by an isostasy model;
+isostasy is turned off by default.</p>
+<p>The new version of CISM adds a set of basal sliding and calving law
+options of varying complexity. The default options and parameters
+were chosen based on standalone Greenland simulations (with SMB forcing
+from the RACMO2 regional climate model) to support a
+stable, reasonably accurate simulation of the Greenland Ice Sheet;
+see Lipscomb et al. (2018) for details.
+The default basal sliding option is pseudo-plastic sliding,
+with parameters based on Aschwanden et al. (2016).
+The default calving law is “no-float”, with all floating ice
+calving immediately.</p>
+<p>The model currently has simple treatments of basal hydrology, including
+a local till model used in conjunction with pseudo-plastic sliding.
+More complex schemes for subglacial water hydrology and
+evolution of basal till strength are being developed.</p>
+<div class="section" id="configuring-and-running-the-model">
+<h3>4.1.1. Configuring and running the model<a class="headerlink" href="#configuring-and-running-the-model" title="Permalink to this headline">¶</a></h3>
+<p><strong>Timesteps:</strong> There are several kinds of timesteps in CISM.</p>
+<ol class="arabic simple">
+<li>The <em>forcing timestep</em> is the interval in hours between calls to
+Glad. Currently, the forcing timestep is the same as the <em>coupling
+interval</em> at which information is passed from the coupler to GLC. The
+forcing timestep is determined by the CISM namelist variables
+<em>dt_option</em> and <em>dt_count</em>. It is 24 hours by default for most
+compsets, but 1 year for T compsets. Note that these are the only
+values that have been tested extensively; results should be checked
+carefully if the forcing timestep is changed from these defaults.</li>
+<li>The <em>mass balance timestep</em> is the interval over which
+accumulation/ablation forcing data is summed and averaged. This
+timestep is set in subroutine <em>glad_mbc_init</em> in module
+<em>glad_mbal_coupling.F90</em>. The current default is one year. With the
+default settings of the forcing timestep and mass balance timestep, Glad
+will accumulate forcing data from the coupler over 365 daily forcing
+timesteps and average the data. The mass balance timestep must be an
+integer multiple of the forcing timestep.</li>
+<li>The <em>ice sheet timestep</em> is the interval in years between calls to
+the dynamic ice sheet model, Glissade (or Glide). The ice sheet timestep should
+divide evenly into the mass balance timestep. The current default is
+0.1 year for 4-km, and 0.5 year for 20-km.</li>
+</ol>
+<p>Two optional runtime parameters can be used to make the time-stepping
+more intricate:</p>
+<ol class="arabic simple">
+<li>The mass balance accumulation time, <em>mbal_accum_time</em> (in years),
+is the period over which mass balance information is accumulated
+before calling Glissade. By default, the mass balance accumulation time
+is equal to either the ice sheet timestep or the mass balance
+timestep, whichever is larger. (For current defaults, this means that
+<em>mbal_accum_time</em> is set equal to the mass balance timestep: 1
+year.) But suppose, for example, that the ice sheet timestep is 5
+years. If we set mbal_accum_time = 1.0, we accumulate mass balance
+information for 1 year and use this mass balance to force the ice
+sheet model, thus avoiding 4 additional years of accumulating mass
+balance data. <strong>Note that this parameter cannot currently be modified
+via *user_nl_cism*, because it is not recommended that users change
+it.</strong></li>
+<li>The timestep multiplier<em>, ice_tstep_multiply</em>, is equal to the
+number of ice sheet timesteps executed for each accumulated mass
+balance field. Suppose that the mass balance timestep is 1 year, the
+ice sheet timestep is 1 year, and ice_tstep_multiply = 10. Glad
+will accumulate and average mass balance information for 1 year, then
+execute 10 ice sheet model timesteps of 1 year each. In other words,
+the ice sheet dynamics is accelerated relative to the land and
+atmosphere. This option may be useful in CESM for multi-millennial
+ice-sheet simulations where it is impractical to run the atmosphere
+and ocean models for more than a few centuries.</li>
+</ol>
+<p>These time options (apart from the forcing timestep) are set in
+<em>cism.config</em>. This file contains (or may contain) the following
+timestep information:</p>
+<ol class="arabic simple">
+<li>The ice sheet timestep <em>dt</em> (in years) is set in the section
+[<em>time</em>] in the ice config file.</li>
+<li>The mass balance time step is not set directly in the config file,
+but is set to the number of hours in a year (i.e., 8760 hours
+for a 365-day year).</li>
+<li>The values of <em>ice_tstep_multiply</em> and <em>mbal_accum_time</em>, if
+present, are listed in the section [<em>GLAD climate</em>].</li>
+</ol>
+<p>Note that the total length of the simulation is not determined by
+CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="controlling-output.html" class="btn btn-neutral float-right" title="5. Controlling output from CISM and CLM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="t-compsets.html" class="btn btn-neutral" title="3. Running the standalone ice sheet model within CESM: T compsets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>var version_json_loc = "../../versions.json";</script>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'CESM2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
