@@ -1,0 +1,7 @@
+{
+    "versions": {
+	"master": "../../master/html",
+	"CESM2.0": "../../release-cesm2.0/html",
+	"CESM2.1": "../../release-cesm2.1/html"
+    }
+}
