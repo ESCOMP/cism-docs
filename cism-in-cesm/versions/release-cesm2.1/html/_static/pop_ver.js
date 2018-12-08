@@ -9,6 +9,9 @@ $(document).ready(function() {
     var mylist = $("#version-list");
     mylist.empty();
     $.getJSON(version_json_loc, function(data) {
+	if (data.hasOwnProperty('master')) {
+	    alert("Yeah");
+	}
         $.each(data, function(version_name, version_dir) {
 	    if (version_dir == cur_version_dir) {
 		/* If you click on the current version, you should stay at the current
@@ -26,5 +29,4 @@ $(document).ready(function() {
             }
         });
     });
-    mylist.selectedIndex = "0";
 });
