@@ -9,18 +9,20 @@ $(document).ready(function() {
     var mylist = $("#version-list");
     mylist.empty();
     $.getJSON(version_json_loc, function(data) {
-	if (data.hasOwnProperty('blah')) {
-	    alert("Yeah");
-	} else {
-	    alert("Nope");
+	if (data.hasOwnProperty(cur_version_dir)) {
+	    /* First add the current version so that it appears first in the drop-down
+	       menu and starts as the selected element of the menu. If you click on the
+	       current version, you should stay at the current page.
+
+	       The conditional around this block should generally be true, but we check it
+	       just in case the current version is missing from the versions.json file for
+	       some reason.*/
+	    cur_version_name = data[cur_version_dir];
+	    mylist.append($("<option>", {value: document.baseURI, text: cur_version_name}));
 	}
-        $.each(data, function(version_name, version_dir) {
-	    if (version_dir == cur_version_dir) {
-		/* If you click on the current version, you should stay at the current
-		   page.
-		*/
-		mylist.prepend($("<option>", {value: document.baseURI, text: version_name}));
-	    } else {
+	// Now add the other versions
+        $.each(data, function(version_dir, version_name) {
+	    if (version_dir != cur_version_dir) {
 		/* If you click on a different version, you should go to the root of the
 		   documentation for that version. This assumes paths like
 		   https://blah.github.io/versions/VERSIONFOO/html/bar/index.html. So we

@@ -1,5 +1,5 @@
 {
     "master": "master",
-    "CESM2.0": "release-cesm2.0",
-    "CESM2.1": "release-cesm2.1"
+    "release-cesm2.0": "CESM2.0",
+    "release-cesm2.1": "CESM2.1"
 }
