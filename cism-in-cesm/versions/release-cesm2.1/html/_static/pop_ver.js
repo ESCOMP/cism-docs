@@ -9,8 +9,10 @@ $(document).ready(function() {
     var mylist = $("#version-list");
     mylist.empty();
     $.getJSON(version_json_loc, function(data) {
-	if (data.hasOwnProperty('master')) {
+	if (data.hasOwnProperty('blah')) {
 	    alert("Yeah");
+	} else {
+	    alert("Nope");
 	}
         $.each(data, function(version_name, version_dir) {
 	    if (version_dir == cur_version_dir) {
