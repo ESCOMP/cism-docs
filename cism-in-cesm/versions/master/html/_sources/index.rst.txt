@@ -13,7 +13,7 @@ CESM Land Ice Documentation and User Guide
 Table of contents
 =================
 
-Test 7
+Test 8
 
 .. toctree::
    :maxdepth: 2
