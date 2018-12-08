@@ -16,7 +16,8 @@ $(document).ready(function() {
 
 	       The conditional around this block should generally be true, but we check it
 	       just in case the current version is missing from the versions.json file for
-	       some reason.*/
+	       some reason.
+	    */
 	    cur_version_name = data[cur_version_dir];
 	    mylist.append($("<option>", {value: document.baseURI, text: cur_version_name}));
 	}
