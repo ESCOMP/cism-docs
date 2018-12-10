@@ -204,13 +204,11 @@ example, to give output every 10 years, set:</p>
 fields written to the history file are the ice thickness (<code class="docutils literal notranslate"><span class="pre">thk</span></code>), upper surface
 elevation (<code class="docutils literal notranslate"><span class="pre">usurf</span></code>), bedrock elevation (<code class="docutils literal notranslate"><span class="pre">topg</span></code>), and the surface mass balance
 (<code class="docutils literal notranslate"><span class="pre">smb</span></code>) and surface temperature (<code class="docutils literal notranslate"><span class="pre">artm</span></code>) downscaled to the ice sheet grid.</p>
-<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. The
-source files with names <code class="docutils literal notranslate"><span class="pre">*_io.F90.default</span></code> specify the fields than can be written out:
-for CESM, these get copied to files with the same name but with the <code class="docutils literal notranslate"><span class="pre">.default</span></code> stripped
-off. The easiest way to write out new variables for your case is to add them to a file
-ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> and then rebuild the <code class="docutils literal notranslate"><span class="pre">*_io.F90</span></code> files using a python script. The
-necessary script can be found in <code class="docutils literal notranslate"><span class="pre">$CASEROOT/Buildconf/cismIOconf</span></code>. See the
-<code class="docutils literal notranslate"><span class="pre">README.cismIO</span></code> file in that directory for details.</p>
+<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. Files
+with names ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> in the source tree specify the fields that can be
+written out. You can add new variables to one of these <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files and rebuild the
+model in order to enable new output fields. (Note: These <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files can NOT be
+placed in SourceMods: they need to be changed in-place in the source tree.)</p>
 <p>Model restart frequency is coordinated by the CESM coupler. The restart file contains all
 the fields required for exact restart.  However, the restart will be exact only if the
 file is written immediately after an ice dynamics time step. This will normally be the
