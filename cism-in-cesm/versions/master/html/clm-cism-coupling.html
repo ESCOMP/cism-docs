@@ -111,15 +111,34 @@
 <li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">6. Coupling CLM and CISM</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modes-of-coupling-clm-and-cism">6.1. Modes of coupling CLM and CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#one-way-diagnostic-coupling">6.1.1. One-way (diagnostic) coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#two-way-interactive-coupling">6.1.2. Two-way (interactive) coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#non-evolving-ice-sheet">6.1.1. Non-evolving ice sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evolving-ice-sheet-with-two-way-interactive-coupling">6.1.2. Evolving ice sheet with two-way (interactive) coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evolving-ice-sheet-with-one-way-diagnostic-coupling">6.1.3. Evolving ice sheet with one-way (diagnostic) coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stub-glc-model-cism-absent">6.1.4. Stub GLC model (CISM absent)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#brief-overview-of-clm-cism-coupling">6.2. Brief overview of CLM-CISM coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fields-exchanged-between-clm-and-cism">6.3. Fields exchanged between CLM and CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#clm-to-cism">6.3.1. CLM to CISM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cism-to-clm">6.3.2. CISM to CLM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#other-fields-sent-from-cism">6.3.3. Other fields sent from CISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clm-to-cism">6.3.1. CLM to CISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">6.3.1.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-mass-balance-smb">6.3.1.2. Surface mass balance (SMB)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-temperature">6.3.1.3. Surface temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-topographic-height">6.3.1.4. Surface topographic height</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cism-to-clm">6.3.2. CISM to CLM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mask-of-ice-covered-vs-ice-free-points">6.3.2.1. Mask of ice-covered vs. ice-free points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-height">6.3.2.2. Surface height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-grid-mask">6.3.2.3. Ice sheet grid mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes">6.3.2.4. Ice sheet mask where we are potentially sending non-zero fluxes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#heat-flux">6.3.2.5. Heat flux</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#other-fields-sent-from-cism">6.3.3. Other fields sent from CISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ice-runoff-calving">6.3.3.1. Ice runoff (calving)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#liquid-runoff-basal-melting">6.3.3.2. Liquid runoff (basal melting)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#remapping-fields-between-clm-and-cism">6.4. Remapping fields between CLM and CISM</a><ul>
@@ -198,35 +217,258 @@
             
   <div class="section" id="coupling-clm-and-cism">
 <span id="clm-cism-coupling"></span><h1>6. Coupling CLM and CISM<a class="headerlink" href="#coupling-clm-and-cism" title="Permalink to this headline">¶</a></h1>
-<p>TODO: This section is under construction.  Several section heads are just placeholders for now.</p>
 <div class="section" id="modes-of-coupling-clm-and-cism">
 <h2>6.1. Modes of coupling CLM and CISM<a class="headerlink" href="#modes-of-coupling-clm-and-cism" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="one-way-diagnostic-coupling">
-<h3>6.1.1. One-way (diagnostic) coupling<a class="headerlink" href="#one-way-diagnostic-coupling" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="non-evolving-ice-sheet">
+<h3>6.1.1. Non-evolving ice sheet<a class="headerlink" href="#non-evolving-ice-sheet" title="Permalink to this headline">¶</a></h3>
+<p>In typical CESM runs, CISM is not evolving; CLM computes the ice sheet surface mass
+balance and sends it to CISM, but CISM’s ice sheet geometry remains fixed over the course
+of the run, and CISM does not send any fluxes to other CESM components. These
+configurations use compsets with <code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code> in their long name (or this can be set
+after setting up a case via the xml variable, <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code>). In these runs, CISM serves
+two roles in the system:</p>
+<ol class="arabic simple">
+<li>Over the CISM domain (typically Greenland in CESM2), CISM dictates
+glacier areas and topographic elevations, overriding the values on
+CLM’s surface dataset. CISM also dictates the elevation of
+non-glacier land units in its domain, and only in this domain are
+atmospheric fields downscaled to non-glacier land units.</li>
+<li>CISM provides the grid onto which SMB is downscaled.</li>
+</ol>
 </div>
-<div class="section" id="two-way-interactive-coupling">
-<h3>6.1.2. Two-way (interactive) coupling<a class="headerlink" href="#two-way-interactive-coupling" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="evolving-ice-sheet-with-two-way-interactive-coupling">
+<h3>6.1.2. Evolving ice sheet with two-way (interactive) coupling<a class="headerlink" href="#evolving-ice-sheet-with-two-way-interactive-coupling" title="Permalink to this headline">¶</a></h3>
+<p>Dynamic ice sheet evolution can be turned on by using a compset with <code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code> in
+its long name, or by setting the xml variable <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> after setting up a case. In
+this configuration, CISM sends updated glacier areas and topographic elevations to CLM at
+the end of each year. In addition, CISM sends fluxes of ice and liquid water to the
+ocean. CLM responds to these changes by adjusting the areas of the glacier land unit and
+each elevation class within this land unit, as well as the mean topographic heights of
+each elevation class. Thus, CLM’s glacier areas and elevations remain in sync with
+CISM’s.</p>
+<p>When running with two-way coupling, conservation of water and energy in the CLM-CISM
+coupling becomes important. There are still some unhandled edge cases in this regard (one
+significant case being when CLM dictates an amount of glacial melt that exceeds the
+available ice in a CISM grid cell), but we do take pains to achieve conservation in most
+cases. An important mechanism to achieve this conservation is via a global renormalization
+step done when mapping SMB from CLM to CISM, as described in <a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.4.1</span></a>. <strong>By
+default, this renormalization is done when running with a two-way-coupled ice sheet that
+sends fluxes to other components (which is typically true in this case of an evolving ice
+sheet), but is turned off in other cases. This leads to small differences in the remapped
+SMB field in runs with an evolving vs. non-evolving ice sheet. This default can be
+overridden via the driver namelist variable,</strong> <code class="docutils literal notranslate"><span class="pre">glc_renormalize_smb</span></code>, <strong>keeping in mind
+that setting this to</strong> <code class="docutils literal notranslate"><span class="pre">off</span></code> <strong>will break conservation for a configuration with an
+evolving, two-way-coupled ice sheet.</strong></p>
+</div>
+<div class="section" id="evolving-ice-sheet-with-one-way-diagnostic-coupling">
+<h3>6.1.3. Evolving ice sheet with one-way (diagnostic) coupling<a class="headerlink" href="#evolving-ice-sheet-with-one-way-diagnostic-coupling" title="Permalink to this headline">¶</a></h3>
+<p>A hybrid mode is also possible, in which CISM evolves dynamically but does not feed back
+to the rest of the system. This configuration is enabled by turning on CISM evolution (via
+using a <code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code> compset or changing the <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> xml variable to
+<code class="docutils literal notranslate"><span class="pre">TRUE</span></code>), but then changing the xml variable <code class="docutils literal notranslate"><span class="pre">GLC_TWO_WAY_COUPLING</span></code> to <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>. This
+change results in changes to CLM and CISM:</p>
+<ul class="simple">
+<li>CLM will not respond to changes in CISM’s glacier areas and topographic elevations. In
+addition, even at initialization, CLM is not affected by CISM’s glacier areas and
+topographic elevations, instead specifying these from its initial conditions file, or
+from its surface dataset in a cold start or interpolated-start run (as would be the case
+when running with a stub GLC model, as described below). (In the future, we may want to
+allow the option that CLM synchronizes its glacier areas and topographic elevations at
+initialization, but then does not respond to any changes throughout the run.)</li>
+<li>CISM does not send fluxes of ice or liquid water to the ocean. Instead, fluxes from CLM
+are treated the same as in the non-evolving ice sheet case. Note that this behavior of
+whether or not CISM sends fluxes to the ocean can also be controlled independently from
+<code class="docutils literal notranslate"><span class="pre">GLC_TWO_WAY_COUPLING</span></code>, via the CISM namelist variable, <code class="docutils literal notranslate"><span class="pre">zero_gcm_fluxes</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="stub-glc-model-cism-absent">
+<h3>6.1.4. Stub GLC model (CISM absent)<a class="headerlink" href="#stub-glc-model-cism-absent" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to run CESM with a stub glacier model rather than CISM by using
+compsets with <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in place of <code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code>. These configurations are similar to
+those with a non-evolving ice sheet, with the following differences:</p>
+<ol class="arabic simple">
+<li>CLM’s glacier areas and elevations will be taken entirely from CLM’s initial conditions
+file, or from its surface dataset in a cold start or interpolated-start run.</li>
+<li>In CLM, no downscaling of atmospheric forcings is done over non-glacier land units (but
+atmospheric forcings are still downscaled over glacier land units in areas with
+multiple glacier elevation classes).</li>
+<li>There is no downscaling of CLM’s surface mass balance and temperature fields to a
+higher-resolution glacier grid.</li>
+</ol>
+<p>This configuration is useful for single-point or regional CLM simulations, or for
+configurations not supported by CISM (such as runs with a Gregorian, rather than no-leap,
+calendar), or simply to avoid needing to make CLM-CISM mapping files when running with a
+new land/atmosphere grid.</p>
 </div>
 </div>
 <div class="section" id="brief-overview-of-clm-cism-coupling">
 <h2>6.2. Brief overview of CLM-CISM coupling<a class="headerlink" href="#brief-overview-of-clm-cism-coupling" title="Permalink to this headline">¶</a></h2>
+<p>This section provides a brief overview of the two-way coupling between CLM and
+CISM. Details on the coupling fields and their remapping are given in the following
+sections.</p>
+<p>CLM passes two fields to CISM: surface temperature and surface mass balance (SMB). Surface
+temperature is provided only for glacier land units, whereas SMB is provided for both
+glacier and vegetated land units. Over the CISM domain, CLM runs with “virtual” vegetated
+and glacier land units, so that it is able to provide forcing fields even for grid cells
+where a given land unit has zero area. SMB over glacier land units can be positive (ice
+accumulation), negative (ice melt) or zero; SMB over vegetated land units can only be
+positive or zero. A positive SMB over vegetated land units will trigger glacial inception
+in any underlying CISM cell that is currently unglaciated.</p>
+<p>These forcing fields are sent from CLM to the CESM coupler every time step (typically 1/2
+hour). The coupler creates annual averages, remaps and downscales these annual averages to
+the CISM grid, then calls CISM at the end of the year. CISM then uses these forcings to
+drive its dynamics for the year, likely resulting in changes to glacier area and
+topographic elevations. These new areas and elevations are sent back to CLM (via the
+coupler); CLM updates its own areas and elevations over the CISM domain to match these for
+the following year’s computations.</p>
+<p>There is an important but subtle point here: Although CLM is responsible for computing
+SMB, including glacial inception, its glacier areas and elevations do not change until it
+receives a signal to do so from CISM.</p>
 </div>
 <div class="section" id="fields-exchanged-between-clm-and-cism">
 <h2>6.3. Fields exchanged between CLM and CISM<a class="headerlink" href="#fields-exchanged-between-clm-and-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="clm-to-cism">
 <h3>6.3.1. CLM to CISM<a class="headerlink" href="#clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="overview">
+<h4>6.3.1.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
+<p>CLM passes three fields to the coupler for the sake of CLM-CISM coupling: surface mass
+balance (SMB), surface temperature, and surface topographic height. The first two are
+remapped/downscaled and sent to CISM, whereas surface topographic height is just used by
+the coupler itself in the downscaling routine. Each CLM grid cell sends <span class="math notranslate nohighlight">\(N+1\)</span> copies
+of each of these fields, where <span class="math notranslate nohighlight">\(N\)</span> is the number of elevation classes, and the
+additional <span class="math notranslate nohighlight">\(1\)</span> is for the bare/vegetated portion of the grid cell. (However, surface
+temperature and topographic height are irrelevant for the bare/vegetated portion.) CLM
+sends values of these fields every time step (typically 1/2 hour). The coupler creates
+annual averages of the fields before remapping and downscaling them to the CISM grid.</p>
+<p>Details of CLM’s glacier treatment, including the surface mass balance calculation, are
+given in the “Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical Note</a>.</p>
+<p>Note that the CLM-CISM coupling does <em>not</em> currently have the capability to couple using a
+positive degree day (PDD) scheme.</p>
+</div>
+<div class="section" id="surface-mass-balance-smb">
+<h4>6.3.1.2. Surface mass balance (SMB)<a class="headerlink" href="#surface-mass-balance-smb" title="Permalink to this headline">¶</a></h4>
+<p>The SMB calculation is described in detail in the “Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical
+Note</a>. Here we just summarize a few important points.</p>
+<p>CLM’s SMB currently only considers changes in the ice column, <em>not</em> changes in the snow
+pack. A positive SMB (ice accumulation) is generated when the snow pack grows beyond its
+prescribed limit (snow capping). A negative SMB (ice melt) is generated when CLM’s ice
+column experiences melt. A positive (but <em>not</em> negative) SMB can be generated over CLM’s
+vegetated land unit; this condition triggers glacial inception in CISM.</p>
+</div>
+<div class="section" id="surface-temperature">
+<h4>6.3.1.3. Surface temperature<a class="headerlink" href="#surface-temperature" title="Permalink to this headline">¶</a></h4>
+<p>CLM sends surface temperature to provide an upper boundary condition for CISM’s
+temperature calculations. In CLM, this is the temperature of the top ice layer.</p>
+</div>
+<div class="section" id="surface-topographic-height">
+<h4>6.3.1.4. Surface topographic height<a class="headerlink" href="#surface-topographic-height" title="Permalink to this headline">¶</a></h4>
+<p>The average topographic height of each glacier elevation class is needed for the
+downscaling, as described below. When running two-way-coupled, CLM’s topographic heights
+are obtained via averages of the underlying CISM grid cells. However, CLM sends these
+heights back to the coupler so that the downscaling routine has access to these values
+regardless of whether we are running one-way or two-way coupled.</p>
+</div>
 </div>
 <div class="section" id="cism-to-clm">
 <h3>6.3.2. CISM to CLM<a class="headerlink" href="#cism-to-clm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="mask-of-ice-covered-vs-ice-free-points">
+<h4>6.3.2.1. Mask of ice-covered vs. ice-free points<a class="headerlink" href="#mask-of-ice-covered-vs-ice-free-points" title="Permalink to this headline">¶</a></h4>
+<p>Each grid cell in CISM is classified as either ice-covered or ice-free (there are no
+partially-ice-covered cells). CISM uses different definitions of ice-covered for different
+purposes; for the purposes of this coupling, any cell with ice thickness greater than zero
+is considered to be ice-covered. This field is used in conjunction with surface height to
+determine the total glacier fraction in each CLM grid cell, as well as the fractional
+cover of each CLM glacier elevation class.</p>
+<p>This field is needed even when running one-way-coupled, because it is used in the
+CLM-to-CISM downscaling (to determine which CISM grid cells should receive SMB from
+glacier land units vs. vegetated land units).</p>
+</div>
+<div class="section" id="surface-height">
+<h4>6.3.2.2. Surface height<a class="headerlink" href="#surface-height" title="Permalink to this headline">¶</a></h4>
+<p>CISM sends the surface height of each grid cell. For glaciers, this is the height of the
+ice surface. For ice-free points, this is the topographic height. This field is used to
+determine the fractional cover and mean elevation of each CLM glacier elevation class, as
+well as the mean elevation of the vegetated land unit in each CLM grid cell within the
+CISM domain.</p>
+<p>This field is needed even when running one-way-coupled, because it is used in the
+CLM-to-CISM downscaling.</p>
+</div>
+<div class="section" id="ice-sheet-grid-mask">
+<h4>6.3.2.3. Ice sheet grid mask<a class="headerlink" href="#ice-sheet-grid-mask" title="Permalink to this headline">¶</a></h4>
+<p>CLM needs a way to know where CISM is sending valid data, and thus knowing where it should
+update its glacier areas and elevations. This is provided via the “ice sheet grid
+mask”. CISM sets this field to 1 for all points that are either bare land or ice-covered
+(including floating ice), and 0 for open ocean (this is determined based on the criterion,
+<code class="docutils literal notranslate"><span class="pre">usrf</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>; in principle, this criterion could cause problems if there were a grid cell
+with <code class="docutils literal notranslate"><span class="pre">usrf</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code> despite having non-zero ice thickness). This mask is important so that
+CLM maintains the values specified by its surface dataset outside the CISM domain, as well
+as in areas that CISM considers to be open ocean but CLM considers to be at least
+partially land-covered.</p>
+<p>One subtlety regards the treatment of land points that fall within CISM’s rectangular grid
+but are outside of Greenland - chiefly, Ellesmere Island. We do not want CISM to handle
+these points, and we want CLM to maintain the glacier cover from its surface dataset
+there. To accomplish this, all land points outside of Greenland are artificially submerged
+to below sea level in a preprocessing step applied to CISM’s input file. Thus, these
+points are not included in the ice sheet grid mask.</p>
+<p>This mask is (slightly) dynamic in time, both because of its inclusion of ice shelves and
+because (with isostasy) CISM’s land-ocean boundary can change in time.</p>
+<p>This mask is regridded to the CLM grid using simple area-conservative
+remapping. (Elevation classes are irrelevant here.)</p>
+</div>
+<div class="section" id="ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes">
+<h4>6.3.2.4. Ice sheet mask where we are potentially sending non-zero fluxes<a class="headerlink" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes" title="Permalink to this headline">¶</a></h4>
+<p>CLM also needs to know where CISM is a fully-coupled part of the climate system - i.e.,
+where it is potentially sending non-zero runoff fluxes to the ocean. CLM uses this
+information to determine how to route its positive and negative SMB terms in order to
+conserve water. This is described in detail in the “Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM
+Technical Note</a>. In particular, see the discussion of the dependence on
+<em>glc_dyn_runoff_routing</em> in that chapter: CLM’s <em>glc_dyn_runoff_routing</em> is true
+within this mask and false outside of it.</p>
+<p>This mask is currently a subset of the ice sheet grid mask. Currently, it is identical to
+the ice sheet grid mask if we are running with an evolving, two-way-coupled ice sheet, and
+otherwise is zero everywhere. In the future, when we allow multiple ice sheets in CESM
+(e.g., Greenland and Antarctica), it is possible that one ice sheet will operate
+two-way-coupled while another is one-way-coupled. In this case, this mask would match the
+ice sheet grid mask for the two-way-coupled ice sheet and would be zero for the other.</p>
+<p>Note that, like the ice sheet grid mask, this mask excludes CISM’s open ocean grid
+cells. CISM does not currently have code in place to handle inputs of SMB over open ocean
+(e.g., routing this SMB directly to the ocean), so CLM needs to treat these open ocean
+areas the same as points completely outside CISM’s domain for conservation reasons.</p>
+<p>This mask, like the ice sheet grid mask, is regridded to the CLM grid using simple
+area-conservative remapping. (Elevation classes are irrelevant here.)</p>
+</div>
+<div class="section" id="heat-flux">
+<h4>6.3.2.5. Heat flux<a class="headerlink" href="#heat-flux" title="Permalink to this headline">¶</a></h4>
+<p>Hooks are in place for CISM to send the heat flux from the ice interior to the surface to
+each CLM elevation class. However, this is not yet fully implemented, leading to a small
+loss of energy conservation.</p>
+<p>This flux is only applicable when running with an evolving, two-way-coupled ice sheet.</p>
+</div>
 </div>
 <div class="section" id="other-fields-sent-from-cism">
 <h3>6.3.3. Other fields sent from CISM<a class="headerlink" href="#other-fields-sent-from-cism" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ice-runoff-calving">
+<h4>6.3.3.1. Ice runoff (calving)<a class="headerlink" href="#ice-runoff-calving" title="Permalink to this headline">¶</a></h4>
+<p>CISM sends an ice runoff - i.e., calving - flux directly to the ocean (POP). When this flux
+reaches the ocean, POP immediately melts the ice, so this ice flux is equivalent to a
+negative salinity flux together with a negative heat flux. Hooks are in place to instead
+direct this flux to the sea ice model, but CESM’s sea ice model is not yet capable of
+simulating icebergs.</p>
+<p>This flux is only applicable when running with an evolving, two-way-coupled ice sheet.</p>
+</div>
+<div class="section" id="liquid-runoff-basal-melting">
+<h4>6.3.3.2. Liquid runoff (basal melting)<a class="headerlink" href="#liquid-runoff-basal-melting" title="Permalink to this headline">¶</a></h4>
+<p>CISM sends a liquid runoff flux directly to the ocean; this is generated from basal
+melting. Note that this term does <em>not</em> include surface melting: the surface melt term is
+sent from CLM to the ocean via the runoff routing model.</p>
+<p>This flux is only applicable when running with an evolving, two-way-coupled ice sheet.</p>
+</div>
 </div>
 </div>
 <div class="section" id="remapping-fields-between-clm-and-cism">
 <h2>6.4. Remapping fields between CLM and CISM<a class="headerlink" href="#remapping-fields-between-clm-and-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="remapping-surface-mass-balance-from-clm-to-cism">
-<h3>6.4.1. Remapping surface mass balance from CLM to CISM<a class="headerlink" href="#remapping-surface-mass-balance-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<span id="remapping-smb"></span><h3>6.4.1. Remapping surface mass balance from CLM to CISM<a class="headerlink" href="#remapping-surface-mass-balance-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>As described above, the surface mass balance (SMB) of ice sheets is computed by CLM
 for each column (i.e., elevation class) of each glaciated landunit in each grid cell on the land grid.
 The SMB is then remapped by the coupler to the finer ice sheet grid and passed to CISM.
