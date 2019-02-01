@@ -326,6 +326,12 @@ starting with observed initial conditions rather than an existing restart file.<
 a startup run.</p>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">CISM_OBSERVED_IC</span></code> is ignored for startup runs; for branch runs, it must be
 FALSE.</p>
+<p>If you are doing a hybrid run where you have changed <code class="docutils literal notranslate"><span class="pre">cisminputfile</span></code> to point to a
+restart file from a standalone CISM case (i.e., a run done outside of CESM) or a case with
+different physics options, then you must also set <code class="docutils literal notranslate"><span class="pre">restart</span> <span class="pre">=</span> <span class="pre">0</span></code> in
+<code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. (Otherwise <code class="docutils literal notranslate"><span class="pre">restart</span></code> has a default value of 1 for a hybrid case, which
+can give incorrect behavior if you are using a restart file from a case with different
+physics options.)</p>
 </div>
 </div>
 <div class="section" id="modifying-namelist-settings">

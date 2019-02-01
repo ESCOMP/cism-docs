@@ -141,10 +141,12 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#remapping-fields-between-clm-and-cism">6.4. Remapping fields between CLM and CISM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#remapping-fields-sent-from-clm-to-cism">6.4. Remapping fields sent from CLM to CISM</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#remapping-surface-mass-balance-from-clm-to-cism">6.4.1. Remapping surface mass balance from CLM to CISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remapping-surface-temperature-from-clm-to-cism">6.4.2. Remapping surface temperature from CLM to CISM</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#clm-s-glacier-regions-and-their-behaviors">6.5. CLM’s glacier regions and their behaviors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -477,8 +479,8 @@ sent from CLM to the ocean via the runoff routing model.</p>
 </div>
 </div>
 </div>
-<div class="section" id="remapping-fields-between-clm-and-cism">
-<h2>6.4. Remapping fields between CLM and CISM<a class="headerlink" href="#remapping-fields-between-clm-and-cism" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="remapping-fields-sent-from-clm-to-cism">
+<h2>6.4. Remapping fields sent from CLM to CISM<a class="headerlink" href="#remapping-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="remapping-surface-mass-balance-from-clm-to-cism">
 <span id="remapping-smb"></span><h3>6.4.1. Remapping surface mass balance from CLM to CISM<a class="headerlink" href="#remapping-surface-mass-balance-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>As described above, the surface mass balance (SMB) of ice sheets is computed by CLM
@@ -558,6 +560,50 @@ by up to 10%.  If we used conservative rather than bilinear remapping, differenc
 because of area distortions on CISM’s polar stereographic grid.
 Thus the local errors for bilinear remapping and renormalization are similar to the local errors for conservative remapping.
 Bilinear remapping, however, is far smoother; smoothness is obtained at the cost of local conservation.</p>
+</div>
+<div class="section" id="remapping-surface-temperature-from-clm-to-cism">
+<h3>6.4.2. Remapping surface temperature from CLM to CISM<a class="headerlink" href="#remapping-surface-temperature-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<p>Surface temperature is remapped similarly to surface mass balance (see
+<a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.4.1</span></a>), but without the renormalization and without separation into
+accumulation vs. ablation zones:</p>
+<ol class="arabic simple">
+<li>CLM computes surface temperature for each grid cell and elevation class (EC).</li>
+<li>The coupler accumulates and averages surface temperature for each EC over the CLM-CISM
+coupling interval (typically 1 year).</li>
+<li>For each EC, the coupler does a bilinear remapping of surface temperature from the CLM
+grid to the CISM grid.</li>
+<li>For each CISM grid cell, the coupler does a linear interpolation in elevation space
+between adjacent ECs, to compute the surface temperature at the CISM cell elevation.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="clm-s-glacier-regions-and-their-behaviors">
+<h2>6.5. CLM’s glacier regions and their behaviors<a class="headerlink" href="#clm-s-glacier-regions-and-their-behaviors" title="Permalink to this headline">¶</a></h2>
+<p>CLM divides the world’s glaciers and ice sheets into multiple regions that differ in
+various respects. For a detailed description of these different glacier behaviors, see the
+“Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical Note</a>. Here we focus on the user interface for
+controlling these behaviors.</p>
+<p>Two sets of CLM inputs work together to determine glacier physics in each grid cell: the
+<code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field on the surface dataset and a set of namelist options (whose names
+begin with <code class="docutils literal notranslate"><span class="pre">glacier_region</span></code>; see the <a class="reference external" href="http://www.cesm.ucar.edu/models/cesm2/settings/current/clm5_0_nml.html">CLM Namelist Definitions</a> for details). The
+<code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field is an integer from 1 through the number of glacier regions, as
+well as 0 for all grid cells that are not part of a distinct other region. The various
+<code class="docutils literal notranslate"><span class="pre">glacier_region</span></code> namelist options then specify the behavior for each of these
+regions. The first element in each namelist array specifies the behavior of
+<code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> 0, the second element specifies the behavior of <code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> 1,
+etc.</p>
+<p>(We rely on CLM’s surface dataset rather than making behaviors dependent on CISM’s ice
+sheet grid mask because we don’t want CLM physics to change just because CISM is using a
+different grid.)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want ice sheet forcings (SMB and surface temperature) for regions other than the
+standard Greenland CISM domain, it is <strong>critical</strong> that you give some thought to this
+<code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field and the associated namelist options: You will need to ensure
+that your glacier regions are set up to have virtual elevation classes
+(<code class="docutils literal notranslate"><span class="pre">glacier_region_behavior</span> <span class="pre">=</span> <span class="pre">'virtual'</span></code>), and that glaciers produce a valid SMB field
+(<code class="docutils literal notranslate"><span class="pre">glacier_region_melt_behavior</span> <span class="pre">=</span> <span class="pre">'replaced_by_ice'</span></code>) wherever you want forcings for
+CISM.</p>
 </div>
 </div>
 </div>
