@@ -118,35 +118,46 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#brief-overview-of-clm-cism-coupling">6.2. Brief overview of CLM-CISM coupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fields-exchanged-between-clm-and-cism">6.3. Fields exchanged between CLM and CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#clm-to-cism">6.3.1. CLM to CISM</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#overview">6.3.1.1. Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#surface-mass-balance-smb">6.3.1.2. Surface mass balance (SMB)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#surface-temperature">6.3.1.3. Surface temperature</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#surface-topographic-height">6.3.1.4. Surface topographic height</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#cism-to-clm">6.3.2. CISM to CLM</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mask-of-ice-covered-vs-ice-free-points">6.3.2.1. Mask of ice-covered vs. ice-free points</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#surface-height">6.3.2.2. Surface height</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-grid-mask">6.3.2.3. Ice sheet grid mask</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes">6.3.2.4. Ice sheet mask where we are potentially sending non-zero fluxes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#heat-flux">6.3.2.5. Heat flux</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#other-fields-sent-from-cism">6.3.3. Other fields sent from CISM</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#ice-runoff-calving">6.3.3.1. Ice runoff (calving)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#liquid-runoff-basal-melting">6.3.3.2. Liquid runoff (basal melting)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resetting-clm-s-baseline-states-for-dynamic-landunits">6.3. Resetting CLM’s baseline states for dynamic landunits</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-of-clm-s-dynbal-fluxes">6.3.1. Overview of CLM’s dynbal fluxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reducing-dynbal-fluxes-via-reset-dynbal-baselines">6.3.2. Further reducing dynbal fluxes via <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#confirming-that-the-dynbal-fluxes-are-small-in-your-simulation">6.3.3. Confirming that the dynbal fluxes are small in your simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#more-details-and-thoughts-on-these-dynbal-fluxes">6.3.4. More details and thoughts on these dynbal fluxes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#two-ways-to-think-about-the-subtraction-of-baselines">6.3.4.1. Two ways to think about the subtraction of baselines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-resources">6.3.4.2. Other resources</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#remapping-fields-sent-from-clm-to-cism">6.4. Remapping fields sent from CLM to CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#remapping-surface-mass-balance-from-clm-to-cism">6.4.1. Remapping surface mass balance from CLM to CISM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#remapping-surface-temperature-from-clm-to-cism">6.4.2. Remapping surface temperature from CLM to CISM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fields-exchanged-between-clm-and-cism">6.4. Fields exchanged between CLM and CISM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clm-to-cism">6.4.1. CLM to CISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">6.4.1.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-mass-balance-smb">6.4.1.2. Surface mass balance (SMB)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-temperature">6.4.1.3. Surface temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-topographic-height">6.4.1.4. Surface topographic height</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#clm-s-glacier-regions-and-their-behaviors">6.5. CLM’s glacier regions and their behaviors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cism-to-clm">6.4.2. CISM to CLM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mask-of-ice-covered-vs-ice-free-points">6.4.2.1. Mask of ice-covered vs. ice-free points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#surface-height">6.4.2.2. Surface height</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-grid-mask">6.4.2.3. Ice sheet grid mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes">6.4.2.4. Ice sheet mask where we are potentially sending non-zero fluxes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#heat-flux">6.4.2.5. Heat flux</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#other-fields-sent-from-cism">6.4.3. Other fields sent from CISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ice-runoff-calving">6.4.3.1. Ice runoff (calving)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#liquid-runoff-basal-melting">6.4.3.2. Liquid runoff (basal melting)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#remapping-fields-sent-from-clm-to-cism">6.5. Remapping fields sent from CLM to CISM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#remapping-surface-mass-balance-from-clm-to-cism">6.5.1. Remapping surface mass balance from CLM to CISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remapping-surface-temperature-from-clm-to-cism">6.5.2. Remapping surface temperature from CLM to CISM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#clm-s-glacier-regions-and-their-behaviors">6.6. CLM’s glacier regions and their behaviors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -253,7 +264,7 @@ coupling becomes important. There are still some unhandled edge cases in this re
 significant case being when CLM dictates an amount of glacial melt that exceeds the
 available ice in a CISM grid cell), but we do take pains to achieve conservation in most
 cases. An important mechanism to achieve this conservation is via a global renormalization
-step done when mapping SMB from CLM to CISM, as described in <a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.4.1</span></a>. <strong>By
+step done when mapping SMB from CLM to CISM, as described in <a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.5.1</span></a>. <strong>By
 default, this renormalization is done when running with a two-way-coupled ice sheet that
 sends fluxes to other components (which is typically true in this case of an evolving ice
 sheet), but is turned off in other cases. This leads to small differences in the remapped
@@ -327,12 +338,172 @@ the following year’s computations.</p>
 SMB, including glacial inception, its glacier areas and elevations do not change until it
 receives a signal to do so from CISM.</p>
 </div>
+<div class="section" id="resetting-clm-s-baseline-states-for-dynamic-landunits">
+<h2>6.3. Resetting CLM’s baseline states for dynamic landunits<a class="headerlink" href="#resetting-clm-s-baseline-states-for-dynamic-landunits" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The information in this section is subtle, but it is important for a fully-coupled run
+with an evolving ice sheet. In particular, it is important that you give some thought
+to CLM’s <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code> namelist flag in order to minimize the fictitious
+sensible heat fluxes generated by CLM’s dynamic landunits code while still conserving
+water and energy. So please read this section carefully and ask for clarifications if
+you are still unsure when to set this flag.</p>
+<p class="last">The information presented here applies to CLM development tags starting with
+<code class="docutils literal notranslate"><span class="pre">ctsm1.0.dev031</span></code> and to the CLM tag used for the ISMIP6 runs
+(<code class="docutils literal notranslate"><span class="pre">ismip6.n01_release-clm5.0.15</span></code>). It does <strong>not</strong> apply to other CLM versions used
+in <code class="docutils literal notranslate"><span class="pre">CESM2.1.z</span></code> releases. You should strive to use a version of CLM where this applies
+(which can be determined based on the availability of the <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code>
+namelist flag) in order to avoid very large dynbal ice and energy fluxes.</p>
+</div>
+<div class="section" id="overview-of-clm-s-dynbal-fluxes">
+<h3>6.3.1. Overview of CLM’s dynbal fluxes<a class="headerlink" href="#overview-of-clm-s-dynbal-fluxes" title="Permalink to this headline">¶</a></h3>
+<p>When subgrid column or landunit areas change in CLM — as occurs with transient glaciers
+— the water and energy states of each column remain constant on a per-area basis. In
+general, this results in a change in the grid cell-integrated water and energy. In order
+to conserve water and energy in the coupled system, CLM generates adjustment
+fluxes. Runoff fluxes (either positive or negative) are generated to conserve liquid water
+and ice, and sensible heat fluxes are generated to conserve energy. Although needed for
+conservation, these “dynbal” fluxes do not have a physical meaning. (See also the
+“Transient Land Use and Land Cover Change” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical Note</a>, and in
+particular the “Mass and Energy Conservation” section in that chapter.)</p>
+<p>CLM’s glacier columns have a different state representation from soil columns: glacier
+columns include nearly 50 m of ice that is (in some sense) “virtual”, yet they do not
+represent the soil under this ice. These two differences work in opposite directions, but
+the first dominates because there is much more mass in the 50 m of glacial ice than there
+is in a typical 50 m soil column. A naïve accounting would therefore generate large dynbal
+fluxes in the transition between glacier and bare soil.</p>
+<p>To reduce these fictitious dynbal fluxes, we subtract baseline values from glacier
+columns, accounting for the two issues mentioned above: (1) we subtract the water and
+energy in the glacier ice, because this is a virtual state in CLM, and (2) we add the
+water and energy from the vegetated column, to account for the fact that we don’t have an
+explicit representation of soil-under-glacier. (This carries the assumption that the
+soil-under-glacier has the same state as the initial vegetated state in that grid cell.)
+We set these baselines in initialization, so they begin equal to the cold start
+state. Water and ice in the glacial ice stay fixed over the course of a simulation, so the
+cold start values should be the same as the current values at any point in time. The heat
+content of the glacial ice does change over time, however, so these default baselines do
+not sufficiently reduce the dynbal sensible heat fluxes. (In addition, the water and ice
+contents in the soil column change over time, although this is a secondary concern.) The
+resolution of this issue is discussed in the following sub-section.</p>
+<p>Note that these baseline values do <strong>not</strong> include aboveground mass and energy — that
+is, any mass and energy in the snow pack or associated with surface water or vegetation.</p>
+</div>
+<div class="section" id="further-reducing-dynbal-fluxes-via-reset-dynbal-baselines">
+<h3>6.3.2. Further reducing dynbal fluxes via <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code><a class="headerlink" href="#further-reducing-dynbal-fluxes-via-reset-dynbal-baselines" title="Permalink to this headline">¶</a></h3>
+<p>As mentioned above, the use of baselines set based on the cold start state is not
+sufficient to reduce the dynbal sensible heat fluxes. For a grid cell that undergoes full
+glaciation or deglaciation in a single year (the first of which can often happen in
+practice in the model), CLM can generate dynbal sensible heat fluxes on the order of 10s
+of W m<sup>-2</sup> every time step for the following year. To reduce these dynbal sensible
+heat fluxes, CLM provides the namelist flag, <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code>. Use of this flag
+can also further reduce the runoff fluxes, since water and ice contents in the soil column
+can change over time.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span> <span class="pre">=</span> <span class="pre">.true.</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code> at the start of a
+simulation resets the baselines for glacier columns to values based on the states in CLM’s
+initial conditions file for that simulation. This can be done, for example, when
+transitioning from an offline spinup to a fully-coupled run. The baseline values are saved
+to CLM’s restart file, so the same baselines will then persist for the remainder of this
+simulation, as well as for any new cases branched off of this one. (This setting only
+impacts startup and hybrid runs. It has no effect in a continue run, so it is safe to keep
+this flag set to <code class="docutils literal notranslate"><span class="pre">.true.</span></code> for resubmissions of the case. It is an error for this to be
+set in a branch run. Furthermore, this setting has no effect in a cold start run.) If the
+states haven’t changed much from the reset point to the point when glacier dynamics occur
+(because the system was close to equilibrium when you reset baselines), then the dynbal
+fluxes arising from glacier dynamics should be very small.</p>
+<p><strong>Setting</strong> <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code> <strong>to true in the midst of a series of simulations
+has the potential to break water and energy conservation, so care is needed regarding
+exactly when to set this flag.</strong> Specifically, any water and energy that has previously
+been added to or removed from states that contribute to these baselines (currently, (a)
+glacier ice and (b) soil water and energy in the vegetated landunit in the same grid cell
+as glaciers) will effectively be ignored when computing conservation corrections due to
+land cover change. Instead, only the change in states from this point forward will be
+considered.</p>
+<p><strong>Here are guidelines for when this flag should and should not be set:</strong></p>
+<ol class="arabic simple">
+<li>If you are starting a fully-coupled (<code class="docutils literal notranslate"><span class="pre">B</span></code> compset) case with an evolving,
+two-way-coupled ice sheet, using initial conditions from a case without a full ocean
+(<code class="docutils literal notranslate"><span class="pre">I</span></code> or <code class="docutils literal notranslate"><span class="pre">F</span></code> compset): You should set <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span> <span class="pre">=</span> <span class="pre">.true.</span></code> at the
+start of this fully-coupled case.</li>
+<li>If you are transitioning from one coupled run with an evolving ice sheet to another
+(e.g., from a historical to a future transient run): Do <strong>not</strong> set
+<code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code>, as this will break conservation.</li>
+<li>What about the situation where you are starting a fully-coupled case with an evolving,
+two-way-coupled ice sheet, using initial conditions from a fully-coupled case with a
+non-evolving ice sheet? For example, you may be doing a series of (a) offline spinup
+(via an <code class="docutils literal notranslate"><span class="pre">I</span></code> compset), (b) further coupled spinup with a non-evolving ice sheet, (c)
+coupled run with an evolving ice sheet; should you reset the baselines at the start
+of (b) or at the start of (c)? Doing so at the start of (b) is safe (as for case (1),
+above), but what about doing so at the start of (c)? It’s unclear whether resetting the
+dynbal baselines at this time is the “right” thing to do. Doing so would likely result
+in smaller dynbal fluxes, but may result in some loss of conservation. Referencing the
+two ways to think about the dynbal fluxes (in section <a class="reference internal" href="#ways-to-think-about-subtraction-of-baselines"><span class="std std-numref">Section 6.3.4.1</span></a>): If we think of the baselines as being arbitrary, then it
+seems safe to reset them at this time, because the dynbal baselines aren’t invoked
+until the onset of transient glacier areas, so it seems safe to reset them up until
+that transient behavior begins. However, if we think of the baselines as being more
+physically-based, then it seems wrong to reset them at this time, because there may
+(for example) have truly been some energy absorbed by CLM’s glacier ice since the start
+of the coupled run, and this energy should be released back to the system when the ice
+sheet retreats.</li>
+</ol>
+<p>Note that the value of this flag has no significant impact on cases with a non-evolving
+ice sheet.</p>
+</div>
+<div class="section" id="confirming-that-the-dynbal-fluxes-are-small-in-your-simulation">
+<h3>6.3.3. Confirming that the dynbal fluxes are small in your simulation<a class="headerlink" href="#confirming-that-the-dynbal-fluxes-are-small-in-your-simulation" title="Permalink to this headline">¶</a></h3>
+<p>When running a coupled simulation with an evolving ice sheet, it is a good idea to
+periodically check CLM’s dynbal fluxes to ensure that they remain relatively small. The
+three relevant fluxes are <code class="docutils literal notranslate"><span class="pre">EFLX_DYNBAL</span></code>, <code class="docutils literal notranslate"><span class="pre">QFLX_LIQ_DYNBAL</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">QFLX_ICE_DYNBAL</span></code>. It is a good idea to check these fluxes for the first few years of
+your simulation, and then periodically spot-check them at various other points throughout
+the run.</p>
+<p>The point of this is to ensure that CLM’s fluxes to the ocean and atmosphere aren’t being
+dominated by these fictitious, conservation-correction fluxes. These fluxes remain
+constant throughout a given year, so it is sufficient to check a single monthly average
+for a given year, or to only output annual averages of these fields.</p>
+</div>
+<div class="section" id="more-details-and-thoughts-on-these-dynbal-fluxes">
+<h3>6.3.4. More details and thoughts on these dynbal fluxes<a class="headerlink" href="#more-details-and-thoughts-on-these-dynbal-fluxes" title="Permalink to this headline">¶</a></h3>
+<p>It is not necessary that you read this sub-section, but we provide it in case you would
+like more details and thoughts on these dynbal fluxes.</p>
+<div class="section" id="two-ways-to-think-about-the-subtraction-of-baselines">
+<span id="ways-to-think-about-subtraction-of-baselines"></span><h4>6.3.4.1. Two ways to think about the subtraction of baselines<a class="headerlink" href="#two-ways-to-think-about-the-subtraction-of-baselines" title="Permalink to this headline">¶</a></h4>
+<p>It seems that there are two ways to think about this subtraction of baselines for the sake
+of computing dynbal fluxes:</p>
+<ol class="arabic simple">
+<li>More physically-based: we choose which states to subtract and add via baselines in
+order to have a state representation that more closely matches reality. For glaciers,
+we subtract the virtual ice column, and add the missing soil-under-glacier.</li>
+<li>Choose baselines in order to minimize dynbal fluxes. We are free to choose whatever
+baselines we want in order to minimize fluxes (as long as these baselines are constant
+in time — though I think it is fine for them to vary for different columns within or
+between grid cells). We can think of counting the water and energy contents relative to
+some arbitrary “zero” state (where the baseline values give this “zero” state), or
+roughly equivalently, counting the change in water and energy contents over time
+relative to some starting point. One way to think about this is that we have some
+unknown states (e.g., the soil under glacier); we are free to keep these values in an
+“unknown” state (rather than assigning them some arbitrary value) until the last
+possible moment.</li>
+</ol>
+<p>I’m not sure if (2) is always acceptable. For glaciers, it turns out that the two methods
+lead us to the same place for mass, though not necessarily for energy. For cases where the
+two ways of thinking lead us to different places, I’m not sure if (2) is an acceptable way
+to think about these baselines, in terms of conservation.</p>
+</div>
+<div class="section" id="other-resources">
+<h4>6.3.4.2. Other resources<a class="headerlink" href="#other-resources" title="Permalink to this headline">¶</a></h4>
+<p>See also the “Transient Land Use and Land Cover Change” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical
+Note</a>, and in particular the “Mass and Energy Conservation” section in that chapter.</p>
+<p>For more details and diagrams of water and energy conservation with dynamic landunits, see
+the <a class="reference external" href="https://drive.google.com/open?id=1PJNIEfKTIxFeDZ2rTrwXw555PrxTBpb2">Dynamic landunits water and energy conservation presentation</a>.</p>
+</div>
+</div>
+</div>
 <div class="section" id="fields-exchanged-between-clm-and-cism">
-<h2>6.3. Fields exchanged between CLM and CISM<a class="headerlink" href="#fields-exchanged-between-clm-and-cism" title="Permalink to this headline">¶</a></h2>
+<h2>6.4. Fields exchanged between CLM and CISM<a class="headerlink" href="#fields-exchanged-between-clm-and-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="clm-to-cism">
-<h3>6.3.1. CLM to CISM<a class="headerlink" href="#clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<h3>6.4.1. CLM to CISM<a class="headerlink" href="#clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="overview">
-<h4>6.3.1.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.1.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
 <p>CLM passes three fields to the coupler for the sake of CLM-CISM coupling: surface mass
 balance (SMB), surface temperature, and surface topographic height. The first two are
 remapped/downscaled and sent to CISM, whereas surface topographic height is just used by
@@ -348,7 +519,7 @@ given in the “Glaciers” chapter of the <a class="reference external" href="h
 positive degree day (PDD) scheme.</p>
 </div>
 <div class="section" id="surface-mass-balance-smb">
-<h4>6.3.1.2. Surface mass balance (SMB)<a class="headerlink" href="#surface-mass-balance-smb" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.1.2. Surface mass balance (SMB)<a class="headerlink" href="#surface-mass-balance-smb" title="Permalink to this headline">¶</a></h4>
 <p>The SMB calculation is described in detail in the “Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical
 Note</a>. Here we just summarize a few important points.</p>
 <p>CLM’s SMB currently only considers changes in the ice column, <em>not</em> changes in the snow
@@ -358,12 +529,12 @@ column experiences melt. A positive (but <em>not</em> negative) SMB can be gener
 vegetated land unit; this condition triggers glacial inception in CISM.</p>
 </div>
 <div class="section" id="surface-temperature">
-<h4>6.3.1.3. Surface temperature<a class="headerlink" href="#surface-temperature" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.1.3. Surface temperature<a class="headerlink" href="#surface-temperature" title="Permalink to this headline">¶</a></h4>
 <p>CLM sends surface temperature to provide an upper boundary condition for CISM’s
 temperature calculations. In CLM, this is the temperature of the top ice layer.</p>
 </div>
 <div class="section" id="surface-topographic-height">
-<h4>6.3.1.4. Surface topographic height<a class="headerlink" href="#surface-topographic-height" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.1.4. Surface topographic height<a class="headerlink" href="#surface-topographic-height" title="Permalink to this headline">¶</a></h4>
 <p>The average topographic height of each glacier elevation class is needed for the
 downscaling, as described below. When running two-way-coupled, CLM’s topographic heights
 are obtained via averages of the underlying CISM grid cells. However, CLM sends these
@@ -372,9 +543,9 @@ regardless of whether we are running one-way or two-way coupled.</p>
 </div>
 </div>
 <div class="section" id="cism-to-clm">
-<h3>6.3.2. CISM to CLM<a class="headerlink" href="#cism-to-clm" title="Permalink to this headline">¶</a></h3>
+<h3>6.4.2. CISM to CLM<a class="headerlink" href="#cism-to-clm" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="mask-of-ice-covered-vs-ice-free-points">
-<h4>6.3.2.1. Mask of ice-covered vs. ice-free points<a class="headerlink" href="#mask-of-ice-covered-vs-ice-free-points" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.2.1. Mask of ice-covered vs. ice-free points<a class="headerlink" href="#mask-of-ice-covered-vs-ice-free-points" title="Permalink to this headline">¶</a></h4>
 <p>Each grid cell in CISM is classified as either ice-covered or ice-free (there are no
 partially-ice-covered cells). CISM uses different definitions of ice-covered for different
 purposes; for the purposes of this coupling, any cell with ice thickness greater than zero
@@ -386,7 +557,7 @@ CLM-to-CISM downscaling (to determine which CISM grid cells should receive SMB f
 glacier land units vs. vegetated land units).</p>
 </div>
 <div class="section" id="surface-height">
-<h4>6.3.2.2. Surface height<a class="headerlink" href="#surface-height" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.2.2. Surface height<a class="headerlink" href="#surface-height" title="Permalink to this headline">¶</a></h4>
 <p>CISM sends the surface height of each grid cell. For glaciers, this is the height of the
 ice surface. For ice-free points, this is the topographic height. This field is used to
 determine the fractional cover and mean elevation of each CLM glacier elevation class, as
@@ -396,7 +567,7 @@ CISM domain.</p>
 CLM-to-CISM downscaling.</p>
 </div>
 <div class="section" id="ice-sheet-grid-mask">
-<span id="id1"></span><h4>6.3.2.3. Ice sheet grid mask<a class="headerlink" href="#ice-sheet-grid-mask" title="Permalink to this headline">¶</a></h4>
+<span id="id1"></span><h4>6.4.2.3. Ice sheet grid mask<a class="headerlink" href="#ice-sheet-grid-mask" title="Permalink to this headline">¶</a></h4>
 <p>CLM needs a way to know where CISM is sending valid data, and thus knowing where it should
 update its glacier areas and elevations. This is provided via the “ice sheet grid
 mask”. CISM sets this field to 1 for all points that are either bare land or ice-covered
@@ -407,11 +578,11 @@ CLM maintains the values specified by its surface dataset outside the CISM domai
 as in areas that CISM considers to be open ocean but CLM considers to be at least
 partially land-covered.</p>
 <p>This mask is also used in the coupler to determine the ice sheet region over which SMB
-must be conserved in the SMB remapping process (see <a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.4.1</span></a>). We assume
+must be conserved in the SMB remapping process (see <a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.5.1</span></a>). We assume
 that we can use the same mask for these two purposes (i.e., both for defining where CISM
 is sending valid data and for defining where CISM can receive SMB). (This use of the ice
 sheet grid mask more closely aligns with the use of the mask where we are potentially
-sending non-zero fluxes, described in <a class="reference internal" href="#mask-for-nonzero-fluxes"><span class="std std-numref">Section 6.3.2.4</span></a>. However, we can’t
+sending non-zero fluxes, described in <a class="reference internal" href="#mask-for-nonzero-fluxes"><span class="std std-numref">Section 6.4.2.4</span></a>. However, we can’t
 use that mask for the remapping, because we then could only perform renormalization if we
 were running with two-way coupling. For this reason, it is important that these two masks
 are defined in the same way.)</p>
@@ -427,7 +598,7 @@ because (with isostasy) CISM’s land-ocean boundary can change in time.</p>
 remapping. (Elevation classes are irrelevant here.)</p>
 </div>
 <div class="section" id="ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes">
-<span id="mask-for-nonzero-fluxes"></span><h4>6.3.2.4. Ice sheet mask where we are potentially sending non-zero fluxes<a class="headerlink" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes" title="Permalink to this headline">¶</a></h4>
+<span id="mask-for-nonzero-fluxes"></span><h4>6.4.2.4. Ice sheet mask where we are potentially sending non-zero fluxes<a class="headerlink" href="#ice-sheet-mask-where-we-are-potentially-sending-non-zero-fluxes" title="Permalink to this headline">¶</a></h4>
 <p>CLM also needs to know where CISM is a fully-coupled part of the climate system - i.e.,
 where it is potentially sending non-zero runoff fluxes to the ocean. CLM uses this
 information to determine how to route its positive and negative SMB terms in order to
@@ -437,7 +608,7 @@ Technical Note</a>. In particular, see the discussion of the dependence on
 within this mask and false outside of it.</p>
 <p>This mask is currently a subset of the ice sheet grid mask. Currently, it is identical to
 the ice sheet grid mask if we are running with an evolving, two-way-coupled ice sheet, and
-otherwise is zero everywhere (and, as described in <a class="reference internal" href="#ice-sheet-grid-mask"><span class="std std-numref">Section 6.3.2.3</span></a>, this
+otherwise is zero everywhere (and, as described in <a class="reference internal" href="#ice-sheet-grid-mask"><span class="std std-numref">Section 6.4.2.3</span></a>, this
 relationship should remain true, because the ice sheet grid mask is used in the coupler in
 a way that closely matches the use of this second mask). In the future, when we allow
 multiple ice sheets in CESM (e.g., Greenland and Antarctica), it is possible that one ice
@@ -452,7 +623,7 @@ areas the same as points completely outside CISM’s domain for conservation rea
 area-conservative remapping. (Elevation classes are irrelevant here.)</p>
 </div>
 <div class="section" id="heat-flux">
-<h4>6.3.2.5. Heat flux<a class="headerlink" href="#heat-flux" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.2.5. Heat flux<a class="headerlink" href="#heat-flux" title="Permalink to this headline">¶</a></h4>
 <p>Hooks are in place for CISM to send the heat flux from the ice interior to the surface to
 each CLM elevation class. However, this is not yet fully implemented, leading to a small
 loss of energy conservation.</p>
@@ -460,9 +631,9 @@ loss of energy conservation.</p>
 </div>
 </div>
 <div class="section" id="other-fields-sent-from-cism">
-<h3>6.3.3. Other fields sent from CISM<a class="headerlink" href="#other-fields-sent-from-cism" title="Permalink to this headline">¶</a></h3>
+<h3>6.4.3. Other fields sent from CISM<a class="headerlink" href="#other-fields-sent-from-cism" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="ice-runoff-calving">
-<h4>6.3.3.1. Ice runoff (calving)<a class="headerlink" href="#ice-runoff-calving" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.3.1. Ice runoff (calving)<a class="headerlink" href="#ice-runoff-calving" title="Permalink to this headline">¶</a></h4>
 <p>CISM sends an ice runoff - i.e., calving - flux directly to the ocean (POP). When this flux
 reaches the ocean, POP immediately melts the ice, so this ice flux is equivalent to a
 negative salinity flux together with a negative heat flux. Hooks are in place to instead
@@ -471,7 +642,7 @@ simulating icebergs.</p>
 <p>This flux is only applicable when running with an evolving, two-way-coupled ice sheet.</p>
 </div>
 <div class="section" id="liquid-runoff-basal-melting">
-<h4>6.3.3.2. Liquid runoff (basal melting)<a class="headerlink" href="#liquid-runoff-basal-melting" title="Permalink to this headline">¶</a></h4>
+<h4>6.4.3.2. Liquid runoff (basal melting)<a class="headerlink" href="#liquid-runoff-basal-melting" title="Permalink to this headline">¶</a></h4>
 <p>CISM sends a liquid runoff flux directly to the ocean; this is generated from basal
 melting. Note that this term does <em>not</em> include surface melting: the surface melt term is
 sent from CLM to the ocean via the runoff routing model.</p>
@@ -480,9 +651,9 @@ sent from CLM to the ocean via the runoff routing model.</p>
 </div>
 </div>
 <div class="section" id="remapping-fields-sent-from-clm-to-cism">
-<h2>6.4. Remapping fields sent from CLM to CISM<a class="headerlink" href="#remapping-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h2>
+<h2>6.5. Remapping fields sent from CLM to CISM<a class="headerlink" href="#remapping-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="remapping-surface-mass-balance-from-clm-to-cism">
-<span id="remapping-smb"></span><h3>6.4.1. Remapping surface mass balance from CLM to CISM<a class="headerlink" href="#remapping-surface-mass-balance-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<span id="remapping-smb"></span><h3>6.5.1. Remapping surface mass balance from CLM to CISM<a class="headerlink" href="#remapping-surface-mass-balance-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>As described above, the surface mass balance (SMB) of ice sheets is computed by CLM
 for each column (i.e., elevation class) of each glaciated landunit in each grid cell on the land grid.
 The SMB is then remapped by the coupler to the finer ice sheet grid and passed to CISM.
@@ -562,9 +733,9 @@ Thus the local errors for bilinear remapping and renormalization are similar to 
 Bilinear remapping, however, is far smoother; smoothness is obtained at the cost of local conservation.</p>
 </div>
 <div class="section" id="remapping-surface-temperature-from-clm-to-cism">
-<h3>6.4.2. Remapping surface temperature from CLM to CISM<a class="headerlink" href="#remapping-surface-temperature-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<h3>6.5.2. Remapping surface temperature from CLM to CISM<a class="headerlink" href="#remapping-surface-temperature-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>Surface temperature is remapped similarly to surface mass balance (see
-<a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.4.1</span></a>), but without the renormalization and without separation into
+<a class="reference internal" href="#remapping-smb"><span class="std std-numref">Section 6.5.1</span></a>), but without the renormalization and without separation into
 accumulation vs. ablation zones:</p>
 <ol class="arabic simple">
 <li>CLM computes surface temperature for each grid cell and elevation class (EC).</li>
@@ -578,7 +749,7 @@ between adjacent ECs, to compute the surface temperature at the CISM cell elevat
 </div>
 </div>
 <div class="section" id="clm-s-glacier-regions-and-their-behaviors">
-<h2>6.5. CLM’s glacier regions and their behaviors<a class="headerlink" href="#clm-s-glacier-regions-and-their-behaviors" title="Permalink to this headline">¶</a></h2>
+<h2>6.6. CLM’s glacier regions and their behaviors<a class="headerlink" href="#clm-s-glacier-regions-and-their-behaviors" title="Permalink to this headline">¶</a></h2>
 <p>CLM divides the world’s glaciers and ice sheets into multiple regions that differ in
 various respects. For a detailed description of these different glacier behaviors, see the
 “Glaciers” chapter of the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM Technical Note</a>. Here we focus on the user interface for
@@ -595,8 +766,8 @@ etc.</p>
 <p>(We rely on CLM’s surface dataset rather than making behaviors dependent on CISM’s ice
 sheet grid mask because we don’t want CLM physics to change just because CISM is using a
 different grid.)</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
 <p class="last">If you want ice sheet forcings (SMB and surface temperature) for regions other than the
 standard Greenland CISM domain, it is <strong>critical</strong> that you give some thought to this
 <code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field and the associated namelist options: You will need to ensure
