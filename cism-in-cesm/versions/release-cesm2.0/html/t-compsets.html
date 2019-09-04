@@ -275,7 +275,7 @@ files are about 7 MB per year.)</p>
 renormalization is done (or not done) in both cases, as described in</strong>
 <a class="reference internal" href="clm-cism-coupling.html#clm-cism-coupling"><span class="std std-numref">Section 6</span></a>. <strong>(For example, if the coupler history files were generated
 from a fully-coupled case, then in the T case you should set</strong> <code class="docutils literal notranslate"><span class="pre">glc_renormalize_smb</span> <span class="pre">=</span>
-<span class="pre">.true.</span></code> <strong>in</strong> <code class="docutils literal notranslate"><span class="pre">user_nl_cpl</span></code> <strong>in order to reproduce the results of the fully-coupled
+<span class="pre">'on'</span></code> <strong>in</strong> <code class="docutils literal notranslate"><span class="pre">user_nl_cpl</span></code> <strong>in order to reproduce the results of the fully-coupled
 case.)</strong> Small differences arise because these forcing files are written with single
 precision, leading to roundoff error on the order of 10<sup>-7</sup>. If you need more
 precision, you can add the following to <code class="docutils literal notranslate"><span class="pre">user_nl_cpl</span></code>:</p>
