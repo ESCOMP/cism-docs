@@ -72,9 +72,9 @@
                       <option value=''>CESM2.0</option>
                       
                         
-                          <option value="">[placeholder]</option>
-                        
                       
+                        
+                          <option value="">[placeholder]</option>
                         
                       
                     </select>
@@ -242,9 +242,9 @@ run using these new forcing data.</p>
 glacier elevation class, along with surface elevation for the coupler’s vertical
 downscaling), you need to perform a CESM run using a compset that includes an active land
 model (CLM). It does not matter whether the glc component is fully-active
-(<code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code>) or active but non-evolving (<code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code>). However, a stub model
-(<code class="docutils literal notranslate"><span class="pre">SGLC</span></code>) will not work for this purpose. CISM’s domain and resolution
-also do not matter (because forcing data are saved prior to downscaling to the CISM grid).</p>
+(<code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code>), active but non-evolving (<code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code>) or a stub model
+(<code class="docutils literal notranslate"><span class="pre">SGLC</span></code>). If running with CISM, CISM’s domain and resolution also do not matter (because
+forcing data are saved prior to downscaling to the CISM grid).</p>
 <p>However, CLM’s <code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field (on the surface dataset) <em>does</em> matter: Surface
 mass balance and temperature forcing fields will only be valid in regions whose glacier
 region behaviors are:</p>
@@ -270,9 +270,13 @@ CLM to CISM (on the CLM grid, separated by elevation class). The files containin
 averages will appear in the cpl/hist directory within your archive space, with names like:
 <code class="docutils literal notranslate"><span class="pre">$CASE.cpl.hl2x1yr_glc.0001-01-01.nc</span></code>. (For a typical 1-degree land resolution, these
 files are about 7 MB per year.)</p>
-<p>A T compset run that later uses these coupler history files as forcing should
-give <em>nearly</em> identical CISM results as the original run. Small
-differences arise because these forcing files are written with single
+<p>A T compset run that later uses these coupler history files as forcing should give
+<em>nearly</em> identical CISM results as the original run, <strong>as long as you ensure that SMB
+renormalization is done (or not done) in both cases, as described in</strong>
+<a class="reference internal" href="clm-cism-coupling.html#clm-cism-coupling"><span class="std std-numref">Section 6</span></a>. <strong>(For example, if the coupler history files were generated
+from a fully-coupled case, then in the T case you should set</strong> <code class="docutils literal notranslate"><span class="pre">glc_renormalize_smb</span> <span class="pre">=</span>
+<span class="pre">.true.</span></code> <strong>in</strong> <code class="docutils literal notranslate"><span class="pre">user_nl_cpl</span></code> <strong>in order to reproduce the results of the fully-coupled
+case.)</strong> Small differences arise because these forcing files are written with single
 precision, leading to roundoff error on the order of 10<sup>-7</sup>. If you need more
 precision, you can add the following to <code class="docutils literal notranslate"><span class="pre">user_nl_cpl</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">histaux_double_precision = .true.</span>
@@ -402,8 +406,7 @@ changed automatically when running with a T compset. These include:</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="_static/pop_ver.js"></script>
     
 
