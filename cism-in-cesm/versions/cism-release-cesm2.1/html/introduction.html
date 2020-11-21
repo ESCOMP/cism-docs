@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Introduction &mdash; CESM Land Ice CESM2.1 documentation</title>
+  <title>1. Introduction &mdash; CESM Land Ice master documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CESM Land Ice CESM2.1 documentation" href="index.html"/>
+    <link rel="top" title="CESM Land Ice master documentation" href="index.html"/>
         <link rel="next" title="2. Running and modifying the CESM land ice component" href="running-and-modifying.html"/>
         <link rel="prev" title="CESM Land Ice Documentation and User Guide" href="index.html"/> 
 
@@ -69,7 +69,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>CESM2.1</option>
+                      <option value=''>master</option>
                       
                         
                       
@@ -105,20 +105,21 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#scientific-background">1.1. Scientific background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ice-sheets-in-cesm">1.2. Ice sheets in CESM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#limitations">1.3. Limitations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#limitations-of-the-ice-sheet-model-itself">1.3.1. Limitations of the ice sheet model itself</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#limitations-of-cism-within-cesm">1.3.2. Limitations of CISM within CESM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#limitations-of-other-components-of-the-cesm-modeling-system">1.3.3. Limitations of other components of the CESM modeling system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-community-ice-sheet-model">1.1. The Community Ice Sheet Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scientific-background">1.2. Scientific background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ice-sheets-in-cesm">1.3. Ice sheets in CESM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">1.4. Limitations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#limitations-of-the-ice-sheet-model-itself">1.4.1. Limitations of the ice sheet model itself</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations-of-cism-within-cesm">1.4.2. Limitations of CISM within CESM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations-of-other-components-of-the-cesm-modeling-system">1.4.3. Limitations of other components of the CESM modeling system</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">1.4. What’s new in CESM2.0 with respect to ice sheet modeling?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">1.5. What’s new in CESM2.0 with respect to ice sheet modeling?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">4. Running the standalone ice sheet model within CESM: T compsets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -216,8 +217,51 @@ will be added to CESM as they become available.</p>
 to have some additional information included, please contact the authors:
 William Lipscomb (<a class="reference external" href="mailto:lipscomb&#37;&#52;&#48;ucar&#46;edu">lipscomb<span>&#64;</span>ucar<span>&#46;</span>edu</a>), William Sacks (<a class="reference external" href="mailto:sacks&#37;&#52;&#48;ucar&#46;edu">sacks<span>&#64;</span>ucar<span>&#46;</span>edu</a>),
 and Gunter Leguy (<a class="reference external" href="mailto:gunterl&#37;&#52;&#48;ucar&#46;edu">gunterl<span>&#64;</span>ucar<span>&#46;</span>edu</a>).</p>
+<div class="section" id="the-community-ice-sheet-model">
+<h2>1.1. The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
+<p>CISM is a thermomechanical ice sheet model that solves the
+equations of ice flow, given suitable approximations and boundary
+conditions. The source code is written primarily in Fortran 90 and 95.
+The model resides on the github repository
+(<a class="reference external" href="https://github.com/ESCOMP/cism">https://github.com/ESCOMP/cism</a>), where it is under active development.
+CISM2.1 is currently the default ice sheet model in CESM2.0.</p>
+<p>CISM2.1 introduces a new dynamical core, Glissade, which runs in parallel
+and solves equations for the conservation of mass, momentum, and
+internal energy. Glissade supports several approximations of the
+Stokes equations for ice flow: the shallow-ice approximation
+(SIA), the shallow-shelf approximation (SSA), a depth-integrated viscosity
+approximation (DIVA), and the Blatter-Pattyn (BP) approximation.
+DIVA is the default solver for CISM in the CESM framework.</p>
+<p>In previous versions of CESM with CISM coupling capabilities, the
+dynamical core of the model was known as Glide and only solved the
+shallow-ice approximation in serial. While this option is still available,
+it is no longer supported.</p>
+<p>The surface boundary conditions (e.g., the surface temperature and
+surface mass balance) are supplied by a climate driver. When
+CISM is run in CESM, the climate driver is Glad, which receives
+the temperature and SMB from the coupler and passes them to the
+ice-sheet grid. The lower boundary conditions are given
+by a geothermal dataset, which supplies heat fluxes at the lower boundary,
+and by a basal topography dataset.
+Optionally, the basal topography can be modified at runtime by an isostasy model;
+isostasy is turned off by default.</p>
+<p>The new version of CISM adds a set of basal sliding and calving law
+options of varying complexity. The default options and parameters
+were chosen based on standalone Greenland simulations (with SMB forcing
+from the RACMO2 regional climate model) to support a
+stable, reasonably accurate simulation of the Greenland Ice Sheet;
+see Lipscomb et al. (2018) for details.
+The default basal sliding option is pseudo-plastic sliding,
+with parameters based on Aschwanden et al. (2016).
+The default calving law is “no-float”, with all floating ice
+calving immediately.</p>
+<p>The model currently has simple treatments of basal hydrology, including
+a local till model used in conjunction with pseudo-plastic sliding.
+More complex schemes for subglacial water hydrology and
+evolution of basal till strength are being developed.</p>
+</div>
 <div class="section" id="scientific-background">
-<h2>1.1. Scientific background<a class="headerlink" href="#scientific-background" title="Permalink to this headline">¶</a></h2>
+<h2>1.2. Scientific background<a class="headerlink" href="#scientific-background" title="Permalink to this headline">¶</a></h2>
 <p>Historically, ice sheet models were not included in global climate
 models, because they were thought to be too sluggish to respond
 to climate change on decade-to-century time scales. In the Community
@@ -270,7 +314,7 @@ will likely lead to scientific insights that would not be possible with
 standalone ice sheet models.</p>
 </div>
 <div class="section" id="ice-sheets-in-cesm">
-<h2>1.2. Ice sheets in CESM<a class="headerlink" href="#ice-sheets-in-cesm" title="Permalink to this headline">¶</a></h2>
+<h2>1.3. Ice sheets in CESM<a class="headerlink" href="#ice-sheets-in-cesm" title="Permalink to this headline">¶</a></h2>
 <p>Starting in 2006, researchers in the Climate, Ocean and Sea Ice Modeling
 (COSIM) group at Los Alamos National Laboratory (LANL) worked with
 scientists at the National Center for Atmospheric Research (NCAR) to
@@ -335,11 +379,11 @@ are more accurate with a new drag parameterization, and a bias in high-latitude
 longwave cloud forcing is much reduced.</p>
 </div>
 <div class="section" id="limitations">
-<h2>1.3. Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<h2>1.4. Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
 <p>CISM’s land-ice capabilities continue to be actively developed, and
 some significant limitations remain, as decribed below.</p>
 <div class="section" id="limitations-of-the-ice-sheet-model-itself">
-<h3>1.3.1. Limitations of the ice sheet model itself<a class="headerlink" href="#limitations-of-the-ice-sheet-model-itself" title="Permalink to this headline">¶</a></h3>
+<h3>1.4.1. Limitations of the ice sheet model itself<a class="headerlink" href="#limitations-of-the-ice-sheet-model-itself" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>CISM2.1 has been designed primarily for simulating Greenland, and is missing
 some features needed for optimal simulation of marine ice sheets.
@@ -354,7 +398,7 @@ at higher resolutions, but is less well tested and less robust.</li>
 </ul>
 </div>
 <div class="section" id="limitations-of-cism-within-cesm">
-<h3>1.3.2. Limitations of CISM within CESM<a class="headerlink" href="#limitations-of-cism-within-cesm" title="Permalink to this headline">¶</a></h3>
+<h3>1.4.2. Limitations of CISM within CESM<a class="headerlink" href="#limitations-of-cism-within-cesm" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>CISM restarts can only occur on day boundaries</li>
 <li>There are a number of bugs with the use of a calendar that includes leap years;
@@ -364,7 +408,7 @@ only instantaneous fields are supported.</li>
 </ul>
 </div>
 <div class="section" id="limitations-of-other-components-of-the-cesm-modeling-system">
-<h3>1.3.3. Limitations of other components of the CESM modeling system<a class="headerlink" href="#limitations-of-other-components-of-the-cesm-modeling-system" title="Permalink to this headline">¶</a></h3>
+<h3>1.4.3. Limitations of other components of the CESM modeling system<a class="headerlink" href="#limitations-of-other-components-of-the-cesm-modeling-system" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>In CESM2.0, CISM can be coupled interactively to CLM, but coupling to the ocean
 is very limited. The ice sheet model can send calving fluxes to the ocean,
@@ -380,7 +424,7 @@ multiple elevation classes have not been found to improve the SMB outside of ice
 </div>
 </div>
 <div class="section" id="what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">
-<h2>1.4. What’s new in CESM2.0 with respect to ice sheet modeling?<a class="headerlink" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h2>
+<h2>1.5. What’s new in CESM2.0 with respect to ice sheet modeling?<a class="headerlink" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h2>
 <p>Compared to the CESM1 series, there have been a number of improvements
 in CESM for land-ice modeling:</p>
 <ul class="simple">
@@ -451,11 +495,21 @@ capabilities.</li>
 
     
     
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'master',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="_static/pop_ver.js"></script>
     
 
