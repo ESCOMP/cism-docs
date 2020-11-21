@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Running the standalone ice sheet model within CESM: T compsets &mdash; CESM Land Ice master documentation</title>
+  <title>4. Running the standalone ice sheet model within CESM: T compsets &mdash; CESM Land Ice master documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="CESM Land Ice master documentation" href="index.html"/>
-        <link rel="next" title="4. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html"/>
-        <link rel="prev" title="2. Running and modifying the CESM land ice component" href="running-and-modifying.html"/> 
+        <link rel="next" title="5. Controlling output from CISM and CLM" href="controlling-output.html"/>
+        <link rel="prev" title="3. Running the fully-coupled ice sheet model within CESM: B compsets" href="b-compsets.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -106,18 +106,18 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Running the standalone ice sheet model within CESM: T compsets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#background">3.1. Background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-with-existing-forcing-data">3.2. Running with existing forcing data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#creating-and-running-with-your-own-forcing-data">3.3. Creating and running with your own forcing data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#performing-a-run-to-create-forcing-data">3.3.1. Performing a run to create forcing data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#performing-a-t-compset-run-using-your-own-forcing-data">3.3.2. Performing a T compset run using your own forcing data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Running the standalone ice sheet model within CESM: T compsets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">4.1. Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-with-existing-forcing-data">4.2. Running with existing forcing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-running-with-your-own-forcing-data">4.3. Creating and running with your own forcing data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#performing-a-run-to-create-forcing-data">4.3.1. Performing a run to create forcing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performing-a-t-compset-run-using-your-own-forcing-data">4.3.2. Performing a T compset run using your own forcing data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#changes-to-some-cesm-defaults-for-t-compsets">3.4. Changes to some CESM defaults for T compsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changes-to-some-cesm-defaults-for-t-compsets">4.4. Changes to some CESM defaults for T compsets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -169,7 +169,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>3. Running the standalone ice sheet model within CESM: T compsets</li>
+      <li>4. Running the standalone ice sheet model within CESM: T compsets</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -189,9 +189,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="running-the-standalone-ice-sheet-model-within-cesm-t-compsets">
-<span id="t-compsets"></span><h1>3. Running the standalone ice sheet model within CESM: T compsets<a class="headerlink" href="#running-the-standalone-ice-sheet-model-within-cesm-t-compsets" title="Permalink to this headline">¶</a></h1>
+<span id="t-compsets"></span><h1>4. Running the standalone ice sheet model within CESM: T compsets<a class="headerlink" href="#running-the-standalone-ice-sheet-model-within-cesm-t-compsets" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="background">
-<h2>3.1. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<h2>4.1. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>The ice sheet model requires much less computational time per simulated
 year than other CESM components, but often needs to be run for many more
 model years (e.g., tens of thousands of years rather than a century).
@@ -205,11 +205,11 @@ was referred to as a TG compset. Now the G appears near the end of the compset n
 compsets have names like T1850G.)  This compset uses the active ice sheet model forced by
 a data land model; all other components are stubs. Before running a T compset, you must
 have coupler history files from a previous run that included CLM (version 4.5 or
-later). You can run with either existing forcing data (see <a class="reference internal" href="#t-with-existing-data"><span class="std std-numref">Section 3.2</span></a>)
-or with your own forcing data (see <a class="reference internal" href="#t-with-your-own-data"><span class="std std-numref">Section 3.3</span></a>).</p>
+later). You can run with either existing forcing data (see <a class="reference internal" href="#t-with-existing-data"><span class="std std-numref">Section 4.2</span></a>)
+or with your own forcing data (see <a class="reference internal" href="#t-with-your-own-data"><span class="std std-numref">Section 4.3</span></a>).</p>
 </div>
 <div class="section" id="running-with-existing-forcing-data">
-<span id="t-with-existing-data"></span><h2>3.2. Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
+<span id="t-with-existing-data"></span><h2>4.2. Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>There is currently just a single set of forcing data available for running T
 compsets. These forcing data were created with software testing rather than scientific
 validity in mind. They were created from 30 years of an <code class="docutils literal notranslate"><span class="pre">I1850Clm50Sp</span></code> compset (CLM
@@ -229,7 +229,7 @@ Greenland grid, would look like:</p>
 </div>
 </div>
 <div class="section" id="creating-and-running-with-your-own-forcing-data">
-<span id="t-with-your-own-data"></span><h2>3.3. Creating and running with your own forcing data<a class="headerlink" href="#creating-and-running-with-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
+<span id="t-with-your-own-data"></span><h2>4.3. Creating and running with your own forcing data<a class="headerlink" href="#creating-and-running-with-your-own-forcing-data" title="Permalink to this headline">¶</a></h2>
 <p>Currently, T compsets are only able to handle forcing data from a previous CESM run
 (although, in theory, it should be possible to “fake” CESM output by creating files with
 the same format as existing T compset forcing files). Thus, performing a T compset run
@@ -237,7 +237,7 @@ with your own forcing data is a two-step process: (1) Perform a CESM run that in
 active land model (CLM), saving the necessary forcing files, and (2) perform a T compset
 run using these new forcing data.</p>
 <div class="section" id="performing-a-run-to-create-forcing-data">
-<h3>3.3.1. Performing a run to create forcing data<a class="headerlink" href="#performing-a-run-to-create-forcing-data" title="Permalink to this headline">¶</a></h3>
+<h3>4.3.1. Performing a run to create forcing data<a class="headerlink" href="#performing-a-run-to-create-forcing-data" title="Permalink to this headline">¶</a></h3>
 <p>To create the necessary forcing data (surface mass balance and surface temperature in each
 glacier elevation class, along with surface elevation for the coupler’s vertical
 downscaling), you need to perform a CESM run using a compset that includes an active land
@@ -287,7 +287,7 @@ volume. Short tests have shown that this change allows the T compset run to matc
 original within double-precision roundoff-level.</p>
 </div>
 <div class="section" id="performing-a-t-compset-run-using-your-own-forcing-data">
-<h3>3.3.2. Performing a T compset run using your own forcing data<a class="headerlink" href="#performing-a-t-compset-run-using-your-own-forcing-data" title="Permalink to this headline">¶</a></h3>
+<h3>4.3.2. Performing a T compset run using your own forcing data<a class="headerlink" href="#performing-a-t-compset-run-using-your-own-forcing-data" title="Permalink to this headline">¶</a></h3>
 <p>To perform a standalone CISM run forced by your newly-created forcing data, first create a
 new case using one of the existing T compsets (e.g., T1850G). The land and ocean
 resolutions of the T compset run (as specified by the <code class="docutils literal notranslate"><span class="pre">--res</span></code> flag to
@@ -345,7 +345,7 @@ different year of forcing data.</p>
 </div>
 </div>
 <div class="section" id="changes-to-some-cesm-defaults-for-t-compsets">
-<h2>3.4. Changes to some CESM defaults for T compsets<a class="headerlink" href="#changes-to-some-cesm-defaults-for-t-compsets" title="Permalink to this headline">¶</a></h2>
+<h2>4.4. Changes to some CESM defaults for T compsets<a class="headerlink" href="#changes-to-some-cesm-defaults-for-t-compsets" title="Permalink to this headline">¶</a></h2>
 <p>T compsets have much lower computational expense per simulation year and much greater
 typical run lengths compared to most CESM configurations. Thus, a number of settings are
 changed automatically when running with a T compset. These include:</p>
@@ -366,10 +366,10 @@ changed automatically when running with a T compset. These include:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dynamic-ice-sheet-model.html" class="btn btn-neutral float-right" title="4. The dynamic ice sheet model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="controlling-output.html" class="btn btn-neutral float-right" title="5. Controlling output from CISM and CLM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="running-and-modifying.html" class="btn btn-neutral" title="2. Running and modifying the CESM land ice component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="b-compsets.html" class="btn btn-neutral" title="3. Running the fully-coupled ice sheet model within CESM: B compsets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
