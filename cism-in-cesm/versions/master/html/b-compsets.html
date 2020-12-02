@@ -119,7 +119,7 @@
 <li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="new-grids.html">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
 </ul>
 
             
@@ -164,7 +164,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>3. Running the fully-coupled ice sheet model within CESM: B compsets</li>
+      <li><span class="section-number">3. </span>Running the fully-coupled ice sheet model within CESM: B compsets</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -184,7 +184,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="running-the-fully-coupled-ice-sheet-model-within-cesm-b-compsets">
-<span id="b-compsets"></span><h1>3. Running the fully-coupled ice sheet model within CESM: B compsets<a class="headerlink" href="#running-the-fully-coupled-ice-sheet-model-within-cesm-b-compsets" title="Permalink to this headline">¶</a></h1>
+<span id="b-compsets"></span><h1><span class="section-number">3. </span>Running the fully-coupled ice sheet model within CESM: B compsets<a class="headerlink" href="#running-the-fully-coupled-ice-sheet-model-within-cesm-b-compsets" title="Permalink to this headline">¶</a></h1>
 <p>CISM is available to run as part of a fully coupled climate system
 simulation in CESM 2.0. Runs with all active components are known
 as “B compsets”, such as the “B1850” compset which runs with all
@@ -207,43 +207,43 @@ method of updating the atmosphere topography to reflect the current
 shape of the ice sheet has been developed. That method is outlined
 below.</p>
 <div class="section" id="helpful-links-for-coupling-information">
-<h2>3.1. Helpful links for coupling information<a class="headerlink" href="#helpful-links-for-coupling-information" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1. </span>Helpful links for coupling information<a class="headerlink" href="#helpful-links-for-coupling-information" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://escomp.github.io/cism-docs/cism-in-cesm/versions/release-cesm2.0/html/clm-cism-coupling.html#">Details of CISM, CLM and POP coupling</a></li>
-<li><a class="reference external" href="https://escomp.github.io/cism-docs/cism-in-cesm/versions/release-cesm2.0/html/t-compsets.html#performing-a-run-to-create-forcing-data">Generating Forcing Data to use in a CISM T compset</a></li>
-<li><a class="reference external" href="https://esmci.github.io/cime/versions/master/html/users_guide/index.html">CESM Case Control System (how to setup, build, and run an experiment with CESM 2)</a></li>
-<li><a class="reference external" href="https://bb.cgd.ucar.edu/cesm/">User questions and answers in the DiscussCESM Forums</a></li>
+<li><p><a class="reference external" href="https://escomp.github.io/cism-docs/cism-in-cesm/versions/release-cesm2.0/html/clm-cism-coupling.html#">Details of CISM, CLM and POP coupling</a></p></li>
+<li><p><a class="reference external" href="https://escomp.github.io/cism-docs/cism-in-cesm/versions/release-cesm2.0/html/t-compsets.html#performing-a-run-to-create-forcing-data">Generating Forcing Data to use in a CISM T compset</a></p></li>
+<li><p><a class="reference external" href="https://esmci.github.io/cime/versions/master/html/users_guide/index.html">CESM Case Control System (how to setup, build, and run an experiment with CESM 2)</a></p></li>
+<li><p><a class="reference external" href="https://bb.cgd.ucar.edu/cesm/">User questions and answers in the DiscussCESM Forums</a></p></li>
 </ul>
 </div>
 <div class="section" id="cism-time-steps">
-<h2>3.2. CISM Time Steps<a class="headerlink" href="#cism-time-steps" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>CISM Time Steps<a class="headerlink" href="#cism-time-steps" title="Permalink to this headline">¶</a></h2>
 <p>There are a few different kinds of timesteps in CISM:</p>
 <ol class="arabic simple">
-<li>The <em>forcing timestep</em> is the interval in hours between calls to
+<li><p>The <em>forcing timestep</em> is the interval in hours between calls to
 Glad. Currently, the forcing timestep is the same as the <em>coupling
 interval</em> at which information is passed from the coupler to GLC. The
 forcing timestep is determined by the CISM namelist variables
 <em>dt_option</em> and <em>dt_count</em>. It is 24 hours by default for most
 compsets, but 1 year for T compsets. Note that these are the only
 values that have been tested extensively; results should be checked
-carefully if the forcing timestep is changed from these defaults.</li>
-<li>The <em>mass balance timestep</em> is the interval over which
+carefully if the forcing timestep is changed from these defaults.</p></li>
+<li><p>The <em>mass balance timestep</em> is the interval over which
 accumulation/ablation forcing data is summed and averaged. This
 timestep is set in subroutine <em>glad_mbc_init</em> in module
 <em>glad_mbal_coupling.F90</em>. The current default is one year. With the
 default settings of the forcing timestep and mass balance timestep, Glad
 will accumulate forcing data from the coupler over 365 daily forcing
 timesteps and average the data. The mass balance timestep must be an
-integer multiple of the forcing timestep.</li>
-<li>The <em>ice sheet timestep</em> is the interval in years between calls to
-the dynamic ice sheet model, Glissade (or Glide). The ice sheet timestep should
+integer multiple of the forcing timestep.</p></li>
+<li><p>The <em>ice sheet timestep</em> is the interval in years between calls to
+the dynamic ice sheet model, Glissade. The ice sheet timestep should
 divide evenly into the mass balance timestep. The current default is
-0.1 year for 4-km, and 0.5 year for 20-km.</li>
+0.1 year for 4-km, and 0.5 year for 20-km.</p></li>
 </ol>
 <p>Two optional runtime parameters can be used to make the time-stepping
 more intricate:</p>
 <ol class="arabic simple">
-<li>The mass balance accumulation time, <em>mbal_accum_time</em> (in years),
+<li><p>The mass balance accumulation time, <em>mbal_accum_time</em> (in years),
 is the period over which mass balance information is accumulated
 before calling Glissade. By default, the mass balance accumulation time
 is equal to either the ice sheet timestep or the mass balance
@@ -255,8 +255,8 @@ information for 1 year and use this mass balance to force the ice
 sheet model, thus avoiding 4 additional years of accumulating mass
 balance data. <strong>Note that this parameter cannot currently be modified
 via *user_nl_cism*, because it is not recommended that users change
-it.</strong></li>
-<li>The timestep multiplier<em>, ice_tstep_multiply</em>, is equal to the
+it.</strong></p></li>
+<li><p>The timestep multiplier<em>, ice_tstep_multiply</em>, is equal to the
 number of ice sheet timesteps executed for each accumulated mass
 balance field. Suppose that the mass balance timestep is 1 year, the
 ice sheet timestep is 1 year, and ice_tstep_multiply = 10. Glad
@@ -265,7 +265,7 @@ execute 10 ice sheet model timesteps of 1 year each. In other words,
 the ice sheet dynamics is accelerated relative to the land and
 atmosphere. This option may be useful in CESM for multi-millennial
 ice-sheet simulations where it is impractical to run the atmosphere
-and ocean models for more than a few centuries.</li>
+and ocean models for more than a few centuries.</p></li>
 </ol>
 <p>The <em>ice_tstep_multiply</em> namelist parameter is the single change needed
 to accelerate the ice sheet model relative to the rest of CESM. Previous
@@ -289,36 +289,37 @@ for more information about these.</p>
 <em>cism.config</em>. This file contains (or may contain) the following
 timestep information:</p>
 <ol class="arabic simple">
-<li>The ice sheet timestep <em>dt</em> (in years) is set in the section
-[<em>time</em>] in the ice config file.</li>
-<li>The mass balance time step is not set directly in the config file,
+<li><p>The ice sheet timestep <em>dt</em> (in years) is set in the section
+[<em>time</em>] in the ice config file.</p></li>
+<li><p>The mass balance time step is not set directly in the config file,
 but is set to the number of hours in a year (i.e., 8760 hours
-for a 365-day year).</li>
-<li>The values of <em>ice_tstep_multiply</em> and <em>mbal_accum_time</em>, if
-present, are listed in the section [<em>GLAD climate</em>].</li>
+for a 365-day year).</p></li>
+<li><p>The values of <em>ice_tstep_multiply</em> and <em>mbal_accum_time</em>, if
+present, are listed in the section [<em>GLAD climate</em>].</p></li>
 </ol>
 <p>Note that the total length of the simulation is not determined by
 CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 </div>
 <div class="section" id="cism-topography-updating-workflow">
-<h2>3.3. CISM Topography Updating Workflow<a class="headerlink" href="#cism-topography-updating-workflow" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3. </span>CISM Topography Updating Workflow<a class="headerlink" href="#cism-topography-updating-workflow" title="Permalink to this headline">¶</a></h2>
 <p>** These instructions require CESM 2.1.1 or greater. **</p>
 <ol class="arabic simple">
-<li>Edit your <code class="docutils literal notranslate"><span class="pre">config_workflow.xml</span></code> file. This is found in <code class="docutils literal notranslate"><span class="pre">cime/config/cesm/machines</span></code> . You will need to add the following code to this file anywhere after a <code class="docutils literal notranslate"><span class="pre">&lt;/workflow_jobs&gt;</span></code> tag.</li>
+<li><p>Edit your <code class="docutils literal notranslate"><span class="pre">config_workflow.xml</span></code> file. This is found in <code class="docutils literal notranslate"><span class="pre">cime/config/cesm/machines</span></code> . You will need to add the following code to this file anywhere after a <code class="docutils literal notranslate"><span class="pre">&lt;/workflow_jobs&gt;</span></code> tag.</p></li>
 </ol>
 <blockquote>
-<div><dl class="docutils">
-<dt>&lt;workflow_jobs id=”topo_regen_10yr_cycle”&gt;</dt>
-<dd><p class="first">&lt;!– order matters, jobs will be run in the order listed here –&gt;
+<div><dl>
+<dt>&lt;workflow_jobs id=”topo_regen_10yr_cycle”&gt;</dt><dd><p>&lt;!– order matters, jobs will be run in the order listed here –&gt;
 &lt;job name=”case.run”&gt;</p>
 <blockquote>
-<div>&lt;template&gt;template.case.run&lt;/template&gt;
-&lt;prereq&gt;$BUILD_COMPLETE and not $TEST&lt;/prereq&gt;</div></blockquote>
+<div><p>&lt;template&gt;template.case.run&lt;/template&gt;
+&lt;prereq&gt;$BUILD_COMPLETE and not $TEST&lt;/prereq&gt;</p>
+</div></blockquote>
 <p>&lt;/job&gt;
 &lt;job name=”case.test”&gt;</p>
 <blockquote>
-<div>&lt;template&gt;template.case.test&lt;/template&gt;
-&lt;prereq&gt;$BUILD_COMPLETE and $TEST&lt;/prereq&gt;</div></blockquote>
+<div><p>&lt;template&gt;template.case.test&lt;/template&gt;
+&lt;prereq&gt;$BUILD_COMPLETE and $TEST&lt;/prereq&gt;</p>
+</div></blockquote>
 <p>&lt;/job&gt;
 &lt;job name=”case.topo_regen”&gt;</p>
 <blockquote>
@@ -328,9 +329,10 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 &lt;prereq&gt;1&lt;/prereq&gt;
 &lt;runtime_parameters&gt;</p>
 <blockquote>
-<div>&lt;task_count&gt;1&lt;/task_count&gt;
+<div><p>&lt;task_count&gt;1&lt;/task_count&gt;
 &lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
-&lt;walltime&gt;0:45:00&lt;/walltime&gt;</div></blockquote>
+&lt;walltime&gt;0:45:00&lt;/walltime&gt;</p>
+</div></blockquote>
 <p>&lt;/runtime_parameters&gt;</p>
 </div></blockquote>
 <p>&lt;/job&gt;
@@ -342,25 +344,25 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 &lt;prereq&gt;$DOUT_S&lt;/prereq&gt;
 &lt;runtime_parameters&gt;</p>
 <blockquote>
-<div>&lt;task_count&gt;1&lt;/task_count&gt;
+<div><p>&lt;task_count&gt;1&lt;/task_count&gt;
 &lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
-&lt;walltime&gt;0:20:00&lt;/walltime&gt;</div></blockquote>
+&lt;walltime&gt;0:20:00&lt;/walltime&gt;</p>
+</div></blockquote>
 <p>&lt;/runtime_parameters&gt;</p>
 </div></blockquote>
-<p class="last">&lt;/job&gt;</p>
+<p>&lt;/job&gt;</p>
 </dd>
 </dl>
 <p>&lt;/workflow_jobs&gt;</p>
 </div></blockquote>
 <ol class="arabic" start="2">
-<li><p class="first">Create your case. When you create your case you will need to add the flag <code class="docutils literal notranslate"><span class="pre">--workflow</span> <span class="pre">topo_regen_10yr_cycle</span></code> . For example:</p>
+<li><p>Create your case. When you create your case you will need to add the flag <code class="docutils literal notranslate"><span class="pre">--workflow</span> <span class="pre">topo_regen_10yr_cycle</span></code> . For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">create_newcase</span> <span class="o">--</span><span class="n">case</span> <span class="n">Test_topo_regen_workflow_m03</span> <span class="o">--</span><span class="n">compset</span> <span class="n">B1850G</span> <span class="o">--</span><span class="n">res</span> <span class="n">f09_g17_gl4</span> <span class="o">--</span><span class="n">workflow</span> <span class="n">topo_regen_10yr_cycle</span> <span class="o">--</span><span class="n">project</span> <span class="n">P93300606</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">unsupported</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Go into your new case directory and run <code class="docutils literal notranslate"><span class="pre">./case.setup</span></code> you should see a warning that says “Input template file /glade/scratch/katec/Test_topo_regen_workflow_m03/bld/../run/dynamic_atm_topo/template.topo_regen for job case.topo_regen does not exist or cannot be read.” If you don’t see a warning like this for your case than something has gone wrong. Check that you did the first two steps correctly.</p>
-</li>
-<li><p class="first">If you do get the warning, now it’s time to get the topography updating tools. Go to your run directory (so, for the above example case, <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/glade/scratch/katec/Test_topo_regen_workflow_m03/run</span></code> and in that directory type:</p>
+<li><p>Go into your new case directory and run <code class="docutils literal notranslate"><span class="pre">./case.setup</span></code> you should see a warning that says “Input template file /glade/scratch/katec/Test_topo_regen_workflow_m03/bld/../run/dynamic_atm_topo/template.topo_regen for job case.topo_regen does not exist or cannot be read.” If you don’t see a warning like this for your case than something has gone wrong. Check that you did the first two steps correctly.</p></li>
+<li><p>If you do get the warning, now it’s time to get the topography updating tools. Go to your run directory (so, for the above example case, <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/glade/scratch/katec/Test_topo_regen_workflow_m03/run</span></code> and in that directory type:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">svn</span> <span class="n">co</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">svn</span><span class="o">-</span><span class="n">ccsm</span><span class="o">-</span><span class="n">models</span><span class="o">.</span><span class="n">cgd</span><span class="o">.</span><span class="n">ucar</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">dynamic_cam_topography</span><span class="o">/</span><span class="n">trunk</span> <span class="n">dynamic_atm_topo</span>
 </pre></div>
 </div>
@@ -368,19 +370,16 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 </ol>
 <p>This will checkout the topography updater into the “dynamic_atm_topo” subdirectory.</p>
 <ol class="arabic" start="5">
-<li><p class="first">Now type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">dynamic_atm_topo/bin_to_cube</span></code> and type <code class="docutils literal notranslate"><span class="pre">make</span></code>. This will build that tool. When it’s done type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">../cube_to_target</span></code> and type <code class="docutils literal notranslate"><span class="pre">make</span></code>. This will build the other tool.</p>
-</li>
-<li><p class="first">Go back to your case directory. Type <code class="docutils literal notranslate"><span class="pre">./case.setup</span> <span class="pre">--reset</span></code> and now you should see it say:</p>
+<li><p>Now type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">dynamic_atm_topo/bin_to_cube</span></code> and type <code class="docutils literal notranslate"><span class="pre">make</span></code>. This will build that tool. When it’s done type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">../cube_to_target</span></code> and type <code class="docutils literal notranslate"><span class="pre">make</span></code>. This will build the other tool.</p></li>
+<li><p>Go back to your case directory. Type <code class="docutils literal notranslate"><span class="pre">./case.setup</span> <span class="pre">--reset</span></code> and now you should see it say:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Writing</span> <span class="n">case</span><span class="o">.</span><span class="n">topo_regen</span> <span class="n">script</span> <span class="kn">from</span> <span class="nn">input</span> <span class="n">template</span> <span class="o">/</span><span class="n">glade</span><span class="o">/</span><span class="n">scratch</span><span class="o">/</span><span class="n">katec</span><span class="o">/</span><span class="n">Test_topo_regen_workflow_m04</span><span class="o">/</span><span class="n">bld</span><span class="o">/../</span><span class="n">run</span><span class="o">/</span><span class="n">dynamic_atm_topo</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">topo_regen</span>
 
 <span class="n">Creating</span> <span class="n">file</span> <span class="o">.</span><span class="n">case</span><span class="o">.</span><span class="n">topo_regen</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Build your case (type <code class="docutils literal notranslate"><span class="pre">qcmd</span> <span class="pre">--</span> <span class="pre">./case.build</span></code> on Cheyenne)</p>
-</li>
-<li><p class="first">Change your run parameters. This workflow will have the topography updater run after each successful case.run segment. So, if your segments are 5 years, then the topography will update every 5 years. Previous experiments ran with 10 year segments and the topography updated every 10 years. So, basically the pattern was:</p>
-</li>
+<li><p>Build your case (type <code class="docutils literal notranslate"><span class="pre">qcmd</span> <span class="pre">--</span> <span class="pre">./case.build</span></code> on Cheyenne)</p></li>
+<li><p>Change your run parameters. This workflow will have the topography updater run after each successful case.run segment. So, if your segments are 5 years, then the topography will update every 5 years. Previous experiments ran with 10 year segments and the topography updated every 10 years. So, basically the pattern was:</p></li>
 </ol>
 <p>Run for 10 years, Update Topography, Short Term Archiver</p>
 <p>To get this you would need to do these xml commands:</p>
@@ -393,8 +392,8 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 </div>
 <p>That will run for 10 segments of 10 years or 100 years with the topography updating every 10 years.</p>
 <ol class="arabic simple" start="9">
-<li>Submit your run (type <code class="docutils literal notranslate"><span class="pre">./case.submit</span></code>). You should see three jobs fired off at the same time. Your run job should be queued and then the topography and archive jobs should be holding in the queue waiting for the completion of the run script.</li>
-<li>After each segment is complete, you should see a <code class="docutils literal notranslate"><span class="pre">topo_regen.log</span></code> file in your case directory. You can give those a quick look-through to make sure that the script ran successfully. The script updates the topography file in the run directory and the cam restart file PHIS field. The restart with the updated field is archived. So, you can go through your restarts and plot the PHIS field to make sure the atmosphere is seeing the evolving topography.</li>
+<li><p>Submit your run (type <code class="docutils literal notranslate"><span class="pre">./case.submit</span></code>). You should see three jobs fired off at the same time. Your run job should be queued and then the topography and archive jobs should be holding in the queue waiting for the completion of the run script.</p></li>
+<li><p>After each segment is complete, you should see a <code class="docutils literal notranslate"><span class="pre">topo_regen.log</span></code> file in your case directory. You can give those a quick look-through to make sure that the script ran successfully. The script updates the topography file in the run directory and the cam restart file PHIS field. The restart with the updated field is archived. So, you can go through your restarts and plot the PHIS field to make sure the atmosphere is seeing the evolving topography.</p></li>
 </ol>
 </div>
 </div>
@@ -445,22 +444,13 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 
     
     
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'master',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/pop_ver.js"></script>
     
 
   

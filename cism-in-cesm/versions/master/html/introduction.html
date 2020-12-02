@@ -126,7 +126,7 @@
 <li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="new-grids.html">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
 </ul>
 
             
@@ -171,7 +171,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>1. Introduction</li>
+      <li><span class="section-number">1. </span>Introduction</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,7 +191,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="introduction">
-<span id="id1"></span><h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>This document accompanies the Community Earth System Model (CESM) User’s
 Guide and is intended for users who would like to run CESM with dynamic
 ice sheets and/or an improved surface mass balance scheme for glaciated
@@ -218,7 +218,7 @@ to have some additional information included, please contact the authors:
 William Lipscomb (<a class="reference external" href="mailto:lipscomb&#37;&#52;&#48;ucar&#46;edu">lipscomb<span>&#64;</span>ucar<span>&#46;</span>edu</a>), William Sacks (<a class="reference external" href="mailto:sacks&#37;&#52;&#48;ucar&#46;edu">sacks<span>&#64;</span>ucar<span>&#46;</span>edu</a>),
 and Gunter Leguy (<a class="reference external" href="mailto:gunterl&#37;&#52;&#48;ucar&#46;edu">gunterl<span>&#64;</span>ucar<span>&#46;</span>edu</a>).</p>
 <div class="section" id="the-community-ice-sheet-model">
-<h2>1.1. The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1. </span>The Community Ice Sheet Model<a class="headerlink" href="#the-community-ice-sheet-model" title="Permalink to this headline">¶</a></h2>
 <p>CISM is a thermomechanical ice sheet model that solves the
 equations of ice flow, given suitable approximations and boundary
 conditions. The source code is written primarily in Fortran 90 and 95.
@@ -261,7 +261,7 @@ More complex schemes for subglacial water hydrology and
 evolution of basal till strength are being developed.</p>
 </div>
 <div class="section" id="scientific-background">
-<h2>1.2. Scientific background<a class="headerlink" href="#scientific-background" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.2. </span>Scientific background<a class="headerlink" href="#scientific-background" title="Permalink to this headline">¶</a></h2>
 <p>Historically, ice sheet models were not included in global climate
 models, because they were thought to be too sluggish to respond
 to climate change on decade-to-century time scales. In the Community
@@ -314,7 +314,7 @@ will likely lead to scientific insights that would not be possible with
 standalone ice sheet models.</p>
 </div>
 <div class="section" id="ice-sheets-in-cesm">
-<h2>1.3. Ice sheets in CESM<a class="headerlink" href="#ice-sheets-in-cesm" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3. </span>Ice sheets in CESM<a class="headerlink" href="#ice-sheets-in-cesm" title="Permalink to this headline">¶</a></h2>
 <p>Starting in 2006, researchers in the Climate, Ocean and Sea Ice Modeling
 (COSIM) group at Los Alamos National Laboratory (LANL) worked with
 scientists at the National Center for Atmospheric Research (NCAR) to
@@ -379,72 +379,72 @@ are more accurate with a new drag parameterization, and a bias in high-latitude
 longwave cloud forcing is much reduced.</p>
 </div>
 <div class="section" id="limitations">
-<h2>1.4. Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.4. </span>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
 <p>CISM’s land-ice capabilities continue to be actively developed, and
 some significant limitations remain, as decribed below.</p>
 <div class="section" id="limitations-of-the-ice-sheet-model-itself">
-<h3>1.4.1. Limitations of the ice sheet model itself<a class="headerlink" href="#limitations-of-the-ice-sheet-model-itself" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.4.1. </span>Limitations of the ice sheet model itself<a class="headerlink" href="#limitations-of-the-ice-sheet-model-itself" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>CISM2.1 has been designed primarily for simulating Greenland, and is missing
+<li><p>CISM2.1 has been designed primarily for simulating Greenland, and is missing
 some features needed for optimal simulation of marine ice sheets.
 By default, CISM uses a “no-float” scheme in which floating ice immediately calves.
 Although calving and sub-shelf melting schemes are available, they are relatively simple
 and may require hand tuning.
 Also, the CISM2.1 release does not have a grounding-line parameterization (GLP).
 A developmental branch of CISM includes a GLP that will be part of a future release,
-and more realistic calving and basal melting schemes are under development.</li>
-<li>To date, CISM has been run for Greenland mainly on 4-km grids. The model can be run
-at higher resolutions, but is less well tested and less robust.</li>
+and more realistic calving and basal melting schemes are under development.</p></li>
+<li><p>To date, CISM has been run for Greenland mainly on 4-km grids. The model can be run
+at higher resolutions, but is less well tested and less robust.</p></li>
 </ul>
 </div>
 <div class="section" id="limitations-of-cism-within-cesm">
-<h3>1.4.2. Limitations of CISM within CESM<a class="headerlink" href="#limitations-of-cism-within-cesm" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.4.2. </span>Limitations of CISM within CESM<a class="headerlink" href="#limitations-of-cism-within-cesm" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>CISM restarts can only occur on day boundaries</li>
-<li>There are a number of bugs with the use of a calendar that includes leap years;
-currently, you can only run CISM with a no-leap calendar.</li>
-<li>There is a bug in the outputting of time-average history fields from CISM; currently,
-only instantaneous fields are supported.</li>
+<li><p>CISM restarts can only occur on day boundaries</p></li>
+<li><p>There are a number of bugs with the use of a calendar that includes leap years;
+currently, you can only run CISM with a no-leap calendar.</p></li>
+<li><p>There is a bug in the outputting of time-average history fields from CISM; currently,
+only instantaneous fields are supported.</p></li>
 </ul>
 </div>
 <div class="section" id="limitations-of-other-components-of-the-cesm-modeling-system">
-<h3>1.4.3. Limitations of other components of the CESM modeling system<a class="headerlink" href="#limitations-of-other-components-of-the-cesm-modeling-system" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.4.3. </span>Limitations of other components of the CESM modeling system<a class="headerlink" href="#limitations-of-other-components-of-the-cesm-modeling-system" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>In CESM2.0, CISM can be coupled interactively to CLM, but coupling to the ocean
+<li><p>In CESM2.0, CISM can be coupled interactively to CLM, but coupling to the ocean
 is very limited. The ice sheet model can send calving fluxes to the ocean,
 but there is currently no mechanism to compute sub-ice-shelf melt rates
 based on ocean conditions, and ocean boundaries do not evolve in response to ice-shelf changes.
 Offline scripts have been developed to support coupling to the Community Atmosphere
 Model (CAM), adjusting CAM’s notion of surface topography; however, this atmosphere
-coupling is not available out-of-the-box and is not officially supported.</li>
-<li>CESM2.0 does not include a prognostic glacier model. Also, by default, the SMB for mountain glaciers
+coupling is not available out-of-the-box and is not officially supported.</p></li>
+<li><p>CESM2.0 does not include a prognostic glacier model. Also, by default, the SMB for mountain glaciers
 is computed for a single elevation class at the mean topography, since
-multiple elevation classes have not been found to improve the SMB outside of ice sheets.</li>
+multiple elevation classes have not been found to improve the SMB outside of ice sheets.</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">
-<h2>1.5. What’s new in CESM2.0 with respect to ice sheet modeling?<a class="headerlink" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5. </span>What’s new in CESM2.0 with respect to ice sheet modeling?<a class="headerlink" href="#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling" title="Permalink to this headline">¶</a></h2>
 <p>Compared to the CESM1 series, there have been a number of improvements
 in CESM for land-ice modeling:</p>
 <ul class="simple">
-<li>CESM includes CISM2.1, with a suite of velocity solvers including a 3D higher-order solver
+<li><p>CESM includes CISM2.1, with a suite of velocity solvers including a 3D higher-order solver
 and a depth-integrated higher-order solver in addition to the SIA and SSA.
 New physics options are available, in particular for basal sliding and iceberg calving.
-Associated with these options are many new default options and parameters for Greenland simulations.</li>
-<li>The default Greenland grid resolution is now 4 km.</li>
-<li>By default, the SMB is computed by CLM in multiple elevation classes for ice sheets.
+Associated with these options are many new default options and parameters for Greenland simulations.</p></li>
+<li><p>The default Greenland grid resolution is now 4 km.</p></li>
+<li><p>By default, the SMB is computed by CLM in multiple elevation classes for ice sheets.
 An SMB downscaled to CISM’s ice sheet grid is now available for all coupled simulations
-with an active land model, not just simulations with dynamic ice sheets.</li>
-<li>CISM can be coupled interactively to CLM, with changes in
+with an active land model, not just simulations with dynamic ice sheets.</p></li>
+<li><p>CISM can be coupled interactively to CLM, with changes in
 ice sheet extent and thickness feeding back on land surface elevation
-and surface types.</li>
-<li>CLM includes many improved snow parameterizations. These include both improvements in
+and surface types.</p></li>
+<li><p>CLM includes many improved snow parameterizations. These include both improvements in
 the properties of fresh snow and improvements in the evolution of the snow pack. CLM
 now includes a deep firn model that allows for meltwater infiltration and refreezing,
-as well as realistic firn densification rates.</li>
-<li>See the other sections of this document for more detailed descriptions of new land-ice
-capabilities.</li>
+as well as realistic firn densification rates.</p></li>
+<li><p>See the other sections of this document for more detailed descriptions of new land-ice
+capabilities.</p></li>
 </ul>
 </div>
 </div>
@@ -495,22 +495,13 @@ capabilities.</li>
 
     
     
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'master',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/pop_ver.js"></script>
     
 
   

@@ -37,7 +37,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="CESM Land Ice master documentation" href="index.html"/>
         <link rel="next" title="6. Coupling CLM and CISM" href="clm-cism-coupling.html"/>
-        <link rel="prev" title="4. The dynamic ice sheet model" href="dynamic-ice-sheet-model.html"/> 
+        <link rel="prev" title="4. Running the standalone ice sheet model within CESM: T compsets" href="t-compsets.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -106,8 +106,8 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">4. Running the standalone ice sheet model within CESM: T compsets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">5. Controlling output from CISM and CLM</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#controlling-cism-output">5.1. Controlling CISM output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#producing-land-ice-specific-output-from-clm">5.2. Producing land ice-specific output from CLM</a><ul>
@@ -122,7 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="new-grids.html">A.1&nbsp;&nbsp;&nbsp;Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
 </ul>
 
             
@@ -167,7 +167,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>5. Controlling output from CISM and CLM</li>
+      <li><span class="section-number">5. </span>Controlling output from CISM and CLM</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -187,9 +187,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="controlling-output-from-cism-and-clm">
-<span id="controlling-output"></span><h1>5. Controlling output from CISM and CLM<a class="headerlink" href="#controlling-output-from-cism-and-clm" title="Permalink to this headline">¶</a></h1>
+<span id="controlling-output"></span><h1><span class="section-number">5. </span>Controlling output from CISM and CLM<a class="headerlink" href="#controlling-output-from-cism-and-clm" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="controlling-cism-output">
-<h2>5.1. Controlling CISM output<a class="headerlink" href="#controlling-cism-output" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.1. </span>Controlling CISM output<a class="headerlink" href="#controlling-cism-output" title="Permalink to this headline">¶</a></h2>
 <p>The default CISM output frequency is yearly. Most of the CISM output fields are
 instantaneous, so this default frequency means that you get a snapshot of the current
 state at the end of each year. You can change the output to be less frequent via the
@@ -215,9 +215,9 @@ file is written immediately after an ice dynamics time step. This will normally 
 case for restart files written at the end of any model year.</p>
 </div>
 <div class="section" id="producing-land-ice-specific-output-from-clm">
-<h2>5.2. Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.2. </span>Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="outputting-forcing-fields-sent-from-clm-to-cism">
-<h3>5.2.1. Outputting forcing fields sent from CLM to CISM<a class="headerlink" href="#outputting-forcing-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.2.1. </span>Outputting forcing fields sent from CLM to CISM<a class="headerlink" href="#outputting-forcing-fields-sent-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>
 <p>CLM sends two sets of fields to CISM for each elevation class: <code class="docutils literal notranslate"><span class="pre">qice</span></code> and <code class="docutils literal notranslate"><span class="pre">tsrf</span></code>. In
 addition, it sends a third set of fields to the coupler for downscaling purposes:
 <code class="docutils literal notranslate"><span class="pre">topo</span></code>. It can often be useful to view the values of these forcing fields for each
@@ -233,7 +233,7 @@ to CLM’s default (monthly) history file, you would add the following in <code 
 different time frequencies. See the <a class="reference external" href="https://escomp.github.io/ctsm-docs">CLM User’s Guide</a> for details on how to do this.</p>
 </div>
 <div class="section" id="adding-a-clm-history-field-that-provides-averages-only-over-ice">
-<h3>5.2.2. Adding a CLM history field that provides averages only over ice<a class="headerlink" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">5.2.2. </span>Adding a CLM history field that provides averages only over ice<a class="headerlink" href="#adding-a-clm-history-field-that-provides-averages-only-over-ice" title="Permalink to this headline">¶</a></h3>
 <p>In general, CLM history fields give weighted averages over the entire grid cell. If you
 are interested in diagnostics just over ice landunits for certain history fields, you can
 make a source code modification for each field of interest.</p>
@@ -242,11 +242,11 @@ step is to find the <code class="docutils literal notranslate"><span class="pre"
 field(s) of interest, by searching the code for the history field name. Then add a new
 <code class="docutils literal notranslate"><span class="pre">hist_addfld1d</span></code> or <code class="docutils literal notranslate"><span class="pre">hist_addfld2d</span></code> call that is mostly the same as the original, but:</p>
 <ol class="arabic simple">
-<li>Change the field name (<code class="docutils literal notranslate"><span class="pre">fname</span></code>), for example, changing <code class="docutils literal notranslate"><span class="pre">TSOI</span></code> to <code class="docutils literal notranslate"><span class="pre">TSOI_ICE</span></code></li>
-<li>Change <code class="docutils literal notranslate"><span class="pre">long_name</span></code> to call out that this field just applies over ice landunits</li>
-<li>Add a new argument to the call: <code class="docutils literal notranslate"><span class="pre">l2g_scale_type='ice'</span></code>.</li>
-<li>Possibly add <code class="docutils literal notranslate"><span class="pre">default='inactive'</span></code> so that this field only appears if explicitly
-requested in <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>.</li>
+<li><p>Change the field name (<code class="docutils literal notranslate"><span class="pre">fname</span></code>), for example, changing <code class="docutils literal notranslate"><span class="pre">TSOI</span></code> to <code class="docutils literal notranslate"><span class="pre">TSOI_ICE</span></code></p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">long_name</span></code> to call out that this field just applies over ice landunits</p></li>
+<li><p>Add a new argument to the call: <code class="docutils literal notranslate"><span class="pre">l2g_scale_type='ice'</span></code>.</p></li>
+<li><p>Possibly add <code class="docutils literal notranslate"><span class="pre">default='inactive'</span></code> so that this field only appears if explicitly
+requested in <code class="docutils literal notranslate"><span class="pre">user_nl_clm</span></code>.</p></li>
 </ol>
 <p>Here are some examples of currently-defined <code class="docutils literal notranslate"><span class="pre">_ICE</span></code> fields and their non-<code class="docutils literal notranslate"><span class="pre">_ICE</span></code>
 counterparts:</p>
@@ -290,7 +290,7 @@ lists via CLM’s <code class="docutils literal notranslate"><span class="pre">h
         <a href="clm-cism-coupling.html" class="btn btn-neutral float-right" title="6. Coupling CLM and CISM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="dynamic-ice-sheet-model.html" class="btn btn-neutral" title="4. The dynamic ice sheet model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="t-compsets.html" class="btn btn-neutral" title="4. Running the standalone ice sheet model within CESM: T compsets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -323,22 +323,13 @@ lists via CLM’s <code class="docutils literal notranslate"><span class="pre">h
 
     
     
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'master',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/pop_ver.js"></script>
     
 
   
