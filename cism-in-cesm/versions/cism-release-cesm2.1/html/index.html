@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CESM Land Ice Documentation and User Guide &mdash; CESM Land Ice master documentation</title>
+  <title>CESM Land Ice Documentation and User Guide &mdash; CESM Land Ice CESM2.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CESM Land Ice master documentation" href="#"/>
+    <link rel="top" title="CESM Land Ice CESM2.1 documentation" href="#"/>
         <link rel="next" title="1. Introduction" href="introduction.html"/> 
 
   
@@ -68,7 +68,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>master</option>
+                      <option value=''>CESM2.1</option>
                       
                         
                       
@@ -105,8 +105,8 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">4. Running the standalone ice sheet model within CESM: T compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -184,86 +184,40 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#the-community-ice-sheet-model">1.1. The Community Ice Sheet Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#scientific-background">1.2. Scientific background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#ice-sheets-in-cesm">1.3. Ice sheets in CESM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#limitations">1.4. Limitations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="introduction.html#limitations-of-the-ice-sheet-model-itself">1.4.1. Limitations of the ice sheet model itself</a></li>
-<li class="toctree-l3"><a class="reference internal" href="introduction.html#limitations-of-cism-within-cesm">1.4.2. Limitations of CISM within CESM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="introduction.html#limitations-of-other-components-of-the-cesm-modeling-system">1.4.3. Limitations of other components of the CESM modeling system</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">1.5. What’s new in CESM2.0 with respect to ice sheet modeling?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#scientific-background">1.1. Scientific background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#ice-sheets-in-cesm">1.2. Ice sheets in CESM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#limitations">1.3. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-s-new-in-cesm2-0-with-respect-to-ice-sheet-modeling">1.4. What’s new in CESM2.0 with respect to ice sheet modeling?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="running-and-modifying.html#choosing-a-cesm-configuration-for-land-ice-work">2.1. Choosing a CESM configuration for land ice work</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="running-and-modifying.html#choosing-a-compset">2.1.1. Choosing a compset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="running-and-modifying.html#choosing-a-cism-grid">2.1.2. Choosing a CISM grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="running-and-modifying.html#special-considerations-for-hybrid-cases">2.1.3. Special considerations for hybrid cases</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="running-and-modifying.html#choosing-a-cesm-configuration-for-land-ice-work">2.1. Choosing a CESM configuration for land ice work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running-and-modifying.html#modifying-namelist-settings">2.2. Modifying namelist settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="running-and-modifying.html#modifying-source-code">2.3. Modifying source code</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="running-and-modifying.html#source-code-directory-structure-and-repositories">2.3.1. Source code directory structure and repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running-and-modifying.html#modifying-source-code">2.3. Modifying source code</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">3. Running the standalone ice sheet model within CESM: T compsets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#background">3.1. Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#running-with-existing-forcing-data">3.2. Running with existing forcing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#creating-and-running-with-your-own-forcing-data">3.3. Creating and running with your own forcing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#changes-to-some-cesm-defaults-for-t-compsets">3.4. Changes to some CESM defaults for T compsets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="b-compsets.html#helpful-links-for-coupling-information">3.1. Helpful links for coupling information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="b-compsets.html#cism-time-steps">3.2. CISM Time Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="b-compsets.html#cism-topography-updating-workflow">3.3. CISM Topography Updating Workflow</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">4. Running the standalone ice sheet model within CESM: T compsets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#background">4.1. Background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#running-with-existing-forcing-data">4.2. Running with existing forcing data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#creating-and-running-with-your-own-forcing-data">4.3. Creating and running with your own forcing data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="t-compsets.html#performing-a-run-to-create-forcing-data">4.3.1. Performing a run to create forcing data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="t-compsets.html#performing-a-t-compset-run-using-your-own-forcing-data">4.3.2. Performing a T compset run using your own forcing data</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="t-compsets.html#changes-to-some-cesm-defaults-for-t-compsets">4.4. Changes to some CESM defaults for T compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic-ice-sheet-model.html">4. The dynamic ice sheet model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dynamic-ice-sheet-model.html#the-community-ice-sheet-model">4.1. The Community Ice Sheet Model</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="controlling-output.html#controlling-cism-output">5.1. Controlling CISM output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controlling-output.html#producing-land-ice-specific-output-from-clm">5.2. Producing land ice-specific output from CLM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="controlling-output.html#outputting-forcing-fields-sent-from-clm-to-cism">5.2.1. Outputting forcing fields sent from CLM to CISM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="controlling-output.html#adding-a-clm-history-field-that-provides-averages-only-over-ice">5.2.2. Adding a CLM history field that provides averages only over ice</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="controlling-output.html#producing-land-ice-specific-output-from-clm">5.2. Producing land ice-specific output from CLM</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#modes-of-coupling-clm-and-cism">6.1. Modes of coupling CLM and CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#non-evolving-ice-sheet">6.1.1. Non-evolving ice sheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#evolving-ice-sheet-with-two-way-interactive-coupling">6.1.2. Evolving ice sheet with two-way (interactive) coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#evolving-ice-sheet-with-one-way-diagnostic-coupling">6.1.3. Evolving ice sheet with one-way (diagnostic) coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#stub-glc-model-cism-absent">6.1.4. Stub GLC model (CISM absent)</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#modes-of-coupling-clm-and-cism">6.1. Modes of coupling CLM and CISM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#brief-overview-of-clm-cism-coupling">6.2. Brief overview of CLM-CISM coupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#resetting-clm-s-baseline-states-for-dynamic-landunits">6.3. Resetting CLM’s baseline states for dynamic landunits</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#overview-of-clm-s-dynbal-fluxes">6.3.1. Overview of CLM’s dynbal fluxes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#further-reducing-dynbal-fluxes-via-reset-dynbal-baselines">6.3.2. Further reducing dynbal fluxes via <code class="docutils literal notranslate"><span class="pre">reset_dynbal_baselines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#confirming-that-the-dynbal-fluxes-are-small-in-your-simulation">6.3.3. Confirming that the dynbal fluxes are small in your simulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#more-details-and-thoughts-on-these-dynbal-fluxes">6.3.4. More details and thoughts on these dynbal fluxes</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#fields-exchanged-between-clm-and-cism">6.4. Fields exchanged between CLM and CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#clm-to-cism">6.4.1. CLM to CISM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#cism-to-clm">6.4.2. CISM to CLM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#other-fields-sent-from-cism">6.4.3. Other fields sent from CISM</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#remapping-fields-sent-from-clm-to-cism">6.5. Remapping fields sent from CLM to CISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#remapping-surface-mass-balance-from-clm-to-cism">6.5.1. Remapping surface mass balance from CLM to CISM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="clm-cism-coupling.html#remapping-surface-temperature-from-clm-to-cism">6.5.2. Remapping surface temperature from CLM to CISM</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#clm-s-glacier-regions-and-their-behaviors">6.6. CLM’s glacier regions and their behaviors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#fields-exchanged-between-clm-and-cism">6.3. Fields exchanged between CLM and CISM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#remapping-fields-sent-from-clm-to-cism">6.4. Remapping fields sent from CLM to CISM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clm-cism-coupling.html#clm-s-glacier-regions-and-their-behaviors">6.5. CLM’s glacier regions and their behaviors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
@@ -333,21 +287,11 @@
 
     
     
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'master',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="_static/pop_ver.js"></script>
     
 
