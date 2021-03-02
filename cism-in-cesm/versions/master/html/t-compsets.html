@@ -202,11 +202,12 @@ sheet model), or run parameter sensitivity analyses much faster than you
 could within the coupled system.</p>
 <p>A run with standalone CISM in the CESM context is known as a T compset. (In the past this
 was referred to as a TG compset. Now the G appears near the end of the compset name, so
-compsets have names like T1850G.)  This compset uses the active ice sheet model forced by
-a data land model; all other components are stubs. Before running a T compset, you must
-have coupler history files from a previous run that included CLM (version 4.5 or
-later). You can run with either existing forcing data (see <a class="reference internal" href="#t-with-existing-data"><span class="std std-numref">Section 4.2</span></a>)
-or with your own forcing data (see <a class="reference internal" href="#t-with-your-own-data"><span class="std std-numref">Section 4.3</span></a>).</p>
+compsets have names like T1850Gg, where the final g indicates Greenland.) This compset
+uses the active ice sheet model for the specified ice sheet(s), forced by a data land
+model; all other components are stubs. Before running a T compset, you must have coupler
+history files from a previous run that included CLM (version 4.5 or later). You can run
+with either existing forcing data (see <a class="reference internal" href="#t-with-existing-data"><span class="std std-numref">Section 4.2</span></a>) or with your own
+forcing data (see <a class="reference internal" href="#t-with-your-own-data"><span class="std std-numref">Section 4.3</span></a>).</p>
 </div>
 <div class="section" id="running-with-existing-forcing-data">
 <span id="t-with-existing-data"></span><h2><span class="section-number">4.2. </span>Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
@@ -217,13 +218,13 @@ forced by a data atmosphere with GSWP3 forcing, starting from an already-near-sp
 state, with nominally year-1850 forcings and satellite phenology). The resolution was
 <code class="docutils literal notranslate"><span class="pre">f09_g17</span></code>. The code base was close to the final CESM2.0 release. For more details, see
 <a class="reference external" href="https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/lnd/dlnd7/CPLHIST_SNO/i.e20.I1850Clm50Sp.f09_g17.001_c180502/README">https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/lnd/dlnd7/CPLHIST_SNO/i.e20.I1850Clm50Sp.f09_g17.001_c180502/README</a>.</p>
-<p>There is one out-of-the-box T compset that uses these forcing data: T1850G. <strong>You should
+<p>There is one out-of-the-box T compset that uses these forcing data: T1850Gg. <strong>You should
 run this compset at f09_g17 resolution — i.e., with the same land resolution and ocean
 mask used to create the forcing data.</strong> You can use any CISM resolution, although the
 current forcing data only have complete forcings for Greenland, not Antarctica.</p>
 <p>So a typical <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> command when running with the standard 4-km Greenland
 grid, would look like:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./create_newcase --case my_t_case --compset T1850G --res f09_g17_gl4</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./create_newcase --case my_t_case --compset T1850Gg --res f09_g17_gl4</span>
 </pre></div>
 </div>
 </div>
@@ -288,7 +289,7 @@ original within double-precision roundoff-level.</p>
 <div class="section" id="performing-a-t-compset-run-using-your-own-forcing-data">
 <h3><span class="section-number">4.3.2. </span>Performing a T compset run using your own forcing data<a class="headerlink" href="#performing-a-t-compset-run-using-your-own-forcing-data" title="Permalink to this headline">¶</a></h3>
 <p>To perform a standalone CISM run forced by your newly-created forcing data, first create a
-new case using one of the existing T compsets (e.g., T1850G). The land and ocean
+new case using one of the existing T compsets (e.g., T1850Gg). The land and ocean
 resolutions of the T compset run (as specified by the <code class="docutils literal notranslate"><span class="pre">--res</span></code> flag to
 <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code>) should match the resolution of the run used to create the forcing
 data. You <em>can</em> run with a different glc resolution than the one used to create the
@@ -401,7 +402,6 @@ changed automatically when running with a T compset. These include:</p>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script src="_static/pop_ver.js"></script>
     
