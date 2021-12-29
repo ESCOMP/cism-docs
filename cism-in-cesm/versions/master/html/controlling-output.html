@@ -123,6 +123,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-icesheet.html"><span class="sectnum">A.2</span> Introducing a new ice sheet</a></li>
 </ul>
 
             
@@ -193,26 +194,28 @@
 <p>The default CISM output frequency is yearly. Most of the CISM output fields are
 instantaneous, so this default frequency means that you get a snapshot of the current
 state at the end of each year. You can change the output to be less frequent via the
-namelist variable <code class="docutils literal notranslate"><span class="pre">history_frequency</span></code>, which can be set in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. For
-example, to give output every 10 years, set:</p>
+namelist variable <code class="docutils literal notranslate"><span class="pre">history_frequency</span></code>, which can be set in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> (to change
+the setting for all ice sheets) or <code class="docutils literal notranslate"><span class="pre">user_nl_cism_ICESHEET</span></code> (to change the setting for a
+specific ice sheet). For example, to give output every 10 years, set:</p>
 <div class="highlight-Fortran notranslate"><div class="highlight"><pre><span></span><span class="n">history_frequency</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
 <p>The set of variables written to each history file is controlled by the namelist variable
-<code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code>. To see the variables output by default, examine
-<code class="docutils literal notranslate"><span class="pre">CaseDocs/cism_in</span></code> after running <code class="docutils literal notranslate"><span class="pre">preview_namelists</span></code> for your case. Among the standard
-fields written to the history file are the ice thickness (<code class="docutils literal notranslate"><span class="pre">thk</span></code>), upper surface
-elevation (<code class="docutils literal notranslate"><span class="pre">usurf</span></code>), bedrock elevation (<code class="docutils literal notranslate"><span class="pre">topg</span></code>), and the surface mass balance
-(<code class="docutils literal notranslate"><span class="pre">smb</span></code>) and surface temperature (<code class="docutils literal notranslate"><span class="pre">artm</span></code>) downscaled to the ice sheet grid.</p>
-<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">cesm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code>. Files
-with names ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> in the source tree specify the fields that can be
-written out. You can add new variables to one of these <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files and rebuild the
-model in order to enable new output fields. (Note: These <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files can NOT be
-placed in SourceMods: they need to be changed in-place in the source tree.)</p>
+<code class="docutils literal notranslate"><span class="pre">esm_history_vars</span></code>. To see the variables output by default, examine
+<code class="docutils literal notranslate"><span class="pre">CaseDocs/cism.ICESHEET.config</span></code> (for some ICESHEET, e.g., gris) after running
+<code class="docutils literal notranslate"><span class="pre">preview_namelists</span></code> for your case. Among the standard fields written to the history file
+are the ice thickness (<code class="docutils literal notranslate"><span class="pre">thk</span></code>), upper surface elevation (<code class="docutils literal notranslate"><span class="pre">usurf</span></code>), bedrock elevation
+(<code class="docutils literal notranslate"><span class="pre">topg</span></code>), and the surface mass balance (<code class="docutils literal notranslate"><span class="pre">smb</span></code>) and surface temperature (<code class="docutils literal notranslate"><span class="pre">artm</span></code>)
+downscaled to the ice sheet grid.</p>
+<p>To modify the list of history fields, set <code class="docutils literal notranslate"><span class="pre">esm_history_vars</span></code> in <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> (to
+change the list for all ice sheets) or in <code class="docutils literal notranslate"><span class="pre">user_nl_cism_ICESHEET</span></code> (to change the setting
+for a specific ice sheet). Files with names ending in <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> in the source tree
+specify the fields that can be written out. You can add new variables to one of these
+<code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files and rebuild the model in order to enable new output fields. (Note:
+These <code class="docutils literal notranslate"><span class="pre">vars.def</span></code> files can NOT be placed in SourceMods: they need to be changed in-place
+in the source tree.)</p>
 <p>Model restart frequency is coordinated by the CESM coupler. The restart file contains all
-the fields required for exact restart.  However, the restart will be exact only if the
-file is written immediately after an ice dynamics time step. This will normally be the
-case for restart files written at the end of any model year.</p>
+the fields required for exact restart.</p>
 </div>
 <div class="section" id="producing-land-ice-specific-output-from-clm">
 <h2><span class="section-number">5.2. </span>Producing land ice-specific output from CLM<a class="headerlink" href="#producing-land-ice-specific-output-from-clm" title="Permalink to this headline">¶</a></h2>

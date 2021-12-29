@@ -120,6 +120,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-icesheet.html"><span class="sectnum">A.2</span> Introducing a new ice sheet</a></li>
 </ul>
 
             
@@ -192,8 +193,8 @@ active components and repeated pre-industrial forcing. Basic B
 compsets run with CISM in no-evolve mode, and compsets that end
 with G (e.g., “B1850G”) have an active, or evolving, CISM
 Greenland ice sheet.</p>
-<p>Any compset, including B compsets, can turn on an actively evolving
-CISM ice sheet model using the xml variable CISM_EVOLVE to TRUE.</p>
+<p>Any compset that includes CISM in no-evolve mode, including B compsets, can turn on an actively evolving
+CISM ice sheet model by setting the xml variables <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE_ICESHEET</span></code> (for each included icesheet — e.g., <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE_GREENLAND</span></code>) as well as the overall <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p>
 <p>The sections below give links to information about CISM’s coupling,
 and how to start and run a CESM case in general. After the links
 are descriptions of CISM’s time stepping options, including how to
@@ -286,7 +287,7 @@ in CESM, however. To accelerate the orbital forcings as well, there are
 currently namelist and source modifications needed. Contact a LIWG scientist
 for more information about these.</p>
 <p>The time options below (apart from the forcing timestep) are set in
-<em>cism.config</em>. This file contains (or may contain) the following
+<em>cism.ICESHEET.config</em> for each ice sheet. This file contains (or may contain) the following
 timestep information:</p>
 <ol class="arabic simple">
 <li><p>The ice sheet timestep <em>dt</em> (in years) is set in the section
@@ -303,61 +304,46 @@ CISM, but is set in the file <em>env_run.xml</em> in the case directory.</p>
 <div class="section" id="cism-topography-updating-workflow">
 <h2><span class="section-number">3.3. </span>CISM Topography Updating Workflow<a class="headerlink" href="#cism-topography-updating-workflow" title="Permalink to this headline">¶</a></h2>
 <p>** These instructions require CESM 2.1.1 or greater. **</p>
-<ol class="arabic simple">
-<li><p>Edit your <code class="docutils literal notranslate"><span class="pre">config_workflow.xml</span></code> file. This is found in <code class="docutils literal notranslate"><span class="pre">cime/config/cesm/machines</span></code> . You will need to add the following code to this file anywhere after a <code class="docutils literal notranslate"><span class="pre">&lt;/workflow_jobs&gt;</span></code> tag.</p></li>
-</ol>
-<blockquote>
-<div><dl>
-<dt>&lt;workflow_jobs id=”topo_regen_10yr_cycle”&gt;</dt><dd><p>&lt;!– order matters, jobs will be run in the order listed here –&gt;
-&lt;job name=”case.run”&gt;</p>
-<blockquote>
-<div><p>&lt;template&gt;template.case.run&lt;/template&gt;
-&lt;prereq&gt;$BUILD_COMPLETE and not $TEST&lt;/prereq&gt;</p>
-</div></blockquote>
-<p>&lt;/job&gt;
-&lt;job name=”case.test”&gt;</p>
-<blockquote>
-<div><p>&lt;template&gt;template.case.test&lt;/template&gt;
-&lt;prereq&gt;$BUILD_COMPLETE and $TEST&lt;/prereq&gt;</p>
-</div></blockquote>
-<p>&lt;/job&gt;
-&lt;job name=”case.topo_regen”&gt;</p>
-<blockquote>
-<div><p>&lt;template&gt;$EXEROOT/../run/dynamic_atm_topo/template.topo_regen&lt;/template&gt;
-&lt;!– If case.run (or case.test) exits successfully then run topo_regen–&gt;
-&lt;dependency&gt;case.run or case.test&lt;/dependency&gt;
-&lt;prereq&gt;1&lt;/prereq&gt;
-&lt;runtime_parameters&gt;</p>
-<blockquote>
-<div><p>&lt;task_count&gt;1&lt;/task_count&gt;
-&lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
-&lt;walltime&gt;0:45:00&lt;/walltime&gt;</p>
-</div></blockquote>
-<p>&lt;/runtime_parameters&gt;</p>
-</div></blockquote>
-<p>&lt;/job&gt;
-&lt;job name=”case.st_archive”&gt;</p>
-<blockquote>
-<div><p>&lt;template&gt;template.st_archive&lt;/template&gt;
-&lt;!– If case.topo_regen exits successfully then run st_archive–&gt;
-&lt;dependency&gt;case.topo_regen&lt;/dependency&gt;
-&lt;prereq&gt;$DOUT_S&lt;/prereq&gt;
-&lt;runtime_parameters&gt;</p>
-<blockquote>
-<div><p>&lt;task_count&gt;1&lt;/task_count&gt;
-&lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
-&lt;walltime&gt;0:20:00&lt;/walltime&gt;</p>
-</div></blockquote>
-<p>&lt;/runtime_parameters&gt;</p>
-</div></blockquote>
-<p>&lt;/job&gt;</p>
-</dd>
-</dl>
-<p>&lt;/workflow_jobs&gt;</p>
-</div></blockquote>
-<ol class="arabic" start="2">
+<ol class="arabic">
+<li><p>Edit your <code class="docutils literal notranslate"><span class="pre">config_workflow.xml</span></code> file. This is found in <code class="docutils literal notranslate"><span class="pre">cime/config/cesm/machines</span></code> . You will need to add the following code to this file anywhere after a <code class="docutils literal notranslate"><span class="pre">&lt;/workflow_jobs&gt;</span></code> tag.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;workflow_jobs id=&quot;topo_regen_10yr_cycle&quot;&gt;
+  &lt;!-- order matters, jobs will be run in the order listed here --&gt;
+  &lt;job name=&quot;case.run&quot;&gt;
+    &lt;template&gt;template.case.run&lt;/template&gt;
+    &lt;prereq&gt;$BUILD_COMPLETE and not $TEST&lt;/prereq&gt;
+  &lt;/job&gt;
+  &lt;job name=&quot;case.test&quot;&gt;
+    &lt;template&gt;template.case.test&lt;/template&gt;
+    &lt;prereq&gt;$BUILD_COMPLETE and $TEST&lt;/prereq&gt;
+  &lt;/job&gt;
+  &lt;job name=&quot;case.topo_regen&quot;&gt;
+    &lt;template&gt;$EXEROOT/../run/dynamic_atm_topo/template.topo_regen&lt;/template&gt;
+    &lt;!-- If case.run (or case.test) exits successfully then run topo_regen--&gt;
+    &lt;dependency&gt;case.run or case.test&lt;/dependency&gt;
+    &lt;prereq&gt;1&lt;/prereq&gt;
+    &lt;runtime_parameters&gt;
+      &lt;task_count&gt;1&lt;/task_count&gt;
+      &lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
+      &lt;walltime&gt;0:45:00&lt;/walltime&gt;
+    &lt;/runtime_parameters&gt;
+  &lt;/job&gt;
+  &lt;job name=&quot;case.st_archive&quot;&gt;
+    &lt;template&gt;template.st_archive&lt;/template&gt;
+    &lt;!-- If case.topo_regen exits successfully then run st_archive--&gt;
+    &lt;dependency&gt;case.topo_regen&lt;/dependency&gt;
+    &lt;prereq&gt;$DOUT_S&lt;/prereq&gt;
+    &lt;runtime_parameters&gt;
+      &lt;task_count&gt;1&lt;/task_count&gt;
+      &lt;tasks_per_node&gt;1&lt;/tasks_per_node&gt;
+      &lt;walltime&gt;0:20:00&lt;/walltime&gt;
+    &lt;/runtime_parameters&gt;
+  &lt;/job&gt;
+&lt;/workflow_jobs&gt;
+</pre></div>
+</div>
+</li>
 <li><p>Create your case. When you create your case you will need to add the flag <code class="docutils literal notranslate"><span class="pre">--workflow</span> <span class="pre">topo_regen_10yr_cycle</span></code> . For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">create_newcase</span> <span class="o">--</span><span class="n">case</span> <span class="n">Test_topo_regen_workflow_m03</span> <span class="o">--</span><span class="n">compset</span> <span class="n">B1850G</span> <span class="o">--</span><span class="n">res</span> <span class="n">f09_g17_gl4</span> <span class="o">--</span><span class="n">workflow</span> <span class="n">topo_regen_10yr_cycle</span> <span class="o">--</span><span class="n">project</span> <span class="n">P93300606</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">unsupported</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">create_newcase</span> <span class="o">--</span><span class="n">case</span> <span class="n">Test_topo_regen_workflow_m03</span> <span class="o">--</span><span class="n">compset</span> <span class="n">B1850G</span> <span class="o">--</span><span class="n">res</span> <span class="n">f09_g17_gris4</span> <span class="o">--</span><span class="n">workflow</span> <span class="n">topo_regen_10yr_cycle</span> <span class="o">--</span><span class="n">project</span> <span class="n">P93300606</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">unsupported</span>
 </pre></div>
 </div>
 </li>

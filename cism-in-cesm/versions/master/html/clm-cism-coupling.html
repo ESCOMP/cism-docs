@@ -165,6 +165,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-icesheet.html"><span class="sectnum">A.2</span> Introducing a new ice sheet</a></li>
 </ul>
 
             
@@ -237,11 +238,10 @@
 <p>In typical CESM runs, CISM is not evolving; CLM computes the ice sheet surface mass
 balance and sends it to CISM, but CISM’s ice sheet geometry remains fixed over the course
 of the run, and CISM does not send any fluxes to other CESM components. These
-configurations use compsets with <code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code> in their long name (or this can be set
-after setting up a case via the xml variable, <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code>). In these runs, CISM serves
+configurations use compsets with <code class="docutils literal notranslate"><span class="pre">CISM2%XXX-NOEVOLVE</span></code> in their long name (for some ice sheet <code class="docutils literal notranslate"><span class="pre">XXX</span></code>). In these runs, CISM serves
 two roles in the system:</p>
 <ol class="arabic simple">
-<li><p>Over the CISM domain (typically Greenland in CESM2), CISM dictates
+<li><p>Over the CISM domain(s) (typically Greenland in CESM2), CISM dictates
 glacier areas and topographic elevations, overriding the values on
 CLM’s surface dataset. CISM also dictates the elevation of
 non-glacier land units in its domain, and only in this domain are
@@ -251,8 +251,8 @@ atmospheric fields downscaled to non-glacier land units.</p></li>
 </div>
 <div class="section" id="evolving-ice-sheet-with-two-way-interactive-coupling">
 <h3><span class="section-number">6.1.2. </span>Evolving ice sheet with two-way (interactive) coupling<a class="headerlink" href="#evolving-ice-sheet-with-two-way-interactive-coupling" title="Permalink to this headline">¶</a></h3>
-<p>Dynamic ice sheet evolution can be turned on by using a compset with <code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code> in
-its long name, or by setting the xml variable <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> after setting up a case. In
+<p>Dynamic ice sheet evolution can be turned on by using a compset with <code class="docutils literal notranslate"><span class="pre">CISM2%XXX-EVOLVE</span></code> in
+its long name (for some ice sheet <code class="docutils literal notranslate"><span class="pre">XXX</span></code>), or by setting the xml variables <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE_ICESHEET</span></code> (for one or more instances of <code class="docutils literal notranslate"><span class="pre">ICESHEET</span></code>) and the overall <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> after setting up a case. In
 this configuration, CISM sends updated glacier areas and topographic elevations to CLM at
 the end of each year. In addition, CISM sends fluxes of ice and liquid water to the
 ocean. CLM responds to these changes by adjusting the areas of the glacier land unit and
@@ -276,8 +276,7 @@ evolving, two-way-coupled ice sheet.</strong></p>
 <div class="section" id="evolving-ice-sheet-with-one-way-diagnostic-coupling">
 <h3><span class="section-number">6.1.3. </span>Evolving ice sheet with one-way (diagnostic) coupling<a class="headerlink" href="#evolving-ice-sheet-with-one-way-diagnostic-coupling" title="Permalink to this headline">¶</a></h3>
 <p>A hybrid mode is also possible, in which CISM evolves dynamically but does not feed back
-to the rest of the system. This configuration is enabled by turning on CISM evolution (via
-using a <code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code> compset or changing the <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> xml variable to
+to the rest of the system. This configuration is enabled by turning on CISM evolution (by using a <code class="docutils literal notranslate"><span class="pre">CISM2%XXX-EVOLVE</span></code> compset or changing the relevant <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE_ICESHEET</span></code> and overall <code class="docutils literal notranslate"><span class="pre">CISM_EVOLVE</span></code> xml variables to
 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>), but then changing the xml variable <code class="docutils literal notranslate"><span class="pre">GLC_TWO_WAY_COUPLING</span></code> to <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>. This
 change results in changes to CLM and CISM:</p>
 <ul class="simple">
@@ -297,7 +296,7 @@ whether or not CISM sends fluxes to the ocean can also be controlled independent
 <div class="section" id="stub-glc-model-cism-absent">
 <h3><span class="section-number">6.1.4. </span>Stub GLC model (CISM absent)<a class="headerlink" href="#stub-glc-model-cism-absent" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to run CESM with a stub glacier model rather than CISM by using
-compsets with <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in place of <code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code>. These configurations are similar to
+compsets with <code class="docutils literal notranslate"><span class="pre">SGLC</span></code> in place of <code class="docutils literal notranslate"><span class="pre">CISM2%XXX-NOEVOLVE</span></code>. These configurations are similar to
 those with a non-evolving ice sheet, with the following differences:</p>
 <ol class="arabic simple">
 <li><p>CLM’s glacier areas and elevations will be taken entirely from CLM’s initial conditions
@@ -610,10 +609,8 @@ within this mask and false outside of it.</p>
 the ice sheet grid mask if we are running with an evolving, two-way-coupled ice sheet, and
 otherwise is zero everywhere (and, as described in <a class="reference internal" href="#ice-sheet-grid-mask"><span class="std std-numref">Section 6.4.2.3</span></a>, this
 relationship should remain true, because the ice sheet grid mask is used in the coupler in
-a way that closely matches the use of this second mask). In the future, when we allow
-multiple ice sheets in CESM (e.g., Greenland and Antarctica), it is possible that one ice
-sheet will operate two-way-coupled while another is one-way-coupled. In this case, this
-mask would match the ice sheet grid mask for the two-way-coupled ice sheet and would be
+a way that closely matches the use of this second mask). One reason this is sent as a separate field is to handle the scenario where there are multiple ice sheets (e.g., Greenland and Antarctica), with one ice sheet operating two-way-coupled while another is one-way-coupled. In this case, this
+mask matches the ice sheet grid mask for the two-way-coupled ice sheet and is
 zero for the other.</p>
 <p>Note that, like the ice sheet grid mask, this mask excludes CISM’s open ocean grid
 cells. CISM does not currently have code in place to handle inputs of SMB over open ocean
@@ -731,6 +728,7 @@ by up to 10%.  If we used conservative rather than bilinear remapping, differenc
 because of area distortions on CISM’s polar stereographic grid.
 Thus the local errors for bilinear remapping and renormalization are similar to the local errors for conservative remapping.
 Bilinear remapping, however, is far smoother; smoothness is obtained at the cost of local conservation.</p>
+<p>When running with multiple ice sheets, the conservation correction is applied independently for each ice sheet. This means that the SMB over one ice sheet does <em>not</em> impact the renormalized SMB over another ice sheet.</p>
 </div>
 <div class="section" id="remapping-surface-temperature-from-clm-to-cism">
 <h3><span class="section-number">6.5.2. </span>Remapping surface temperature from CLM to CISM<a class="headerlink" href="#remapping-surface-temperature-from-clm-to-cism" title="Permalink to this headline">¶</a></h3>

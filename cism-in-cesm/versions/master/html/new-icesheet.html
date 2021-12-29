@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>A.2 Introducing a new ice sheet &mdash; CESM Land Ice master documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CESM Land Ice master documentation" href="index.html"/>
+        <link rel="prev" title="A.1 Introducing a new ice sheet grid" href="new-grids.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CESM Land Ice
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>master</option>
+                      
+                        
+                      
+                        
+                          <option value="">[placeholder]</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running-and-modifying.html">2. Running and modifying the CESM land ice component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="b-compsets.html">3. Running the fully-coupled ice sheet model within CESM: B compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t-compsets.html">4. Running the standalone ice sheet model within CESM: T compsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controlling-output.html">5. Controlling output from CISM and CLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clm-cism-coupling.html">6. Coupling CLM and CISM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">7. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">8. References</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><span class="sectnum">A.2</span> Introducing a new ice sheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#changes-needed-in-the-cism-wrapper-repository"><span class="sectnum">A.2.1</span> Changes needed in the CISM-wrapper repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changes-needed-in-other-repositories"><span class="sectnum">A.2.2</span> Changes needed in other repositories</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CESM Land Ice</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><span class="sectnum">A.2</span> Introducing a new ice sheet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/new-icesheet.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introducing-a-new-ice-sheet">
+<span id="new-icesheet"></span><h1><span class="sectnum">A.2</span> Introducing a new ice sheet<a class="headerlink" href="#introducing-a-new-ice-sheet" title="Permalink to this headline">¶</a></h1>
+<p>This section describes what is needed when introducing support for a completely new ice sheet — i.e., an ice sheet other than Greenland or Antarctica. If you are instead adding a new grid for an existing ice sheet (e.g., a new Greenland or Antarctica grid), see <a class="reference internal" href="new-grids.html#new-grids"><span class="std std-ref">A.1   Introducing a new ice sheet grid</span></a>.</p>
+<div class="section" id="changes-needed-in-the-cism-wrapper-repository">
+<h2><span class="sectnum">A.2.1</span> Changes needed in the CISM-wrapper repository<a class="headerlink" href="#changes-needed-in-the-cism-wrapper-repository" title="Permalink to this headline">¶</a></h2>
+<p>The following changes are needed so that you can create a compset with a new ice sheet and have an appropriate <code class="docutils literal notranslate"><span class="pre">cism.ICESHEET.config</span></code> file generated for the new ice sheet:</p>
+<ol class="arabic simple">
+<li><p>Add an entry to the <code class="docutils literal notranslate"><span class="pre">_ICESHEET_OPTIONS</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">buildnml</span></code> file (in the <code class="docutils literal notranslate"><span class="pre">cime_config</span></code> directory of the CISM-wrapper repository). Each ice sheet has two names associated with it: a short, lowercase name (e.g., <code class="docutils literal notranslate"><span class="pre">ais</span></code>) and a full, uppercase name (e.g., <code class="docutils literal notranslate"><span class="pre">ANTARCTICA</span></code>). Both names are given in the <code class="docutils literal notranslate"><span class="pre">_ICESHEET_OPTIONS</span></code> variable. The short name is used in the grid specification, the <code class="docutils literal notranslate"><span class="pre">user_nl_cism</span></code> file name, the config file name, and various other file names; the full name is used in some XML variables. <strong>It is important that the ordering of ice sheets in _ICESHEET_OPTIONS is consistent with the ordering of grids in the config_grids xml file (e.g., if the Antarctica grid is listed before the Greenland grid in grids defined in that file, then Antarctica must appear before Greenland in this variable). Also, avoid having one ice sheet’s name be a prefix of another (e.g., “gris” and “grisa”).</strong></p></li>
+<li><p>Add entries in <code class="docutils literal notranslate"><span class="pre">cime_config/config_component.xml</span></code> giving XML variables for the new ice sheet and their relationship with compset long names. Follow the examples of other ice sheets in that file (e.g., do a case-insensitive search for “Antarctica” in that file).</p></li>
+<li><p>Add entries in <code class="docutils literal notranslate"><span class="pre">cime_config/namelist_definition_cism.xml</span></code> to add default configuration values for this ice sheet for any variables whose defaults differ between ice sheets. At a minimum, look for any variable in that file that already has a <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> entry with an <code class="docutils literal notranslate"><span class="pre">icesheet</span></code> attribute — e.g., <code class="docutils literal notranslate"><span class="pre">&lt;value</span> <span class="pre">icesheet=&quot;gris&quot;&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;value</span> <span class="pre">icesheet=&quot;ais&quot;&gt;</span></code> — and add a new entry for the new ice sheet; sometimes a specific grid might also be needed as an additional attribute. Optionally, there may be some additional variables that currently have the same default value for all ice sheets but for which you want a different default for the new ice sheet; for these, you can replace the single <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> entry with new <code class="docutils literal notranslate"><span class="pre">&lt;value</span> <span class="pre">icesheet=&quot;xxx&quot;&gt;</span></code> entries for each ice sheet.</p></li>
+<li><p>Add entries in <code class="docutils literal notranslate"><span class="pre">cime_config/config_archive.xml</span></code>: add a new rpointer section for the new ice sheet, as well as rpointer test file entries for this new ice sheet. (You can search for “ais” in that file to see what is needed.)</p></li>
+<li><p>[OPTIONAL] Add one or more new compset aliases in <code class="docutils literal notranslate"><span class="pre">cime_config/config_compsets.xml</span></code> using the new ice sheet. Note that only T compsets are defined here; other compsets are defined in other <code class="docutils literal notranslate"><span class="pre">config_compsets.xml</span></code> files elsewhere in CESM.</p></li>
+<li><p>[OPTIONAL] Add one or more default processor layouts in <code class="docutils literal notranslate"><span class="pre">cime_config/config_pes.xml</span></code> for the new ice sheet. Note that only processor layouts for T compsets are defined here; processor layouts for other compsets are defined in other <code class="docutils literal notranslate"><span class="pre">config_pes.xml</span></code> files elsewhere in CESM.</p></li>
+</ol>
+</div>
+<div class="section" id="changes-needed-in-other-repositories">
+<h2><span class="sectnum">A.2.2</span> Changes needed in other repositories<a class="headerlink" href="#changes-needed-in-other-repositories" title="Permalink to this headline">¶</a></h2>
+<p>A number of changes are also needed in other repositories to specify the new CISM grid(s). (See also <a class="reference internal" href="new-grids.html#new-grids"><span class="std std-ref">A.1   Introducing a new ice sheet grid</span></a>.)</p>
+<ol class="arabic simple">
+<li><p>In the appropriate XML file in <a class="reference external" href="https://github.com/ESMCI/ccs_config_cesm">https://github.com/ESMCI/ccs_config_cesm</a> add one or more grid definitions for this ice sheet. This involves adding a <code class="docutils literal notranslate"><span class="pre">&lt;domain&gt;</span></code> entry (which specifies the dimensions of the grid and an ESMF mesh file that defines the grid) and one or more <code class="docutils literal notranslate"><span class="pre">&lt;model_grid&gt;</span></code> entries (which specify grid aliases that can be used to run CISM with this grid together with certain atmosphere/land and ocean grids, possibly in conjunction with other CISM grids if you want to run multiple ice sheets in a single simulation). As with other changes, it is easiest to follow the example of an existing CISM grid; for example, search for “ais8” to see what your additions should look like.</p></li>
+<li><p>[OPTIONAL] To enable fully-coupled (B compset) runs, additional changes are needed in <a class="reference external" href="https://github.com/ESMCI/ccs_config_cesm">https://github.com/ESMCI/ccs_config_cesm</a> to specify runoff mapping files from the new CISM grid(s) to the desired ocean grid(s). (Mapping files between CISM and other components do not need to be specified, since they will be generated at runtime.) Once again, search for “ais8” to see what your additions should look like.</p></li>
+<li><p>In CTSM, set up an appropriate glacier region (see <a class="reference internal" href="new-grids.html#new-grids"><span class="std std-ref">A.1   Introducing a new ice sheet grid</span></a> for details).</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="new-grids.html" class="btn btn-neutral" title="A.1 Introducing a new ice sheet grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Gunter Leguy, William Lipscomb, Bill Sacks.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>var version_json_loc = "../../versions.json";</script>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/pop_ver.js"></script>
+    
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -125,6 +125,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="new-grids.html"><span class="sectnum">A.1</span> Introducing a new ice sheet grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new-icesheet.html"><span class="sectnum">A.2</span> Introducing a new ice sheet</a></li>
 </ul>
 
             
@@ -211,20 +212,13 @@ forcing data (see <a class="reference internal" href="#t-with-your-own-data"><sp
 </div>
 <div class="section" id="running-with-existing-forcing-data">
 <span id="t-with-existing-data"></span><h2><span class="section-number">4.2. </span>Running with existing forcing data<a class="headerlink" href="#running-with-existing-forcing-data" title="Permalink to this headline">¶</a></h2>
-<p>There is currently just a single set of forcing data available for running T
-compsets. These forcing data were created with software testing rather than scientific
-validity in mind. They were created from 30 years of an <code class="docutils literal notranslate"><span class="pre">I1850Clm50Sp</span></code> compset (CLM
-forced by a data atmosphere with GSWP3 forcing, starting from an already-near-spun-up
-state, with nominally year-1850 forcings and satellite phenology). The resolution was
-<code class="docutils literal notranslate"><span class="pre">f09_g17</span></code>. The code base was close to the final CESM2.0 release. For more details, see
-<a class="reference external" href="https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/lnd/dlnd7/CPLHIST_SNO/i.e20.I1850Clm50Sp.f09_g17.001_c180502/README">https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/lnd/dlnd7/CPLHIST_SNO/i.e20.I1850Clm50Sp.f09_g17.001_c180502/README</a>.</p>
-<p>There is one out-of-the-box T compset that uses these forcing data: T1850Gg. <strong>You should
-run this compset at f09_g17 resolution — i.e., with the same land resolution and ocean
-mask used to create the forcing data.</strong> You can use any CISM resolution, although the
-current forcing data only have complete forcings for Greenland, not Antarctica.</p>
+<p>There is currently just a single set of out-of-the-box forcing data available for running T
+compsets. These forcing data were created from the B1850 CMIP6 PI-control run, at resolution <code class="docutils literal notranslate"><span class="pre">f09_g17</span></code>.</p>
+<p>There are three out-of-the-box T compsets that use these forcing data: <code class="docutils literal notranslate"><span class="pre">T1850Gg</span></code> (Greenland only), <code class="docutils literal notranslate"><span class="pre">T1850Ga</span></code> (Antarctica only), and <code class="docutils literal notranslate"><span class="pre">T1850Gag</span></code> (both Antarctica and Greenland). There is no scientific advantage to running both Antarctica and Greenland in the same T compset case, since the two ice sheets won’t interact in this situation (in contrast to a coupled simulation, where it can be scientifically useful to run multiple ice sheets in the same simulation). Thus, the main reasons for using <code class="docutils literal notranslate"><span class="pre">T1850Gag</span></code> are for convenience or testing. With any of these compsets, <strong>you should use f09_g17 resolution — i.e., with the same land resolution and ocean
+mask used to create the forcing data.</strong> You can use any CISM grid(s), although note that you must choose a resolution that specifies a grid for each active ice sheet (see <a class="reference internal" href="running-and-modifying.html#choosing-a-cism-grid"><span class="std std-numref">Section 2.1.2</span></a>).</p>
 <p>So a typical <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code> command when running with the standard 4-km Greenland
 grid, would look like:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./create_newcase --case my_t_case --compset T1850Gg --res f09_g17_gl4</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./create_newcase --case my_t_case --compset T1850Gg --res f09_g17_gris4</span>
 </pre></div>
 </div>
 </div>
@@ -242,7 +236,7 @@ run using these new forcing data.</p>
 glacier elevation class, along with surface elevation for the coupler’s vertical
 downscaling), you need to perform a CESM run using a compset that includes an active land
 model (CLM). It does not matter whether the glc component is fully-active
-(<code class="docutils literal notranslate"><span class="pre">CISM2%EVOLVE</span></code>), active but non-evolving (<code class="docutils literal notranslate"><span class="pre">CISM2%NOEVOLVE</span></code>) or a stub model
+(e.g., <code class="docutils literal notranslate"><span class="pre">CISM2%GRIS-EVOLVE</span></code>), active but non-evolving (e.g., <code class="docutils literal notranslate"><span class="pre">CISM2%GRIS-NOEVOLVE</span></code>) or a stub model
 (<code class="docutils literal notranslate"><span class="pre">SGLC</span></code>). If running with CISM, CISM’s domain and resolution also do not matter (because
 forcing data are saved prior to downscaling to the CISM grid).</p>
 <p>However, CLM’s <code class="docutils literal notranslate"><span class="pre">GLACIER_REGION</span></code> field (on the surface dataset) <em>does</em> matter: Surface
@@ -294,8 +288,8 @@ resolutions of the T compset run (as specified by the <code class="docutils lite
 <code class="docutils literal notranslate"><span class="pre">create_newcase</span></code>) should match the resolution of the run used to create the forcing
 data. You <em>can</em> run with a different glc resolution than the one used to create the
 forcing data. So, for example, if you created the forcing data from an I or B compset with
-resolution <code class="docutils literal notranslate"><span class="pre">f09_g17_gl4</span></code>, the T compset run should use resolution <code class="docutils literal notranslate"><span class="pre">f09_g17_xxx</span></code>, where
-any value of <code class="docutils literal notranslate"><span class="pre">xxx</span></code> is acceptable.</p>
+resolution <code class="docutils literal notranslate"><span class="pre">f09_g17_gris4</span></code>, the T compset run should use resolution <code class="docutils literal notranslate"><span class="pre">f09_g17_xxx</span></code>, where
+any value of <code class="docutils literal notranslate"><span class="pre">xxx</span></code> is acceptable. You can even run the T compset with a different ice sheet than the one(s) used to create the forcing data, as long as CLM’s glacier regions and their behaviors were set up appropriately, as described above.</p>
 <p>The following variables in <code class="docutils literal notranslate"><span class="pre">env_run.xml</span></code> should be modified appropriately for your
 forcing data:</p>
 <ul>

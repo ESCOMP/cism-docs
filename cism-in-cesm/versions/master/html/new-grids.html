@@ -36,6 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="CESM Land Ice master documentation" href="index.html"/>
+        <link rel="next" title="A.2 Introducing a new ice sheet" href="new-icesheet.html"/>
         <link rel="prev" title="8. References" href="references.html"/> 
 
   
@@ -133,6 +134,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="new-icesheet.html"><span class="sectnum">A.2</span> Introducing a new ice sheet</a></li>
 </ul>
 
             
@@ -199,7 +201,7 @@
   <div class="section" id="introducing-a-new-ice-sheet-grid">
 <span id="new-grids"></span><h1><span class="sectnum">A.1</span> Introducing a new ice sheet grid<a class="headerlink" href="#introducing-a-new-ice-sheet-grid" title="Permalink to this headline">¶</a></h1>
 <p>This section describes what is needed when introducing a new ice sheet grid into the
-system. Much of the information in <a class="reference internal" href="#generating-mapping-files"><span class="std std-ref">A.1.4   Generating the necessary inter-component mapping files</span></a> is also relevant when
+system. This assumes you are adding a grid for an existing ice sheet: If you are adding a completely new ice sheet (i.e., an ice sheet other than Greenland or Antarctica), see <a class="reference internal" href="new-icesheet.html#new-icesheet"><span class="std std-ref">A.2   Introducing a new ice sheet</span></a>. Much of the information in <a class="reference internal" href="#generating-mapping-files"><span class="std std-ref">A.1.4   Generating the necessary inter-component mapping files</span></a> is also relevant when
 introducing a new land grid (in which case new lnd-glc mapping files are needed) or a new
 ocean grid (in which case new ocn-glc mapping files are needed).</p>
 <p>Note that local ice sheet grids must be rectangular; typically they are polar
@@ -471,6 +473,7 @@ scientifically.</p>
 <span id="generating-mapping-files"></span><h2><span class="sectnum">A.1.4</span> Generating the necessary inter-component mapping files<a class="headerlink" href="#generating-the-necessary-inter-component-mapping-files" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="generating-lnd-glc-mapping-files-for-a-new-cism-grid">
 <h3><span class="sectnum">A.1.4.1</span> Generating lnd &lt;-&gt; glc mapping files for a new CISM grid<a class="headerlink" href="#generating-lnd-glc-mapping-files-for-a-new-cism-grid" title="Permalink to this headline">¶</a></h3>
+<p><strong>Note: this step is no longer necessary with the NUOPC/CMEPS interface, where lnd &lt;-&gt; glc mappings are now generated at runtime. (The glc -&gt; ocn mapping files described in the next section ARE still needed.)</strong></p>
 <ol class="arabic">
 <li><p>Build the check_maps tool</p>
 <p>This isn’t entirely necessary, but allows the maps you generate to be checked
@@ -735,6 +738,7 @@ scripts, you need to add entries in config_grids.xml
 </div>
 </li>
 <li><p>Point to new mapping files: lnd &lt;-&gt; glc</p>
+<p><strong>Note: this step is no longer necessary with the NUOPC/CMEPS interface, where lnd &lt;-&gt; glc mappings are now generated at runtime. (The glc -&gt; ocn mapping files described in the next step ARE still needed.)</strong></p>
 <p>You’ll need to add a section like this for each land grid, in the section
 “lnd to glc and glc to lnd mapping”:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gridmap</span> <span class="na">lnd_grid=</span><span class="s">&quot;0.9x1.25&quot;</span> <span class="na">glc_grid=</span><span class="s">&quot;gland4&quot;</span> <span class="nt">&gt;</span>
@@ -787,6 +791,8 @@ model is ever activated for gx3v7.)</p></li>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="new-icesheet.html" class="btn btn-neutral float-right" title="A.2 Introducing a new ice sheet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="references.html" class="btn btn-neutral" title="8. References" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
