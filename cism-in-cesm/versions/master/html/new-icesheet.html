@@ -117,6 +117,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><span class="sectnum">A.2</span> Introducing a new ice sheet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#changes-needed-in-the-cism-wrapper-repository"><span class="sectnum">A.2.1</span> Changes needed in the CISM-wrapper repository</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#changes-needed-in-other-repositories"><span class="sectnum">A.2.2</span> Changes needed in other repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caveats-when-adding-a-new-ice-sheet"><span class="sectnum">A.2.3</span> Caveats when adding a new ice sheet</a></li>
 </ul>
 </li>
 </ul>
@@ -205,6 +206,10 @@
 <li><p>[OPTIONAL] To enable fully-coupled (B compset) runs, additional changes are needed in <a class="reference external" href="https://github.com/ESMCI/ccs_config_cesm">https://github.com/ESMCI/ccs_config_cesm</a> to specify runoff mapping files from the new CISM grid(s) to the desired ocean grid(s). (Mapping files between CISM and other components do not need to be specified, since they will be generated at runtime.) Once again, search for “ais8” to see what your additions should look like.</p></li>
 <li><p>In CTSM, set up an appropriate glacier region (see <a class="reference internal" href="new-grids.html#new-grids"><span class="std std-ref">A.1   Introducing a new ice sheet grid</span></a> for details).</p></li>
 </ol>
+</div>
+<div class="section" id="caveats-when-adding-a-new-ice-sheet">
+<h2><span class="sectnum">A.2.3</span> Caveats when adding a new ice sheet<a class="headerlink" href="#caveats-when-adding-a-new-ice-sheet" title="Permalink to this headline">¶</a></h2>
+<p><strong>In a run with multiple ice sheets, it is very important that the grids for the different ice sheets do not overlap.</strong> In fact, the restriction is a bit more stringent: <strong>There cannot be any land grid cell that intersects with multiple CISM domains.</strong> This is because the lnd-glc mapping algorithms in CMEPS cannot handle the situation where a given land grid cell intersects with multiple CISM domains. This requirement is NOT checked in the code: it is the user’s responsibility to ensure that it is satisfied.</p>
 </div>
 </div>
 

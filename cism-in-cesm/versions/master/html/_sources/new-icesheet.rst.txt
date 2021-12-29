@@ -42,3 +42,9 @@ A number of changes are also needed in other repositories to specify the new CIS
 #. [OPTIONAL] To enable fully-coupled (B compset) runs, additional changes are needed in https://github.com/ESMCI/ccs_config_cesm to specify runoff mapping files from the new CISM grid(s) to the desired ocean grid(s). (Mapping files between CISM and other components do not need to be specified, since they will be generated at runtime.) Once again, search for "ais8" to see what your additions should look like.
 
 #. In CTSM, set up an appropriate glacier region (see :ref:`new-grids` for details).
+
+===================================
+Caveats when adding a new ice sheet
+===================================
+
+**In a run with multiple ice sheets, it is very important that the grids for the different ice sheets do not overlap.** In fact, the restriction is a bit more stringent: **There cannot be any land grid cell that intersects with multiple CISM domains.** This is because the lnd-glc mapping algorithms in CMEPS cannot handle the situation where a given land grid cell intersects with multiple CISM domains. This requirement is NOT checked in the code: it is the user's responsibility to ensure that it is satisfied.
